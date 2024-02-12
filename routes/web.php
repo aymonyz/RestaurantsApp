@@ -41,7 +41,12 @@ Route::get('controlpanel/{id}/edit', [Branch_dataController::class, 'edit'])->na
 
 
 //إضافة عميل جديد
-Route::post('customers.store', [CustomerController::class, 'store'])->name('customer.store');
+//Route::post('customers.store', [CustomerController::class, 'store'])->name('customer.store');
+Route::post('customers/store', [CustomerController::class, 'store'])->name('customer.store');
+Route::post('/customers', [CustomerController::class, 'store']);
+Route::post('customers/store', [CustomerController::class, 'store'])->name('customers.store');
+
+
 //Route::post('/add-customer', 'CustomerController@store')->name('add.customer');
 Route::post('/countries/get-data', 'CountryController@getData');
 // في ملف routes/web.php

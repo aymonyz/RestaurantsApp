@@ -8,9 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     use HasFactory;
-    public function create()
-{
-    return view('cards');
-}
+
+   // في App\Models\Customer.php
+protected $fillable = [
+    'name', 'country', 'branch', 'mobileNumber', 'mobileNumber2',
+    'apartmentNumber', 'buildingNumber', 'address', 'priceList',
+    'discount', 'email', 'taxNumber', 'otherData',
+];
+
+
 
 }
