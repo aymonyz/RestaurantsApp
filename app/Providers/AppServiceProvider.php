@@ -1,24 +1,22 @@
 <?php
 
+// في App\Providers\AppServiceProvider.php
+
 namespace App\Providers;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use App\Models\BranchData;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
+    public function boot()
     {
-        //
+        View::composer('cards', function ($view) {
+            $view->with('branches', BranchData::all());
+        });
     }
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        //
-    }
 }
+
+   

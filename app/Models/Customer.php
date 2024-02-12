@@ -9,7 +9,7 @@ class Customer extends Model
 {
     use HasFactory;
 
-   // في App\Models\Customer.php
+protected $table = 'customers';
 protected $fillable = [
     'name', 'country', 'branch', 'mobileNumber', 'mobileNumber2',
     'apartmentNumber', 'buildingNumber', 'address', 'priceList',
