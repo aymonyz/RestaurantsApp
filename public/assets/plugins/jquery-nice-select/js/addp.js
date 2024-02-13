@@ -27,7 +27,7 @@
             });
         });
     });
-
+//تم تعديل الكود ليعمل بدون جيكويري
     // دالة إضافة المنتج إلى سلة المشتريات
     function addItemToCart(itemName, itemPrice) {
         const selectedCustomerDiv = document.getElementById('selectedCustomer');
