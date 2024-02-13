@@ -88,22 +88,40 @@
             <div class="modal-body">
                 <!-- هنا يأتي كود الفورم الخاص بـ "إضافة عميل جديد" -->
                 <!-- BEGIN FORM... (الفورم الذي أرسلته) -->
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            
+
                 <form method="POST" action="{{ route('customers.store') }}">
                     
                     @csrf
                 
                     <!-- إضافة الحقول هنا -->
+                  
+                    <div class="form-group">
+                        <label for="country">الدولة:</label>
+                        <input type="text" class="form-control" id="country" name="country" value="السعودية" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="branch">الفرع:</label>
+                        <select class="form-control" id="branch" name="branch">
+                            @foreach ($branches as $branch)
+                                <option value="{{ $branch->name_ar}}">{{ $branch->name_ar }}</option>
+                            @endforeach
+                        </select>
+                        
+                    </div>
                     <div class="form-group">
                         <label for="name">إسم العميل:</label>
                         <input type="text" class="form-control" id="name" name="name" maxlength="255">
-                    </div>
-                    <div class="form-group">
-                        <label for="country">الدولة:</label>
-                        <input type="text" class="form-control" id="country" name="country">
-                    </div>
-                    <div class="form-group">
-                        <label for="branch">الفرع:</label>
-                        <input type="text" class="form-control" id="branch" name="branch">
                     </div>
                     <div class="form-group">
                         <label for="mobileNumber">رقم المحمول:</label>
@@ -125,10 +143,7 @@
                         <label for="address">العنوان:</label>
                         <textarea class="form-control" id="address" name="address"></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="priceList">قائمة الأسعار:</label>
-                        <input type="text" class="form-control" id="priceList" name="priceList">
-                    </div>
+                  
                     <div class="form-group">
                         <label for="discount">الخصم (%):</label>
                         <input type="number" class="form-control" id="discount" name="discount" min="0" max="100" step="0.01">
@@ -145,13 +160,14 @@
                         <label for="otherData">بيانات أخرى:</label>
                         <textarea class="form-control" id="otherData" name="otherData"></textarea>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                        <button type="submit" class="btn btn-primary">حفظ</button>
+                    </div>
+                </form>
                 
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
-                <button type="submit" class="btn btn-primary">حفظ</button>
-            </div>
-        </form>
+         
         </div>
     </div>
 </div>

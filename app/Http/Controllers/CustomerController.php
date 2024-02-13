@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\BranchData;
 class CustomerController extends Controller
 
 {
     public function store(Request $request)
     {
+        dd($request->all());
         // Validating the request data
         $data = $request->validate([
+             // تأكد من وجود id في جدول branch_data
+
             'name' => 'nullable|max:255', // Assuming 'name' is the field name for the customer's name
             'country' => 'nullable', // Assuming 'country' is the field name for the customer's country
             'branch' => 'nullable', // Assuming 'branch' is the field name for the branch
@@ -26,15 +29,20 @@ class CustomerController extends Controller
             'email' => 'nullable|email|max:255', // Validating email
             'taxNumber' => 'nullable|max:255', // Validating tax number
             'otherData' => 'nullable|max:255', // Validating other data, if provided
+            // 'branch' => 'required|exists:branch_data,id',
+            
         ]);
 
-        ;
-
+       
+      
         // Creating a new customer record
-        $customer = Customer::create($data);
+        $customer = Customer::create(
 
+            $data
+        );
         // Redirecting back with a success message
         return back()->with('success', 'تم حفظ العميل بنجاح');
+        
     }
 
     public function index() {
@@ -53,7 +61,22 @@ class CustomerController extends Controller
         return response()->json($result);
     }
     
+    
+    public function showForm()
+{
+    // استرجاع جميع الفروع من قاعدة البيانات
+    $branches = BranchData::all();
+    
+    // التحقق مما إذا كان هناك فروع متاحة
+    if($branches->isEmpty()) {
+        return back()->with('error', 'لم يتم العثور على بيانات الفروع.');
+    }
 
+    // تمرير المتغير $branches إلى العرض
+    return view('cards', ['branches' => $branches]);
+}
+
+    
 }
 
 

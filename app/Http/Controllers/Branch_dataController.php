@@ -112,6 +112,7 @@ public function destroy($id)
     $branch->delete();
     return redirect()->route('controlpanel.index')->with('success', 'تم حذف الفرع بنجاح');
 }
+
 }
 
 

@@ -12,6 +12,9 @@ use App\Http\Controllers\GroupsController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Branch_dataController;
+use Illuminate\Support\Facades\View;
+use App\Models\BranchData; // تأكد من استخدام المسار الصحيح لموديل BranchData
+
 // web.php
 Route::get('/groups', [GroupsController::class, 'index'])->name('groups.index');
 
@@ -45,6 +48,12 @@ Route::get('controlpanel/{id}/edit', [Branch_dataController::class, 'edit'])->na
 Route::post('customers/store', [CustomerController::class, 'store'])->name('customer.store');
 Route::post('/customers', [CustomerController::class, 'store']);
 Route::post('customers/store', [CustomerController::class, 'store'])->name('customers.store');
+Route::get('/showForm', [CustomerController::class, 'showForm']);
+View::composer('cards', function ($view) {
+    $view->with('branches', BranchData::all());
+});
+
+
 
 
 //Route::post('/add-customer', 'CustomerController@store')->name('add.customer');
