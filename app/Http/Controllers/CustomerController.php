@@ -10,7 +10,7 @@ class CustomerController extends Controller
 {
     public function store(Request $request)
     {
-        dd($request->all());
+        
         // Validating the request data
         $data = $request->validate([
              // تأكد من وجود id في جدول branch_data
@@ -33,8 +33,7 @@ class CustomerController extends Controller
             
         ]);
 
-       
-      
+
         // Creating a new customer record
         $customer = Customer::create(
 

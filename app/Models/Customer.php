@@ -16,6 +16,4 @@ protected $fillable = [
     'discount', 'email', 'taxNumber', 'otherData',
 ];
 
-
-
 }
