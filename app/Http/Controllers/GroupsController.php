@@ -14,13 +14,16 @@ class GroupsController extends Controller
 
     public function store(Request $request)
     {
+        $is_active = $request->has('is_active') ? true : false;
+
         //dd($request->all());
         $validatedData = $request->validate([
             'GroupNameArabic' => 'required|string|max:255',
             'GroupNameEnglish' => 'required|string|max:255',
             'Ranking' => 'required|integer',
-            'IsActive' => 'nullable|boolean',
         ]);
+        $validatedData ['is_active'] = $is_active;
+
 
          Group::create($validatedData);
        

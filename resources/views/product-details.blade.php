@@ -202,8 +202,8 @@
 											<div class="col-md-6 mb-3">
 												<label class="form-label">وحدة القياس</label>
 												<select class="form-select" name="unit">
-													<option>متر</option>
-													<option>قطعة</option>
+													<option value="متر">متر</option>
+													<option value="قطعة">قطعة</option>
 												</select>
 											</div>
 											<div class="col-md-6 mb-3">
@@ -242,16 +242,33 @@
 							</thead>
 							<tbody>
 								@foreach($items as $item)
-									<tr>
-										<td>{{ $item->arabicName }}</td>
-										<td>{{ $item->englishName }}</td>
-										<td>{{ $item->abbreviatedArabicname }}</td>
-										<td>{{ $item->group }}</td>
-										<td>{{ $item->image }}</td>
-										<td>{{ $item->is_active }}</td>
-										<td class="edit-btn">تعديل</td>
-										<td class="delete-btn">حذف</td>
-									</tr>
+							<tr>
+								<td>{{ $item->arabicName }}</td>
+								<td>{{ $item->englishName }}</td>
+								<td>{{ $item->abbreviatedArabicname }}</td>
+								<td>{{ $item->group }}</td>
+								<td>
+									@if ($item->image)
+									<img src="{{ asset($item->image) }}" alt="Item Image" height="50">
+								@else
+									<img src="{{ asset('/Images/photo-empty.png') }}" alt="Default Image" height="50">
+								@endif
+								<div>
+									<button onclick="showEditImageForm({{ $item->id }})"><a href="{{route('files',['item'=>$item])}}">تعديل</a></button>
+								</div>
+								</td>
+								<td>{{ $item->is_active }}</td>
+								<td class="edit-btn">
+									<a href="#" onclick="showEditForm({{ $item->id }}, '{{ $item->arabicName }}', '{{ $item->englishName }}', '{{ $item->abbreviatedArabicname }}', '{{ $item->group }}', '{{ $item->unit }}', '{{ $item->is_active }}')">تعديل</a>
+								</td>
+								<td class="delete-btn">
+									<form method="post" action="{{route('items.destroy',['item'=>$item])}}">
+										@csrf
+										@method('delete')
+										<input type="submit" value="حذف">
+									</form>
+								</td>
+							</tr>
 								@endforeach
 							</tbody>
 							

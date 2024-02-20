@@ -6,12 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\ItemPrice;
 use App\Models\Group;
+use Illuminate\Support\Facades\DB;
 
 
 class ItemController extends Controller
 {
     //
     public function store(Request $request){
+       // dd($request->all());
 
 $is_active = $request->has('is_active') ? true : false;
 
@@ -22,12 +24,12 @@ $is_active = $request->has('is_active') ? true : false;
                 'abbreviatedEnglishname' => 'required|string',
                 'itemNumber' => 'required|integer',
                 'unit' => 'required|string|in:متر,قطعة', // Add more options if needed
+
                 'group' => 'required|string'// Add more options if needed
 
         ]);
         $data ['is_active'] = $is_active;
 
-    
     
         // Now $data contains the validated form input, and you can use it to save to the database or perform other actions.
     
@@ -70,6 +72,16 @@ $is_active = $request->has('is_active') ? true : false;
                 $items = Item::all();
         }
         $groups=Group::where('IsActive', 1)->get();
+        $item = DB::table('items_prices')
+    ->join('items', 'items_prices.item_name', '=', 'items.arabicName')
+    ->select('items_prices.item_name', 'items_prices.price', 'items.unit')
+    ->where('items_prices.item_name', '=', 'known_item_name') // replace 'known_item_name' with an actual item name
+    ->first();
+
+dd($item);
+  
+       
+        
 
         // قم بإرجاع العرض مع العناصر المصفاة
         return view('cards', ['items' => $items,'groups'=>$groups
