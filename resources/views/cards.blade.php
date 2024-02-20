@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="">
     <title>Shopping Cart</title>
     <style>
@@ -540,6 +541,8 @@ function removeAdditionalService(itemId, additionalServiceName) {
             // Send an AJAX request to save the cart to the database
             // You can use a JavaScript framework like Axios or jQuery.ajax to make the request
             // Example using Axios:
+           // import axios for me
+
             axios.post('/cart/save', {
                 items: cartItems,
                 discount: discount,
