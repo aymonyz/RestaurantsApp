@@ -12,7 +12,9 @@ use App\Http\Controllers\GroupsController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Branch_dataController;
+use App\Http\Controllers\AdditionalServiceController;
 use Illuminate\Support\Facades\View;
+
 use App\Models\BranchData; 
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\CostController;
@@ -22,7 +24,11 @@ use App\http\Controllers\LocationController;
 use App\http\Controllers\restController;
 
 
-// web.php
+
+use App\Http\Controllers\ImageController;
+// تأكد من استخدام المسار الصحيح لموديل BranchData
+
+
 
 
 Route::get('/', function () {
@@ -30,6 +36,8 @@ Route::get('/', function () {
 })->name('login');
 Auth::routes();
 Route::get('/groups', [GroupsController::class, 'index'])->name('groups.index');
+Route::post('/update-image/{item}', [ImageController::class, 'updateImage'])->name('updateImage');
+
 
 // استخدم هذا النمط لكل الطرق
 Route::get('/groups/{id}edit', [GroupsController::class, 'edit'])->name('groups.edit');
@@ -88,6 +96,13 @@ Route::delete('/alerts/{id}', [CostController::class, 'destroy'])->name('alerts.
 
 
 
+//additional_services
+Route::get('/additional_services', [AdditionalServiceController::class, 'index'])->name('additional_services.index');
+Route::post('/additional_services/store', [AdditionalServiceController::class, 'store'])->name('additional_services.store');
+Route::get('/additional_services/{id}/edit', [AdditionalServiceController::class, 'edit'])->name('additional_services.edit');
+Route::put('/additional_services/{id}/update', [AdditionalServiceController::class, 'update'])->name('additional_services.update');
+Route::delete('/additional_services/{id}/destroy', [AdditionalServiceController::class, 'destroy'])->name('additional_services.destroy');
+
 
 //إضافة عميل جديد
 
@@ -117,8 +132,17 @@ Route::get('/search', [CustomerController::class, 'search'])->name('search');
 
 Route::get('/product-details',[ItemController::class, 'show'])->name('items.show');
 Route::get('/cards',[InvoiceController::class, 'show'])->name('cards.show');
-Route::get('/your-route', 'YourController@yourMethod')->name('yourRouteName');
+Route::delete('/items/destroy/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
 
+//Update image
+
+Route::get('/your-route', 'YourController@yourMethod')->name('yourRouteName');
+//shopping cart
+Route::post('/cart/add', [InvoiceController::class, 'store'])->name('cart.add');
+//ملف إختيار الصورة
+Route::get('/files/{item}', function($item){
+    return view('files',['item'=>$item]);
+})->name('files');
 
 // Redirect the root URL to the login page
 
