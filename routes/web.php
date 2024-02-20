@@ -13,9 +13,22 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Branch_dataController;
 use Illuminate\Support\Facades\View;
-use App\Models\BranchData; // تأكد من استخدام المسار الصحيح لموديل BranchData
+use App\Models\BranchData; 
+use App\Http\Controllers\ExpensesController;
+use App\Http\Controllers\CostController;
+use App\Http\Controllers\EstablishmePController;
+use App\Models\Cost;
+use App\http\Controllers\LocationController;
+use App\http\Controllers\restController;
+
 
 // web.php
+
+
+Route::get('/', function () {
+    return view('auth.login');
+})->name('login');
+Auth::routes();
 Route::get('/groups', [GroupsController::class, 'index'])->name('groups.index');
 
 // استخدم هذا النمط لكل الطرق
@@ -29,9 +42,7 @@ Route::delete('/groups/{id}', [GroupsController::class, 'destroy'])->name('group
  Route::get('/products', [GroupsController::class, 'index'])->name('groups.index');
  Route::post('/groups/store', [GroupsController::class, 'store'])->name('groups.store');
 Route::get('/groups/{id}/edit', 'GroupsController@edit')->name('groups.edit');
-// Route::put('/groups/{id}', 'GroupsController@update')->name('groups.update');
-// Route::delete('/groups/{id}', 'GroupsController@destroy')->name('groups.destroy');
-// Route::get('/groups', [GroupsController::class, 'index'])->name('groups.index');
+
 Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
 //لوحة التحكم
 Route::post('branches.store', [Branch_dataController::class, 'store'])->name('branches.store');
@@ -41,10 +52,45 @@ Route::put('/controlpanel/{id}', [Branch_dataController::class, 'update'])->name
 Route::delete('/controlpanel/{id}', [Branch_dataController::class, 'destroy'])->name('controlpanel.destroy');
 Route::get('controlpanel/{id}/edit', [Branch_dataController::class, 'edit'])->name('controlpanel.edit');
 
+//المصروفاتمجموعة 
+
+Route::post('/avatar/store', 'ExpensesController@store')->name('Expenses.store');
+Route::post('/avatar/store', [ExpensesController::class, 'store'])->name('Expenses.store');
+Route::get('/avatar', [ExpensesController::class, 'index'])->name('avatar.index');
+Route::delete('/avatar/{id}', [ExpensesController::class, 'destroy'])->name('Expenses.destroy');
+Route::get('/avatar/{id}/edit', [ExpensesController::class, 'edit'])->name('Expenses.edit');
+Route::get('/avatar/{id}/edit', [ExpensesController::class, 'edit'])->name('Expenses.edit');
+Route::put('/avatar/{id}', [ExpensesController::class, 'update'])->name('Expenses.update');
+Route::get('/avatar', [ExpensesController::class, 'index'])->name('Expenses.index');
+
+//مصروفات
+Route::get('/Establishmentneam-edit/{id}/edit', [CostController::class, 'edit'])->name('alerts.edit');
+
+Route::get('/alerts', [CostController::class, 'index'])->name('alerts.index');
+Route::post('/alerts/store', [CostController::class, 'store'])->name('alerts.store');
+
+
+Route::put('/alerts/{id}', [CostController::class, 'update'])->name('alerts.update');
+Route::delete('/alerts/{id}', [CostController::class, 'destroy'])->name('alerts.destroy');
+
+
+
+
+// //المناطق
+// Route::post('/rest','restController@store')->name('rest.store');
+// Route::put('/rest/{id}', [restController::class, 'update'])->name('rest.update');
+// Route::get('/rest', [restController::class, 'index'])->name('rest.index');
+// Route::post('/rest/store', [restController::class, 'store'])->name('rest.store');
+// Route::get('/rest', [restController::class, 'index'])->name('rest.index');
+// Route::delete('/rest/{id}', [restController::class, 'destroy'])->name('rest.destroy');
+// Route::get('/rest/{id}/edit', [restController::class, 'edit'])->name('rest.edit');
+
+
+
 
 
 //إضافة عميل جديد
-//Route::post('customers.store', [CustomerController::class, 'store'])->name('customer.store');
+
 Route::post('customers/store', [CustomerController::class, 'store'])->name('customer.store');
 Route::post('/customers', [CustomerController::class, 'store']);
 Route::post('customers/store', [CustomerController::class, 'store'])->name('customers.store');
@@ -56,7 +102,6 @@ View::composer('cards', function ($view) {
 
 
 
-//Route::post('/add-customer', 'CustomerController@store')->name('add.customer');
 Route::post('/countries/get-data', 'CountryController@getData');
 // في ملف routes/web.php
 Route::post('/your-endpoint', 'YourController@yourMethod');
@@ -64,10 +109,10 @@ Route::post('/your-endpoint', 'YourController@yourMethod');
 Route::post('/invoice', 'InvoiceController@process')->name('invoice.process');
 Route::post('/inv.aspx/FillInitializeInvoice', 'YourController@yourMethod');
 Route::post('/GetCustomers', 'YourController@yourMethod');
-//Route::get('/customers', [CustomerController::class, 'index']);
+
 
 Route::get('/search', [CustomerController::class, 'search'])->name('search');
-// يمكنك تحديد طرق أخرى خارج الـ resource controller إذا كانت هناك حاجة
+
 // ...
 
 Route::get('/product-details',[ItemController::class, 'show'])->name('items.show');
@@ -76,12 +121,9 @@ Route::get('/your-route', 'YourController@yourMethod')->name('yourRouteName');
 
 
 // Redirect the root URL to the login page
-Route::get('/', function () {
-    return view('auth.login');
-})->name('login');
 
 // Laravel's built-in authentication routes
-Auth::routes();
+
 
 // Define your custom routes below
 
@@ -89,17 +131,15 @@ Auth::routes();
 Route::get('/index', function () {
     return view('index');
 });
-
-// Example dynamic route that accepts a 'page' parameter
-Route::get('/{page}', [AdminController::class, 'index'])->where('page', '.*');
+ Route::get('/{page}', [AdminController::class, 'index'])->where('page', '.*');
 
 // Example route to the home page
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 ///////////////////////////  الاصناف  ///////////////////////////
 Route::get('/Items',[ItemController::class, 'show'])->name('items.show');
 Route::get('/Invoices',[InvoiceController::class, 'show'])->name('invoices.show');
-//Route::get('/searchCustomers', [CustomerController::class,'search'])->name('searchCustomers');
+
 Route::get('/Branches', [BranchController::class, 'index'])->name('branch.index');
 Route::post('/BranchesStore', [BranchController::class, 'store'])->name('branch.store');
 //Area
@@ -111,4 +151,3 @@ Route::post('/items', [ItemController::class, 'store'])->name('items.store');
 
 Route::post('/itemsprice', [ItemPriceController::class, 'store'])->name('itemPricing.store');
 
-//Route::resource('groups', 'GroupController');

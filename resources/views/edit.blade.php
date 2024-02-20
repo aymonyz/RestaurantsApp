@@ -1,3 +1,15 @@
+
+
+
+
+
+
+
+
+
+
+
+
 @extends('layouts.master')
 @section('css')
 @endsection
@@ -39,27 +51,30 @@
 @endsection
 @section('content')
 				<!-- row -->
- <div class="row">
-	<form method="POST" action="reset" class="col-12">
-		@csrf
-	<div class="form-group">
-		<label for="branch">الفرع:</label>
-		<select class="form-control" id="branch" name="branch">
-			@foreach ($branches as $branch)
-				<option value="{{ $branch->name_ar}}">{{ $branch->name_ar }}</option>
-			@endforeach
-		</select>
-	</div>	
-	<div class="form-group">
-		<label for="matga">المنطقة</label>
-		<input type="text" class="form-control" name="name" id="matga" placeholder="ادخل المنطقة">
+				<div class="row">
 
-	</div>
-    </form>
-
-</div>
+				</div>
+				<!-- row closed -->
+                <div class="container">
+                    <h2>تعديل نفقة</h2>
+                    <form action="{{ route('Expenses.update', $expense->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group">
+                            <label for="nameMsrof">الاسم</label>
+                            <input type="text" class="form-control" name="nameMsrof" value="{{ $expense->nameMsrof }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="desMsrof">الوصف</label>
+                            <textarea class="form-control" name="desMsrof" rows="4" required>{{ $expense->desMsrof }}</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">تحديث</button>
+                    </form>
+                </div>
+			</div>
+			<!-- Container closed -->
 		</div>
-	</div>
+		<!-- main-content closed -->
 @endsection
 @section('js')
 @endsection
