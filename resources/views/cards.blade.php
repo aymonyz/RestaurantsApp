@@ -1,3 +1,53 @@
+@extends('layouts.master')
+@section('css')
+@endsection
+@section('page-header')
+				<!-- breadcrumb -->
+				<div class="breadcrumb-header justify-content-between">
+					<div class="my-auto">
+						<div class="d-flex">
+							<h4 class="content-title mb-0 my-auto">سند صرف</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ المصروفات</span>
+						</div>
+					</div>
+					<div class="d-flex my-xl-auto right-content">
+						<div class="pr-1 mb-3 mb-xl-0">
+							<button type="button" class="btn btn-info btn-icon ml-2"><i class="mdi mdi-filter-variant"></i></button>
+						</div>
+						<div class="pr-1 mb-3 mb-xl-0">
+							<button type="button" class="btn btn-danger btn-icon ml-2"><i class="mdi mdi-star"></i></button>
+						</div>
+						<div class="pr-1 mb-3 mb-xl-0">
+							<button type="button" class="btn btn-warning  btn-icon ml-2"><i class="mdi mdi-refresh"></i></button>
+						</div>
+						<div class="mb-3 mb-xl-0">
+							<div class="btn-group dropdown">
+								<button type="button" class="btn btn-primary">14 Aug 2019</button>
+								<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuDate" data-x-placement="bottom-end">
+									<a class="dropdown-item" href="#">2015</a>
+									<a class="dropdown-item" href="#">2016</a>
+									<a class="dropdown-item" href="#">2017</a>
+									<a class="dropdown-item" href="#">2018</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- breadcrumb -->
+@endsection
+@section('content')
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +55,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="">
     <title>Shopping Cart</title>
     <style>
@@ -542,7 +591,6 @@ function removeAdditionalService(itemId, additionalServiceName) {
             // You can use a JavaScript framework like Axios or jQuery.ajax to make the request
             // Example using Axios:
            // import axios for me
-
             axios.post('/cart/save', {
                 items: cartItems,
                 discount: discount,
@@ -561,3 +609,29 @@ function removeAdditionalService(itemId, additionalServiceName) {
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				</div>
+				<!-- row closed -->
+			</div>
+			<!-- Container closed -->
+		</div>
+		<!-- main-content closed -->
+@endsection
+@section('js')
+@endsection

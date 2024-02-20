@@ -16,7 +16,7 @@ use App\Http\Controllers\AdditionalServiceController;
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\ImageController;
 use App\Models\BranchData; // تأكد من استخدام المسار الصحيح لموديل BranchData
-
+Auth::routes();
 // web.php
 Route::get('/groups', [GroupsController::class, 'index'])->name('groups.index');
 Route::post('/update-image/{item}', [ImageController::class, 'updateImage'])->name('updateImage');
@@ -101,7 +101,7 @@ Route::get('/', function () {
 })->name('login');
 
 // Laravel's built-in authentication routes
-Auth::routes();
+
 
 // Define your custom routes below
 
