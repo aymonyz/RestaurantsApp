@@ -61,20 +61,24 @@ class CustomerController extends Controller
     }
     
     
-    public function showForm()
-{
-    // استرجاع جميع الفروع من قاعدة البيانات
-    $branches = BranchData::all();
+//  22222   public function showForm()
+// {
+//     // استرجاع جميع الفروع من قاعدة البيانات
+//     $branches = BranchData::all();
     
-    // التحقق مما إذا كان هناك فروع متاحة
-    if($branches->isEmpty()) {
-        return back()->with('error', 'لم يتم العثور على بيانات الفروع.');
-    }
+//     // التحقق مما إذا كان هناك فروع متاحة
+//     if($branches->isEmpty()) {
+//         return back()->with('error', 'لم يتم العثور على بيانات الفروع.');
+//     }
 
-    // تمرير المتغير $branches إلى العرض
-    return view('cards', ['branches' => $branches]);
-}
-
+//     // تمرير المتغير $branches إلى العرض
+//     return view('cards', ['branches' => $branches]);
+// }
+// public function someMethod()
+// {
+//     $Branches = DB::table('Branches')->get(); // جلب جميع السجلات من جدول Branches
+//     return view('ad-castoar', compact('Branches')); // تمرير البيانات إلى العرض
+// }
     
 }
 

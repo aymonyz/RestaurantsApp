@@ -13,6 +13,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Branch_dataController;
 use App\Http\Controllers\AdditionalServiceController;
+use App\Http\Controllers\adress;
 use Illuminate\Support\Facades\View;
 
 use App\Models\BranchData; 
@@ -26,10 +27,13 @@ use App\http\Controllers\restController;
 
 
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\ResetController;
+use Illuminate\Database\Console\Migrations\ResetCommand;
+
 // تأكد من استخدام المسار الصحيح لموديل BranchData
 
-
-
+use App\Http\Controllers\adressController;
+use App\Models\address;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -106,16 +110,30 @@ Route::delete('/additional_services/{id}/destroy', [AdditionalServiceController:
 
 //إضافة عميل جديد
 
-Route::post('customers/store', [CustomerController::class, 'store'])->name('customer.store');
+Route::post('customer/store', [CustomerController::class, 'store'])->name('customer.store');
 Route::post('/customers', [CustomerController::class, 'store']);
 Route::post('customers/store', [CustomerController::class, 'store'])->name('customers.store');
 Route::get('/showForm', [CustomerController::class, 'showForm']);
 View::composer('cards', function ($view) {
     $view->with('branches', BranchData::all());
 });
+//المناطق
+Route::get('/reset', [ResetController::class, 'index'])->name('reset.index');
 
+// Route to handle form submission and save the area
+Route::post('/reset/store', [ResetController::class, 'store'])->name('reset.store');
 
+// Route to handle deleting an area
+Route::post('/reset/delete', [ResetController::class, 'delete'])->name('reset.delete');
+// web.php
 
+// Route to handle deleting an area
+Route::post('/reset/delete/{id}', [ResetController::class, 'delete'])->name('reset.delete');
+// في ملف web.php، أضف Route جديد أو قم بتعديل Route موجود ليشمل إرسال بيانات الفروع إلى الصفحة.
+Route::get('/ad-castoar', [adressController::class, 'showCards'])->name('ad-castoar');
+Route::get('/ad-castoar', [adressController::class, 'showSelectForm']);
+Route::get('/some-path', 'adressController@someMethod');
+Route::get('/ad-castoar',[adressController::class,'show'])->name('adress');
 
 Route::post('/countries/get-data', 'CountryController@getData');
 // في ملف routes/web.php

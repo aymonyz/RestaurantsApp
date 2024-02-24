@@ -41,7 +41,16 @@
 <style>
 
     </style>
+    <!link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+   
+<!-- زر "إضافة عميل جديد" -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addClientModal">
+    إضافة عميل جديد
+</button>
 
+
+
+<!-- Include the modal from the ad-castoar.blade file -->
 
 <div class="container">
     <div class="row justify-content-center">
@@ -339,7 +348,7 @@
     </div>
     <div style="float:right;">
         <div class="pageSummaryMetric">
-            <h4 id="Content1_Content2_lblROrder" style="font-size:20px">الفواتير</h4>
+            <h4 id="Content1_Content2_lblROrder" style="font-size:20px">الييييييييييييييييفواتير</h4>
             <p id="cl_o_r" style="font-size:18px; font-weight:bold;">2902</p>
         </div>
         <div class="pageSummaryMetric">
@@ -430,7 +439,7 @@
 </div>
 
 
-
+@include('ad-castoar')
 <script>
     function openPage(pageName) {
         // إخفاء جميع الصفحات
