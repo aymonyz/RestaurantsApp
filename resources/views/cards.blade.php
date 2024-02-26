@@ -67,6 +67,12 @@
 
 <div id="page1" class="page" style="display:none;">
     <!----1--->
+    @if (session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
+
     <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -190,6 +196,7 @@
                 <div class="card" id="cart">
                     <div class="card-body">
                         <h5 class="card-title">إصدار فاتورة</h5>
+                        
                         <ul id="cartItems"></ul>
                         <p>إجمالي المبلغ: <span id="totalPrice">0.00</span></p>
                         <p>خصم: <input type="number" id="discount" value="0" min="0" onchange="updateTotalPrice()"></p>

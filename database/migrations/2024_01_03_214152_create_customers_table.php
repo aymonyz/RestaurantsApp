@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name', 255)->nullable(); // Name of the customer
             $table->string('country')->nullable(); // Country of the customer
             $table->string('branch')->nullable(); // Branch
-            $table->string('mobileNumber', 9)->nullable(); // Mobile number with a length of 9 digits
+            $table->string('mobileNumber', 9)->nullable()->unique(); // جعل رقم الهاتف فريد
             $table->string('mobileNumber2', 9)->nullable(); // Second mobile number, nullable
             $table->string('apartmentNumber', 255)->nullable(); // Apartment number
             $table->string('buildingNumber', 255)->nullable(); // Building number

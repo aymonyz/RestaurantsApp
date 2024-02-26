@@ -10,10 +10,8 @@ class Customer extends Model
     use HasFactory;
 
 protected $table = 'customers';
-protected $fillable = [
-    'name', 'country', 'branch', 'mobileNumber', 'mobileNumber2',
-    'apartmentNumber', 'buildingNumber', 'address', 'priceList',
-    'discount', 'email', 'taxNumber', 'otherData',
-];
+// في موديل Customer
+protected $fillable = ['branch', 'country', 'mobileNumber', 'mobileNumber2', 'name', 'apartmentNumber', 'buildingNumber', 'address', 'discount', 'email', 'taxNumber', 'otherData'];
+
 
 }
