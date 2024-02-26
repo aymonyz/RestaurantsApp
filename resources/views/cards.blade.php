@@ -67,6 +67,11 @@
 
 <div id="page1" class="page" style="display:none;">
     <!----1--->
+    <div> 
+        <input type="text" id="CustomerSearch" placeholder="البحث عن عميل..." onkeyup="searchCustomer()">
+        <button onclick="clearCustomerSearch()">x</button>
+        <div id="searchResults" style="position: absolute; z-index: 1000; background: rgb(63, 134, 128); width: 200px;">
+    </div>
     @if (session('success'))
 <div class="alert alert-success">
     {{ session('success') }}
@@ -906,7 +911,69 @@ function removeAdditionalService(itemId, additionalServiceName) {
 
 
 
+<script>
+    function selectCustomer(customerId, customerName) {
+    var customerSearchInput = document.getElementById('CustomerSearch');
+    var selectedCustomerIdInput = document.getElementById('selectedCustomerId');
+    var searchResultsDiv = document.getElementById('searchResults');
 
+    customerSearchInput.value = customerName; // تحديث صندوق البحث بالاسم
+    selectedCustomerIdInput.value = customerId; // تخزين معرف العميل
+
+    // إخفاء نتائج البحث
+    searchResultsDiv.style.display = 'none';
+}
+
+</script>
+<script>
+    function clearCustomerSearch() {
+    var customerSearchInput = document.getElementById('CustomerSearch');
+    var selectedCustomerIdInput = document.getElementById('selectedCustomerId');
+    var searchResultsDiv = document.getElementById('searchResults');
+
+    customerSearchInput.value = '';
+    selectedCustomerIdInput.value = '';
+    searchResultsDiv.innerHTML = '';
+    searchResultsDiv.style.display = 'none';
+}
+
+</script>
+<script>
+    function clearCustomerSearch() {
+    var customerSearchInput = document.getElementById('CustomerSearch');
+    var selectedCustomerIdInput = document.getElementById('selectedCustomerId');
+    var searchResultsDiv = document.getElementById('searchResults');
+
+    customerSearchInput.value = '';
+    selectedCustomerIdInput.value = '';
+    searchResultsDiv.innerHTML = '';
+    searchResultsDiv.style.display = 'none';
+}
+
+</script>
+<script>
+   function searchCustomer() {
+    var input = document.getElementById('CustomerSearch').value;
+    var searchResultsDiv = document.getElementById('searchResults');
+
+    if(input.length >= 3) {
+        // استخدام الـ Template Literals بشكل صحيح
+        fetch(`/search?term=${input}`)
+        .then(response => response.json())
+        .then(data => {
+            searchResultsDiv.innerHTML = '';
+            searchResultsDiv.style.display = 'block';
+            data.forEach(customer => {
+                // تصحيح استخدام Template Literals هنا أيضًا
+                searchResultsDiv.innerHTML += `<div onclick="selectCustomer(${customer.id}, '${customer.name.replace(/'/g, "\\'")}')">${customer.name}</div>`;
+            });
+        }).catch(error => console.error('Error:', error));
+    } else {
+        searchResultsDiv.style.display = 'none';
+    }
+}
+
+</script>
 
 
 
@@ -918,4 +985,6 @@ function removeAdditionalService(itemId, additionalServiceName) {
 		<!-- main-content closed -->
 @endsection
 @section('js')
+
+
 @endsection
