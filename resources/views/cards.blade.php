@@ -70,7 +70,22 @@
     <div> 
         <input type="text" id="CustomerSearch" placeholder="البحث عن عميل..." onkeyup="searchCustomer()">
         <button onclick="clearCustomerSearch()">x</button>
-        <div id="searchResults" style="position: absolute; z-index: 1000; background: rgb(63, 134, 128); width: 200px;">
+        <div id="searchResults" style="position: absolute; z-index: 1000; background: rgb(243, 243, 243); width: 200px; #searchResults {
+            position: absolute;
+            z-index: 1000;
+            background: rgb(243, 243, 243);
+            width: 200px;
+            /* هذه القيم مثالية، قد تحتاج إلى تعديلها بناءً على التصميم الفعلي */
+            top: 0; /* سيتم تحديث هذا القيمة ديناميكيًا */
+            left: 0; /* يمكن تعديلها إذا لزم الأمر */
+        }
+        ">
+            <div id="selectedCustomer">
+                <!-- Selected customer information will be displayed here -->
+                
+            </div>
+            </div>
+            
     </div>
     @if (session('success'))
 <div class="alert alert-success">
@@ -530,143 +545,217 @@ window.onload = function() {
 
 }
 
-
 function showMeterModal(itemId, itemName, itemPrice) {
-// Create modal
-const modal = document.createElement('div');
-modal.style.display = 'block';
-modal.style.position = 'fixed';
-modal.style.zIndex = '1';
-modal.style.left = '0';
-modal.style.top = '0';
-modal.style.width = '100%';
-modal.style.height = '100%';
-modal.style.overflow = 'auto';
-modal.style.backgroundColor = 'rgba(0,0,0,0.4)';
+  // Create modal
+  const modal = document.createElement('div');
+  modal.style.display = 'block';
+  modal.style.position = 'fixed';
+  modal.style.zIndex = '1';
+  modal.style.left = '0';
+  modal.style.top = '0';
+  modal.style.width = '100%';
+  modal.style.height = '100%';
+  modal.style.overflow = 'auto';
+  modal.style.backgroundColor = 'rgba(0,0,0,0.4)';
 
-// Create modal content
-const modalContent = document.createElement('div');
-modalContent.style.backgroundColor = '#fefefe';
-modalContent.style.margin = '15% auto';
-modalContent.style.padding = '5px';
-modalContent.style.border = '1px solid #888';
-modalContent.style.width = '70%';
-modalContent.style.maxWidth = '500px';
+  // Create modal content
+  const modalContent = document.createElement('div');
+  modalContent.style.backgroundColor = '#fefefe';
+  modalContent.style.margin = '15% auto';
+  modalContent.style.padding = '20px';
+  modalContent.style.border = '1px solid #888';
+  modalContent.style.width = '70%';
+  modalContent.style.maxWidth = '500px';
 
-// Create close button
-const closeButton = document.createElement('span');
-closeButton.textContent = 'x';
-closeButton.style.color = '#aaa';
-closeButton.style.float = 'right';
-closeButton.style.fontSize = '2px';
-closeButton.style.fontWeight = 'bold';
-closeButton.onclick = () => modal.style.display = 'none';
-modalContent.appendChild(closeButton);
+  // Create close button
+  const closeButton = document.createElement('span');
+  closeButton.textContent = 'x';
+  closeButton.style.color = '#aaa';
+  closeButton.style.float = 'right';
+  closeButton.style.fontSize = '28px';
+  closeButton.style.fontWeight = 'bold';
+  closeButton.style.cursor = 'pointer';
+  closeButton.onclick = () => modal.style.display = 'none';
+  modalContent.appendChild(closeButton);
 
-// Create first row
-const firstRow = document.createElement('div');
-firstRow.style.display = 'flex';
-firstRow.style.justifyContent = 'space-between';
-firstRow.style.marginBottom = '20px';
+  // Create first row
+  const firstRow = document.createElement('div');
+  firstRow.style.display = 'flex';
+  firstRow.style.justifyContent = 'space-between';
+  firstRow.style.marginBottom = '20px';
 
-// Create label and input field for width
-const widthLabel = document.createElement('label');
-widthLabel.textContent = 'العرض:';
-firstRow.appendChild(widthLabel);
+  // Create label and input field for width
+  const widthLabel = document.createElement('label');
+  widthLabel.textContent = 'العرض:';
+  firstRow.appendChild(widthLabel);
 
-const widthInput = document.createElement('input');
-widthInput.type = 'number';
-widthInput.value = 1;
-firstRow.appendChild(widthInput);
+  const widthInput = document.createElement('input');
+  widthInput.type = 'number';
+  widthInput.value = 1;
+  firstRow.appendChild(widthInput);
 
-// Create label and input field for height
-const heightLabel = document.createElement('label');
-heightLabel.textContent = 'الطول:';
-firstRow.appendChild(heightLabel);
+  // Create width increment and decrement buttons
+  const widthDecrementButton = document.createElement('button');
+  widthDecrementButton.textContent = '-';
+  widthDecrementButton.onclick = () => {
+    widthInput.value = Math.max(0, parseInt(widthInput.value) - 1);
+    widthInput.oninput();
+  };
+  firstRow.appendChild(widthDecrementButton);
 
-const heightInput = document.createElement('input');
-heightInput.type = 'number';
-heightInput.value = 1;
-firstRow.appendChild(heightInput);
+  const widthIncrementButton = document.createElement('button');
+  widthIncrementButton.textContent = '+';
+  widthIncrementButton.onclick = () => {
+    widthInput.value = parseInt(widthInput.value) + 1;
+    widthInput.oninput();
+  };
+  firstRow.appendChild(widthIncrementButton);
 
-modalContent.appendChild(firstRow);
+  // Create label and input field for height
+  const heightLabel = document.createElement('label');
+  heightLabel.textContent = 'الطول:';
+  firstRow.appendChild(heightLabel);
 
-// Create second row
-const secondRow = document.createElement('div');
-secondRow.style.display = 'flex';
-secondRow.style.justifyContent = 'space-between';
-secondRow.style.marginBottom = '20px';
+  const heightInput = document.createElement('input');
+  heightInput.type = 'number';
+  heightInput.value = 1;
+  firstRow.appendChild(heightInput);
 
-// Create label and read-only input field for number of meters
-const meterLabel = document.createElement('label');
-meterLabel.textContent = 'عدد الأمتار:';
-secondRow.appendChild(meterLabel);
+  // Create height increment and decrement buttons
+  const heightDecrementButton = document.createElement('button');
+  heightDecrementButton.textContent = '-';
+  heightDecrementButton.onclick = () => {
+    heightInput.value = Math.max(0, parseInt(heightInput.value) - 1);
+    heightInput.oninput();
+  };
+  firstRow.appendChild(heightDecrementButton);
 
-const meterInput = document.createElement('input');
-meterInput.type = 'number';
-meterInput.value = 1;
-meterInput.readOnly = true;
-secondRow.appendChild(meterInput);
+  const heightIncrementButton = document.createElement('button');
+  heightIncrementButton.textContent = '+';
+  heightIncrementButton.onclick = () => {
+    heightInput.value = parseInt(heightInput.value) + 1;
+    heightInput.oninput();
+  };
+  firstRow.appendChild(heightIncrementButton);
 
-modalContent.appendChild(secondRow);
+  modalContent.appendChild(firstRow);
 
-// Create third row
-const thirdRow = document.createElement('div');
-thirdRow.style.display = 'flex';
-thirdRow.style.justifyContent = 'space-between';
+  // Create second row
+  const secondRow = document.createElement('div');
+  secondRow.style.display = 'flex';
+  secondRow.style.justifyContent = 'space-between';
+  secondRow.style.marginBottom = '20px';
 
-// Create label and input field for number of items
-const quantityLabel = document.createElement('label');
-quantityLabel.textContent = 'القطع:';
-thirdRow.appendChild(quantityLabel);
+  // Create label and read-only input field for number of meters
+  const meterLabel = document.createElement('label');
+  meterLabel.textContent = 'عدد الأمتار:';
+  secondRow.appendChild(meterLabel);
 
-const quantityInput = document.createElement('input');
-quantityInput.type = 'number';
-quantityInput.value = 1;
-thirdRow.appendChild(quantityInput);
+  const meterInput = document.createElement('input');
+  meterInput.type = 'text';
+  meterInput.value = '1';
+  meterInput.readOnly = true;
+  secondRow.appendChild(meterInput);
 
-// Create label and input field for item price
-const priceLabel = document.createElement('label');
-priceLabel.textContent = 'السعر';
-thirdRow.appendChild(priceLabel);
+  modalContent.appendChild(secondRow);
 
-const priceInput = document.createElement('input');
-priceInput.type = 'number';
-priceInput.value = itemPrice;
-thirdRow.appendChild(priceInput);
+  // Create third row
+  const thirdRow = document.createElement('div');
+  thirdRow.style.display = 'flex';
+  thirdRow.style.justifyContent = 'space-between';
 
-modalContent.appendChild(thirdRow);
+  // Create label and input field for number of items
+  const quantityLabel = document.createElement('label');
+  quantityLabel.textContent = 'القطع:';
+  thirdRow.appendChild(quantityLabel);
 
-// Update number of meters when width or height changes
-widthInput.oninput = heightInput.oninput = () => {
+  const quantityInput = document.createElement('input');
+  quantityInput.type = 'number';
+  quantityInput.value = 1;
+  thirdRow.appendChild(quantityInput);
+
+  // Create label and input field for item price
+  const priceLabel = document.createElement('label');
+  priceLabel.textContent = 'السعر:';
+  thirdRow.appendChild(priceLabel);
+
+  const priceInput = document.createElement('input');
+  priceInput.type = 'number';
+  priceInput.value = itemPrice;
+  //priceInput.readOnly = true;
+  thirdRow.appendChild(priceInput);
+
+  modalContent.appendChild(thirdRow);
+
+  // Update number of meters when width or height changes
+  widthInput.oninput = heightInput.oninput = () => {
     const width = parseFloat(widthInput.value);
     const height = parseFloat(heightInput.value);
     const numberOfMeters = width * height;
-    meterInput.value = numberOfMeters;
+    meterInput.value = numberOfMeters.toFixed(2); // Fixing to two decimal places
+
+
+// Update total price when price changes
+priceInput.oninput = () => {
+  const width = parseFloat(widthInput.value);
+  const height = parseFloat(heightInput.value);
+  const quantity = parseInt(quantityInput.value);
+  const price = parseFloat(priceInput.value); // Get the new price
+  const numberOfMeters = width * height;
+  const totalPrice = numberOfMeters * price * quantity; // Use the new price to calculate total
+
+  // Update some UI element with the new total price if necessary
+  // For example:
+  // document.getElementById('totalPriceElement').textContent = totalPrice.toFixed(2);
 };
 
-// Create button to calculate total price and add item to cart
-const addButton = document.createElement('button');
-addButton.textContent = 'Add to cart';
 addButton.onclick = () => {
+  const width = parseFloat(widthInput.value);
+  const height = parseFloat(heightInput.value);
+  const quantity = parseInt(quantityInput.value);
+  const price = parseFloat(priceInput.value); // Get the new price
+  const numberOfMeters = width * height;
+  const totalPrice = numberOfMeters * price * quantity; // Use the new price for the total
+
+  // Add to cart with the new price
+  cartItems.push({ id: itemId, name: itemName, price: price, totalPrice: totalPrice, quantity: quantity });
+  totalCartPrice += totalPrice;
+
+  updateCart(); // Make sure this function now reflects the changes in the UI
+
+  modal.style.display = 'none';
+};
+
+
+
+
+  };
+
+  // Create button to calculate total price and add item to cart
+  const addButton = document.createElement('button');
+  addButton.textContent = 'إضافة إلى السلة';
+  addButton.onclick = () => {
     const width = parseFloat(widthInput.value);
     const height = parseFloat(heightInput.value);
     const quantity = parseInt(quantityInput.value);
     const numberOfMeters = width * height;
-    const itemPrice = parseFloat(priceInput.value);
     const totalPrice = numberOfMeters * itemPrice * quantity;
 
+    // Assuming cartItems and totalCartPrice are defined elsewhere in your code
     cartItems.push({ id: itemId, name: itemName, price: totalPrice, quantity: quantity });
     totalCartPrice += totalPrice;
-    updateCart();
+
+    // Assuming updateCart is a function defined elsewhere in your code
+    updateCart(); 
 
     modal.style.display = 'none';
-};
-modalContent.appendChild(addButton);
+  };
+  modalContent.appendChild(addButton);
 
-modal.appendChild(modalContent);
-document.body.appendChild(modal);
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
 }
+
 //search the customers select for a certain customer
 const customerSelect = document.getElementById('customer');
 
@@ -971,7 +1060,23 @@ function removeAdditionalService(itemId, additionalServiceName) {
     } else {
         searchResultsDiv.style.display = 'none';
     }
+    updateSearchResultsPosition();
 }
+
+function updateSearchResultsPosition() {
+    var searchBox = document.getElementById('CustomerSearch');
+    var resultsBox = document.getElementById('searchResults');
+    var searchBoxRect = searchBox.getBoundingClientRect();
+    
+    // تحديث موضع النتائج بناءً على موضع صندوق البحث وارتفاعه
+    resultsBox.style.top = (searchBoxRect.bottom + window.scrollY) + 'px';
+    resultsBox.style.left = searchBoxRect.left + 'px';
+}
+
+window.onload = function() {
+    updateSearchResultsPosition(); // لضمان تموضع صحيح عند تحميل الصفحة
+};
+
 
 </script>
 
