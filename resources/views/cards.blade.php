@@ -4,6 +4,32 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				</div>
+				<!-- row closed -->
+			</div>
+			<!-- Container closed -->
+		</div>
+		<!-- main-content closed -->
+@endsection
+@section('js')
+@endsection
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -140,11 +166,15 @@
 
 <form name="cartForm" method="POST" action="{{route('cart.store')}}">
     @csrf
+
+    
+
     <div class="card" id="cart">
         <div class="card-body">
             <h5 class="card-title">إصدار فاتورة</h5>
             <ul id="cartItems"></ul>
             <p>إجمالي المبلغ: <span id="totalPrice">0.00</span></p>
+
             <p>
                 خصم: 
                 <input type="number" id="discount" value="0" min="0" onchange="updateTotalPrice()">
@@ -156,6 +186,9 @@
             <p>مستعجل <input type="checkbox" id="urgent" name="urgent"></p>
             <p>التوصيل للمنازل: <input type="checkbox" id="delivery" onchange="toggleDelivery()"></p>
 
+
+            <p>خصم: <input type="number" id="discount" value="0" min="0" onchange="updateTotalPrice()"></p>
+            <p>التوصيل للمنازل: <input type="checkbox" id="delivery" onchange="toggleDelivery()"></p>
 
             <p>تكلفة التوصيل: <input type="number" id="deliveryCost" value="0" min="0" disabled onchange="updateTotalPrice()"></p>
             <p>طرق الدفع: 
@@ -172,6 +205,7 @@
                         <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                     @endforeach
                 </select>
+
             </p>
             
             <button onclick="saveCart(event)">حفظ</button>
@@ -179,6 +213,15 @@
     </div>
 </form>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+            @foreach($additionalServices as $additionalService)
+                <button class="additional-service-button" onclick="addToCart({{$additionalService->id}}, '{{$additionalService->name}}', {{$additionalService->price}},'{{ $additionalService->unit }}')">{{$additionalService->name}}</button>
+            @endforeach
+            
+            <button onclick="saveCart()">حفظ</button>
+        </div>
+    </div>
+
     <script>
         //filter items and search items
         document.getElementById('itemSearch').addEventListener('input', filterItems);
@@ -232,6 +275,12 @@ window.onload = function() {
 let totalCartPrice = 0;
 window.onload = function() {
     window.addToCart = function(itemId, itemName, itemPrice, itemUnit) {
+
+let cartItems = [];
+let totalCartPrice = 0;
+
+window.addToCart = function(itemId, itemName, itemPrice, itemUnit) {
+
     itemUnit = itemUnit.trim();  // Remove any leading or trailing white spaces
 
     if (itemUnit === "متر") {
@@ -244,6 +293,9 @@ window.onload = function() {
 }
 
 }
+
+}
+       
 
 
 function showMeterModal(itemId, itemName, itemPrice) {
@@ -279,7 +331,11 @@ function showMeterModal(itemId, itemName, itemPrice) {
 
     // Create label and input field for width
     const widthLabel = document.createElement('label');
+
     widthLabel.textContent = 'العرض:';
+
+    widthLabel.textContent = 'Width:';
+
     modalContent.appendChild(widthLabel);
 
     const widthInput = document.createElement('input');
@@ -289,7 +345,11 @@ function showMeterModal(itemId, itemName, itemPrice) {
 
     // Create label and input field for height
     const heightLabel = document.createElement('label');
+
     heightLabel.textContent = 'الطول:';
+
+    heightLabel.textContent = 'Height:';
+
     modalContent.appendChild(heightLabel);
 
     const heightInput = document.createElement('input');
@@ -299,7 +359,11 @@ function showMeterModal(itemId, itemName, itemPrice) {
 
     // Create label and read-only input field for number of meters
     const meterLabel = document.createElement('label');
+
     meterLabel.textContent = 'عدد الأمتار:';
+
+    meterLabel.textContent = 'Number of meters:';
+
     modalContent.appendChild(meterLabel);
 
     const meterInput = document.createElement('input');
@@ -318,7 +382,11 @@ function showMeterModal(itemId, itemName, itemPrice) {
 
     // Create label and input field for number of items
     const quantityLabel = document.createElement('label');
+
     quantityLabel.textContent = 'القطع:';
+
+    quantityLabel.textContent = 'Number of items:';
+
     modalContent.appendChild(quantityLabel);
 
     const quantityInput = document.createElement('input');
@@ -328,7 +396,11 @@ function showMeterModal(itemId, itemName, itemPrice) {
 
     // Create label and input field for item price
     const priceLabel = document.createElement('label');
+
     priceLabel.textContent = 'السعر';
+
+    priceLabel.textContent = 'Price per item:';
+
     modalContent.appendChild(priceLabel);
 
     const priceInput = document.createElement('input');
@@ -376,6 +448,7 @@ const customerSelect = document.getElementById('customer');
         }
     });
     //delete item from the cart
+
     function deleteItem(index) {
     // Directly use the index to splice the array
     cartItems.splice(index, 1);
@@ -475,6 +548,82 @@ const customerSelect = document.getElementById('customer');
     totalPrice = (totalCartPrice - discount + deliveryCost).toFixed(2);
     totalPriceElement.textContent = totalPrice;
 }
+
+    function deleteItem(itemId) {
+    // Filter out the item with the given id
+    cartItems = cartItems.filter(item => item.id !== itemId);
+
+    // Update the total cart price
+    totalCartPrice = cartItems.reduce((total, item) => total + item.price, 0);
+
+    // Update the cart in the UI
+    updateCart();
+    }
+      
+
+      
+        function updateCart() {
+            const cartContainer = document.getElementById('cartItems');
+    
+            // Clear previous items
+            cartContainer.innerHTML = '';
+    
+            // Update cart items
+            cartItems.forEach(item => {
+                const listItem = document.createElement('li');
+                //original code in next line                 listItem.textContent = ${item.name} - $${item.price.toFixed(2)};    
+
+                listItem.textContent = ${item.name} - ${item.price.toFixed(2)};    
+                // Create edit icon
+                const editIcon = document.createElement('i');
+                editIcon.className = 'fas fa-edit';
+                editIcon.onclick = () => showEditForm(item.id, item.name, item.price);
+                listItem.appendChild(editIcon);
+
+                // Create delete icon
+                const deleteIcon = document.createElement('i');
+                deleteIcon.className = 'fas fa-trash';
+                deleteIcon.onclick = () => deleteItem(item.id);
+                listItem.appendChild(deleteIcon);
+    
+    
+                // Create form for additional services
+                const editForm = document.createElement('form');
+                editForm.style.display = 'none';
+                editForm.id = editForm${item.id};
+    
+                // getting additional services from the database
+                let additionalServices = @json($additionalServices);
+    
+                // Create buttons for additional services
+                additionalServices.forEach((service, index) => {
+                    const button = document.createElement('button');
+                    button.textContent = service.additional_service_name;
+                    button.value = service.additional_service_price; // Use the price from the database
+                    button.onclick = () => {
+                        event.preventDefault();
+
+                        updateItemPrice(item.id, parseFloat(service.additional_service_price));
+                    };
+                    editForm.appendChild(button);
+                });
+    
+                listItem.appendChild(editForm);
+                cartContainer.appendChild(listItem);
+            });
+    
+            updateTotalPrice();
+        }
+    
+        function updateTotalPrice() {
+            const discount = parseFloat(document.getElementById('discount').value);
+            const deliveryCost = document.getElementById('delivery').checked ? parseFloat(document.getElementById('deliveryCost').value) : 0;
+            const totalPriceElement = document.getElementById('totalPrice');
+    
+            totalPrice = (totalCartPrice - discount + deliveryCost).toFixed(2);
+            totalPriceElement.textContent = totalPrice;
+        }
+
     
         function toggleDelivery() {
             const deliveryCostInput = document.getElementById('deliveryCost');
@@ -517,6 +666,9 @@ const customerSelect = document.getElementById('customer');
     const additionalServicesList = document.createElement('ul');
     additionalServicesList.id = `additionalServicesList${itemId}`;
 
+    additionalServicesList.id = additionalServicesList${itemId};
+
+
     // Create buttons for additional services
     let additionalServices = @json($additionalServices);
     additionalServices.forEach((service, index) => {
@@ -549,9 +701,17 @@ function updateItemPrice(itemId, additionalServicePrice, additionalServiceName) 
         item.additionalServices.push({ name: additionalServiceName, price: additionalServicePrice });
 
         // Update additional services list in modal
+
         const additionalServicesList = document.getElementById(`additionalServicesList${itemId}`);
         const listItem = document.createElement('li');
         listItem.textContent = `${additionalServiceName} - ${additionalServicePrice.toFixed(2)}`;
+
+        const additionalServicesList = document.getElementById(additionalServicesList${itemId});
+        const listItem = document.createElement('li');
+        //original code in the next line         listItem.textContent = ${additionalServiceName} - $${additionalServicePrice.toFixed(2)};
+
+        listItem.textContent = ${additionalServiceName} - ${additionalServicePrice.toFixed(2)};
+
 
         // Create delete icon
         const deleteIcon = document.createElement('i');
@@ -575,7 +735,11 @@ function removeAdditionalService(itemId, additionalServiceName) {
             item.additionalServices.splice(index, 1); // Remove the additional service from the list
 
             // Update additional services list in modal
+
             const additionalServicesList = document.getElementById(`additionalServicesList${itemId}`);
+
+            const additionalServicesList = document.getElementById(additionalServicesList${itemId});
+
             additionalServicesList.removeChild(additionalServicesList.childNodes[index]);
         }
     }
@@ -583,6 +747,7 @@ function removeAdditionalService(itemId, additionalServiceName) {
 }
         
     
+
         function saveCart(event) {
             event.preventDefault();
             // Create hidden inputs for all the data you want to submit
@@ -680,6 +845,31 @@ item.additionalServices.forEach((service, serviceIndex) => {
          form.submit();
            
     }
+
+        function saveCart() {
+            const discount = parseFloat(document.getElementById('discount').value);
+            const delivery = document.getElementById('delivery').checked;
+            const deliveryCost = delivery ? parseFloat(document.getElementById('deliveryCost').value) : 0;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const customerId = document.getElementById('customer').value;
+    
+            // Send an AJAX request to save the cart to the database
+            // You can use a JavaScript framework like Axios or jQuery.ajax to make the request
+            // Example using Axios:
+            axios.post('/cart/save', {
+                items: cartItems,
+                discount: discount,
+                delivery: delivery,
+                deliveryCost: deliveryCost,
+                paymentMethod: paymentMethod,
+                customerId: customerId,
+                totalPrice: totalPrice
+            })
+            .then(function (response) {
+                // Handle the response, e.g. show a success message
+            });
+        }
+
     </script>
 
 
@@ -703,3 +893,6 @@ item.additionalServices.forEach((service, serviceIndex) => {
 
 
 				
+
+</html>
+
