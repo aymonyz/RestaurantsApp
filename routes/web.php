@@ -13,6 +13,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Branch_dataController;
 use App\Http\Controllers\AdditionalServiceController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\View;
 
 use App\Models\BranchData; 
@@ -41,6 +42,10 @@ Route::post('/update-image/{item}', [ImageController::class, 'updateImage'])->na
 
 // استخدم هذا النمط لكل الطرق
 Route::get('/groups/{id}edit', [GroupsController::class, 'edit'])->name('groups.edit');
+
+Route::post('/cart/save', [CartController::class, 'store'])->name('cart.store');
+
+
 
 
 Route::put('/groups/{id}', [GroupsController::class, 'update'])->name('groups.update');
@@ -124,6 +129,9 @@ Route::post('/your-endpoint', 'YourController@yourMethod');
 Route::post('/invoice', 'InvoiceController@process')->name('invoice.process');
 Route::post('/inv.aspx/FillInitializeInvoice', 'YourController@yourMethod');
 Route::post('/GetCustomers', 'YourController@yourMethod');
+
+
+
 
 
 Route::get('/search', [CustomerController::class, 'search'])->name('search');
