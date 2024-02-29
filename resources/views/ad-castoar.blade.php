@@ -122,7 +122,7 @@
         </div>
     </div>
 </div>
-<script>
+{{-- <script>
     
     document.getElementById('phone').addEventListener('input', function() {
     
@@ -130,4 +130,4 @@
     
         document.getElementById('name').value = phoneValue;
     });
-</script>
+</script> --}}

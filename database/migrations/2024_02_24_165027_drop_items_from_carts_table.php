@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('carts', function (Blueprint $table) {
-            //
-            $table->dropColumn('items');
-
+            $table->decimal('deliveryCost', 8, 2)->default(0.00)->change();
         });
     }
 
