@@ -13,7 +13,12 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Branch_dataController;
 use App\Http\Controllers\AdditionalServiceController;
+use App\Http\Controllers\PaymentMethodController;
+
 use App\Http\Controllers\adress;
+
+use App\Http\Controllers\CartController;
+
 use Illuminate\Support\Facades\View;
 
 use App\Models\BranchData; 
@@ -23,6 +28,8 @@ use App\Http\Controllers\EstablishmePController;
 use App\Models\Cost;
 use App\http\Controllers\LocationController;
 use App\http\Controllers\restController;
+
+
 
 
 
@@ -45,6 +52,15 @@ Route::post('/update-image/{item}', [ImageController::class, 'updateImage'])->na
 
 // استخدم هذا النمط لكل الطرق
 Route::get('/groups/{id}edit', [GroupsController::class, 'edit'])->name('groups.edit');
+
+Route::post('/cart/save', [CartController::class, 'store'])->name('cart.store');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart', 'App\Http\Controllers\CartController@store');
+Route::post('/cart', [CartController::class, 'store']);
+Route::get('/cart', 'App\Http\Controllers\CartController@index');
+
+
+Route::get('/cart', [CartController::class, 'index']);
 
 
 Route::put('/groups/{id}', [GroupsController::class, 'update'])->name('groups.update');
@@ -107,6 +123,12 @@ Route::get('/additional_services/{id}/edit', [AdditionalServiceController::class
 Route::put('/additional_services/{id}/update', [AdditionalServiceController::class, 'update'])->name('additional_services.update');
 Route::delete('/additional_services/{id}/destroy', [AdditionalServiceController::class, 'destroy'])->name('additional_services.destroy');
 
+Route::get('/payment_methods', [PaymentMethodController::class, 'index'])->name('payment_methods.index');
+Route::post('/payment_methods/store', [PaymentMethodController::class, 'store'])->name('payment-methods.save');
+Route::get('/payment_methods/{id}/edit', [PaymentMethodController::class, 'edit'])->name('payment-methods.edit');
+Route::put('/payment_methods/{id}/update', [PaymentMethodController::class, 'update'])->name('payment-methods.update');
+Route::delete('/payment_methods/{id}/destroy', [PaymentMethodController::class, 'destroy'])->name('payment-methods.destroy');
+
 
 //إضافة عميل جديد
 
@@ -142,6 +164,9 @@ Route::post('/your-endpoint', 'YourController@yourMethod');
 Route::post('/invoice', 'InvoiceController@process')->name('invoice.process');
 Route::post('/inv.aspx/FillInitializeInvoice', 'YourController@yourMethod');
 Route::post('/GetCustomers', 'YourController@yourMethod');
+
+
+
 
 
 Route::get('/search', [CustomerController::class, 'search'])->name('search');
