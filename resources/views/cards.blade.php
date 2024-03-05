@@ -44,7 +44,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <!link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-   
+
 <!-- زر "إضافة عميل جديد" -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addClientModal">
     إضافة عميل جديد
@@ -89,14 +89,14 @@
             </div>
             
     </div>
+    <!--رساله الحفظ-->
     @if (session('success'))
 <div class="alert alert-success">
     {{ session('success') }}
 </div>
 @endif
 
-    <!DOCTYPE html>
-<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -213,6 +213,8 @@
                     </div>
                 </div>
             </div>
+            <div id="messageContainer"></div>
+
             <div class="col-lg-3">
                 <!-- جزء السلة -->
                 <div class="card" id="cart">
@@ -221,6 +223,7 @@
                             @csrf
                             <div class="card" id="cart">
                                 <div class="card-body">
+
                                     <h5 class="card-title">إصدار فاتورة</h5>
                                     <ul id="cartItems"></ul>
                                     <p>إجمالي المبلغ: <span id="totalPrice">0.00</span></p>
@@ -256,7 +259,8 @@
                                     {{-- <button onclick="saveCart(event)">حفظ</button> --}}
                                     <!-- زر حفظ السلة -->
                                     <button id="saveCartButton" onclick="saveCart(event)">Save Cart</button>
-                                   
+                                    
+
 
                                 </div>
                             </div>
@@ -278,213 +282,12 @@
 
 <div id="page2" class="page" style="display:none;">
 <!---2----->
-<div id="DivDeliverySearch" class="col-md-12" style="background: #F8F8FB;padding:15px;margin-bottom:15px;">
-    <div class="col-md-2">
-        <label id="Content1_Content2_LblRSearch" class="control-label">بحث</label>
-        <input type="text" id="txtReadySearch" class="form-control" fdprocessedid="ytz4tp">
-    </div>
-    <div class="col-md-2 col-sm-2">
-        <div class="space20"></div>
-        <div class="space5"></div>
-        <a id="Content1_Content2_btnOrderDistributionR" class="btn btn-primary" onclick="onDistributeOrderDelivery()">توزيع طلبات التوصيل</a>
-    </div>
-    <div class="col-md-2">
-    </div>
-    <div style="float:right;">
-        <div class="pageSummaryMetric">
-            <h4 id="Content1_Content2_lblROrder" style="font-size:20px">الفواتير</h4>
-            <p id="cl_o_r" style="font-size:18px; font-weight:bold;">2902</p>
-        </div>
-        <div class="pageSummaryMetric">
-            <h4 id="Content1_Content2_lblRPieces" style="font-size:20px">القطع</h4>
-            <p id="cl_p_r" style="font-size:18px; font-weight:bold;">7165</p>
-        </div>
-        <div class="pageSummaryMetric">
-            <h4 id="Content1_Content2_lblRValue" style="font-size:20px">القيمة</h4>
-            <p><span id="cl_s_r" style="font-size:18px;  font-weight:bold;">305636.48</span> <span id="cl_s_r_curr">ريال</span></p>
-        </div>
-        <div class="pageSummaryMetric">
-            <h4 id="Content1_Content2_lblRUnpaid" style="font-size:20px">غير مدفوع</h4>
-            <p><span id="cl_u_r" style="font-size:18px; font-weight:bold; color:red;">-301201.00</span> <span id="cl_u_r_curr">ريال</span></p>
-        </div>
-        <a style="float: right;" id="refreshRe" onclick="refreshCl()" class="dpB dpBBold">
-            <img id="imgRe" title="Refresh" width="30" height="30" src="../../assets/img/refresh2.svg" class="">
-        </a>
-        <div class="clear"></div>
-    </div>
-</div>
-
-<!DOCTYPE html>
-<html lang="ar">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>جدول الطلبات</title>
-      <!-- تضمين Bootstrap CSS -->
-      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    </head>
-    <body dir="rtl">
-    
-    <div class="container mt-5">
-      <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">الرقم</th>
-            <th scope="col">تاريخ الفاتورة</th>
-            <th scope="col">تاريخ التسليم</th>
-            <th scope="col">إسم العميل</th>
-            <th scope="col">الأصناف</th>
-            <th scope="col">القطع</th>
-            <th scope="col">عادي/مستعجل</th>
-            <th scope="col">طريقة الدفع</th>
-            <th scope="col">الإجمالي</th>
-            <th scope="col">العملية</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>A017406</td>
-            <td>2024-02-21 10:01 AM</td>
-            <td>2024-02-23 09:57 AM</td>
-            <td>شركه سبل الخبره_طريق المدينه</td>
-            <td>أ (مفرشة)(WA) *1<br>أ (مفرشة)(WA) *1</td>
-            <td>6meter( Hight 3 * Width 2)<br>8.75meter( Hight 3.5 * Width 2.5)</td>
-            <td>عادي</td>
-            <td>غير مدفوعة</td>
-            <td>148.00 ريال</td>
-            <td>استكمال العملية</td>
-          </tr>
-          <tr>
-            <td>A017407</td>
-            <td>2024-02-21 10:07 AM</td>
-            <td>2024-02-23 10:01 AM</td>
-            <td>ابو احمد الراعي</td>
-            <td>أ (مفرشة)(WA) *3<br>أ (مفرشة)(WA) *1<br>قطعة 15(WA) *4<br>35(WA) *3<br>أ (مفرشة)(WA) *1</td>
-            <td>6meter( Hight 3 * Width 2)<br>3meter( Hight 3 * Width 1)<br>1meter( Hight 1 * Width 1)</td>
-            <td>عادي</td>
-            <td>غير مدفوعة</td>
-            <td>361.00 ريال</td>
-            <td>استكمال العملية</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    
-    <!-- تضمين Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
-    </body>
-    </html>
-    
-  
-   <!---2---end-->
+<!---2---end-->
 </div>
 
 <div id="page3" class="page" style="display:none;">
 <!---3----->
-<div id="DivDeliverySearch" class="col-md-12" style="background: #F8F8FB;padding:15px;margin-bottom:15px;">
-    <div class="col-md-2">
-        <label id="Content1_Content2_LblRSearch" class="control-label">بحث</label>
-        <input type="text" id="txtReadySearch" class="form-control" fdprocessedid="ytz4tp">
-    </div>
-    <div class="col-md-2 col-sm-2">
-        <div class="space20"></div>
-        <div class="space5"></div>
-        <a id="Content1_Content2_btnOrderDistributionR" class="btn btn-primary" onclick="onDistributeOrderDelivery()">توزيع طلبات التوصيل</a>
-    </div>
-    <div class="col-md-2">
-    </div>
-    <div style="float:right;">
-        <div class="pageSummaryMetric">
-            <h4 id="Content1_Content2_lblROrder" style="font-size:20px">الييييييييييييييييفواتير</h4>
-            <p id="cl_o_r" style="font-size:18px; font-weight:bold;">2902</p>
-        </div>
-        <div class="pageSummaryMetric">
-            <h4 id="Content1_Content2_lblRPieces" style="font-size:20px">القطع</h4>
-            <p id="cl_p_r" style="font-size:18px; font-weight:bold;">7165</p>
-        </div>
-        <div class="pageSummaryMetric">
-            <h4 id="Content1_Content2_lblRValue" style="font-size:20px">القيمة</h4>
-            <p><span id="cl_s_r" style="font-size:18px;  font-weight:bold;">305636.48</span> <span id="cl_s_r_curr">ريال</span></p>
-        </div>
-        <div class="pageSummaryMetric">
-            <h4 id="Content1_Content2_lblRUnpaid" style="font-size:20px">غير مدفوع</h4>
-            <p><span id="cl_u_r" style="font-size:18px; font-weight:bold; color:red;">-301201.00</span> <span id="cl_u_r_curr">ريال</span></p>
-        </div>
-        <a style="float: right;" id="refreshRe" onclick="refreshCl()" class="dpB dpBBold">
-            <img id="imgRe" title="Refresh" width="30" height="30" src="../../assets/img/refresh2.svg" class="">
-        </a>
-        <div class="clear"></div>
-    </div>
-</div>
 
-<!DOCTYPE html>
-<html lang="ar">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>جدول الطلبات</title>
-      <!-- تضمين Bootstrap CSS -->
-      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    </head>
-    <body dir="rtl">
-    
-    <div class="container mt-5">
-      <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">الرقم</th>
-            <th scope="col">تاريخ الفاتورة</th>
-            <th scope="col">تاريخ التسليم</th>
-            <th scope="col">إسم العميل</th>
-            <th scope="col">الأصناف</th>
-            <th scope="col">القطع</th>
-            <th scope="col">عادي/مستعجل</th>
-            <th scope="col">طريقة الدفع</th>
-            <th scope="col">الإجمالي</th>
-            <th scope="col">العملية</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>A017406</td>
-            <td>2024-02-21 10:01 AM</td>
-            <td>2024-02-23 09:57 AM</td>
-            <td>شركه سبل الخبره_طريق المدينه</td>
-            <td>أ (مفرشة)(WA) *1<br>أ (مفرشة)(WA) *1</td>
-            <td>6meter( Hight 3 * Width 2)<br>8.75meter( Hight 3.5 * Width 2.5)</td>
-            <td>عادي</td>
-            <td>غير مدفوعة</td>
-            <td>148.00 ريال</td>
-            <td>استكمال العملية</td>
-          </tr>
-          <tr>
-            <td>A017407</td>
-            <td>2024-02-21 10:07 AM</td>
-            <td>2024-02-23 10:01 AM</td>
-            <td>ابو احمد الراعي</td>
-            <td>أ (مفرشة)(WA) *3<br>أ (مفرشة)(WA) *1<br>قطعة 15(WA) *4<br>35(WA) *3<br>أ (مفرشة)(WA) *1</td>
-            <td>6meter( Hight 3 * Width 2)<br>3meter( Hight 3 * Width 1)<br>1meter( Hight 1 * Width 1)</td>
-            <td>عادي</td>
-            <td>غير مدفوعة</td>
-            <td>361.00 ريال</td>
-            <td>استكمال العملية</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    
-    <!-- تضمين Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
-    </body>
-    </html>
-    
-  
     <!---3---end-->
 </div>
 
@@ -503,63 +306,6 @@
 @endsection
 @section('js')
 
-  <script>
-    function addToCart(itemId, itemName, itemPrice, itemUnit) {
-    // إذا كان العنصر يباع بالمتر
-    if (itemUnit === 'بالمتر') {
-        // إنشاء نافذة منبثقة لتحديد الطول والعرض والسعر وعدد الأمتار
-        const modal = document.createElement('div');
-        modal.style.cssText = 'display:block;position:fixed;z-index:1;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.4);';
-
-        // إنشاء محتوى النافذة المنبثقة
-        const modalContent = document.createElement('div');
-        modalContent.style.cssText = 'background-color:#fefefe;margin:15% auto;padding:20px;border:1px solid #888;width:70%;max-width:500px;';
-
-        // إنشاء واجهة لإدخال البيانات
-        const form = document.createElement('form');
-        form.onsubmit = (e) => {
-            e.preventDefault();
-            const length = parseFloat(lengthInput.value);
-            const width = parseFloat(widthInput.value);
-            const meters = length * width;
-            const totalPrice = meters * itemPrice;
-            // إضافة العنصر إلى السلة
-            addProductToCart(itemId, itemName, totalPrice, meters);
-            modal.remove();
-        };
-
-        form.innerHTML = `
-            <div style="margin-bottom:20px;">
-                <label>الطول (متر):</label>
-                <input type="number" id="lengthInput" value="1" min="1" step="0.01" style="margin-right:10px;">
-                <label>العرض (متر):</label>
-                <input type="number" id="widthInput" value="1" min="1" step="0.01" style="margin-right:10px;">
-                <label>السعر لكل متر (${itemPrice} دولار):</label>
-                <input type="text" value="${itemPrice}" readonly style="margin-right:10px;">
-            </div>
-            <button type="submit">إضافة إلى السلة</button>
-        `;
-
-        modalContent.appendChild(form);
-        modal.appendChild(modalContent);
-        document.body.appendChild(modal);
-    } else {
-        // إذا كان العنصر لا يباع بالمتر، قم بإضافته مباشرة إلى السلة
-        const quantity = 1;
-        const totalPrice = itemPrice * quantity;
-        addProductToCart(itemId, itemName, totalPrice, quantity);
-    }
-}
-
-// دالة لإضافة العنصر إلى السلة
-function addProductToCart(itemId, itemName, totalPrice, quantity) {
-    // هنا يمكنك إضافة العنصر إلى السلة بمعلوماته مثل الاسم والسعر والكمية وأي معلومات إضافية
-    console.log("Adding item to cart:");
-    console.log("Item ID:", itemId);
-    console.log("Item Name:", itemName);
-    console.log("Total Price:", totalPrice);
-    console.log("Quantity:", quantity);
-}
 </script>
 <script>
     var cartStoreUrl = "{{ route('cart.store') }}";
@@ -569,6 +315,9 @@ function addProductToCart(itemId, itemName, totalPrice, quantity) {
 </script>
 <script src="{{ asset('assets/js/cardincoeses.js') }}"></script>
 
+{{-- 
+<script src="{{ asset('assets/js/cust159181
+omerSearch.js') }}"></script> --}}
 
 {{-- 
 
@@ -577,7 +326,7 @@ function addProductToCart(itemId, itemName, totalPrice, quantity) {
 
 <script src="{{ asset('assets/js/itemFilter.js') }}"></script>
 
-<script src="{{ asset('assets/js/customerSearch.js') }}"></script> --}}
+--}}
 
 
 

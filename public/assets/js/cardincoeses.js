@@ -289,13 +289,16 @@ addButton.onclick = () => {
 const customerSelect = document.getElementById('customer');
 const sendInvoiceButton = document.getElementById('send-invoice-button'); // تحديد زر إرسال الفاتورة
 
-customerSelect.addEventListener('change', () => {
-    if (customerSelect.value === "اختر عميلاً") { // تحقق مما إذا كانت القيمة المحددة تساوي القيمة الافتراضية
-        sendInvoiceButton.disabled = true; // تعطيل زر إرسال الفاتورة
-    } else {
-        sendInvoiceButton.disabled = false; // تفعيل زر إرسال الفاتورة
-    }
-});
+// document.addEventListener('DOMContentLoaded', function() {
+//     // Your code that depends on DOM elements goes here
+//     var selectedCustomerElement = document.getElementById('selectedCustomerId');
+//     if (!selectedCustomerElement) {
+//         console.error('Selected customer element not found');
+//         return; // Optionally, handle the error gracefully here
+//     }
+//     // Proceed with operations that depend on the selected customer element
+// });
+
 
 //  //search the customers select for a certain customer
 //  const customerSelect = document.getElementById('customer');
@@ -327,57 +330,52 @@ customerSelect.addEventListener('change', () => {
     }
 
 
-
-        function updateCart() {
-            const cartContainer = document.getElementById('cartItems');
-
-            // Clear previous items
-            cartContainer.innerHTML = '';
-
-            // Update cart items
-            cartItems.forEach(item => {
-                const listItem = document.createElement('li');
-                //original code in next line                 listItem.textContent = `${item.name} - $${item.price.toFixed(2)}`;
-
-                listItem.textContent = `${item.name} - ${item.price.toFixed(2)}`;
-                // Create edit icon
-                const editIcon = document.createElement('i');
-                editIcon.className = 'fas fa-edit';
-                editIcon.onclick = () => showEditForm(item.id, item.name, item.price);
-                listItem.appendChild(editIcon);
-
-                // Create delete icon
-                const deleteIcon = document.createElement('i');
-                deleteIcon.className = 'fas fa-trash';
-                deleteIcon.onclick = () => deleteItem(item.id);
-                listItem.appendChild(deleteIcon);
-
-
-                // Create form for additional services
-                const editForm = document.createElement('form');
-                editForm.style.display = 'none';
-                editForm.id = `editForm${item.id}`;
-
-                // getting additional services from the database
-                console.log(additionalServices);
-
-                // Create buttons for additional services
-                additionalServices.forEach((service, index) => {
-                    const button = document.createElement('button');
-                    button.textContent = service.additional_service_name;
-                    button.value = service.additional_service_price; // Use the price from the database
-                    button.onclick = () => {
-                        event.preventDefault();
-
-                        updateItemPrice(item.id, parseFloat(service.additional_service_price));
-                    };
-                    editForm.appendChild(button);
-                });
-
-                listItem.appendChild(editForm);
-                cartContainer.appendChild(listItem);
+    function updateCart() {
+        const cartContainer = document.getElementById('cartItems');
+        cartContainer.innerHTML = ''; // Clear previous items
+    
+        cartItems.forEach(item => {
+            // التحقق من صحة بيانات العنصر
+            if (!item.name || item.price <= 0 || isNaN(item.price)) {
+                console.error('Error: Invalid item data', item);
+                return; // تجاهل هذا العنصر والانتقال إلى العنصر التالي
+            }
+    
+            const listItem = document.createElement('li');
+            listItem.textContent = `${item.name} - ${item.price.toFixed(2)}`;
+    
+            // Create and append edit icon
+            const editIcon = document.createElement('i');
+            editIcon.className = 'fas fa-edit';
+            editIcon.onclick = () => showEditForm(item.id, item.name, item.price);
+            listItem.appendChild(editIcon);
+    
+            // Create and append delete icon
+            const deleteIcon = document.createElement('i');
+            deleteIcon.className = 'fas fa-trash';
+            deleteIcon.onclick = () => deleteItem(item.id);
+            listItem.appendChild(deleteIcon);
+    
+            // Append additional services form
+            const editForm = document.createElement('form');
+            editForm.style.display = 'none';
+            editForm.id = `editForm${item.id}`;
+            additionalServices.forEach(service => {
+                const button = document.createElement('button');
+                button.textContent = service.additional_service_name;
+                button.value = service.additional_service_price;
+                button.onclick = (event) => {
+                    event.preventDefault();
+                    updateItemPrice(item.id, parseFloat(service.additional_service_price));
+                };
+                editForm.appendChild(button);
             });
-
+    
+            listItem.appendChild(editForm);
+            cartContainer.appendChild(listItem);
+        });
+  
+    
             updateTotalPrice();
         }
 
@@ -497,64 +495,60 @@ function removeAdditionalService(itemId, additionalServiceName) {
     }
     updateTotalPrice();
 }
-
 function saveCart(event) {
     event.preventDefault();
 
-    // Collect cart data from the DOM
-    let cartItems = [];
-    document.querySelectorAll('#cartItems li').forEach((item) => {
-        cartItems.push({
-            id: item.dataset.productId, // تأكد من وجود هذا الخاصية وصحتها
-            name: item.dataset.productName, // تأكد من وجود هذا الخاصية وصحتها
-            price: parseFloat(item.dataset.productPrice), // تحويل السلسلة النصية إلى رقم
-            quantity: parseInt(item.dataset.productQuantity) // تحويل السلسلة النصية إلى عدد صحيح
-        });
-    });
+    var messageContainer = document.getElementById('messageContainer'); // الحصول على عنصر عرض الرسالة
+    messageContainer.style.color = 'red'; // تحديد لون النص للرسائل
 
+    var selectedCustomerElement = document.getElementById('selectedCustomerId');
+    var selectedCustomer = selectedCustomerElement ? selectedCustomerElement.value.trim() : '';
 
-    // Add the rest of the data
-    let formData = {
-        _token: document.querySelector('input[name="_token"]').value,
-        items: cartItems,
-        discount: document.getElementById('discount').value,
+    // التحقق من اختيار العميل بشكل صحيح
+    if (!selectedCustomer || selectedCustomer === '') {
+        messageContainer.innerText = 'الرجاء اختيار عميل أولاً';
+        return;
+    }
+    
+    // التحقق من وجود منتجات في السلة
+    if (cartItems.length === 0) {
+        messageContainer.innerText = 'الرجاء اختيار منتجات لإضافتها إلى السلة أولاً';
+        return;
+    }
+    var selectedCustomer = selectedCustomerElement.value;
+
+    // جمع بيانات السلة من الـ DOM
+    let cartData = {
+        customer: selectedCustomer,
+        items: cartItems.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+        })),
+        total: totalCartPrice,
+        discount: parseFloat(document.getElementById('discount').value) || 0,
         discountType: document.getElementById('discountType').value,
         urgent: document.getElementById('urgent').checked,
         delivery: document.getElementById('delivery').checked,
-        deliveryCost: document.getElementById('deliveryCost').value,
+        deliveryCost: parseFloat(document.getElementById('deliveryCost').value || 0),
         paymentMethod: document.getElementById('paymentMethod').value,
-        customer: document.getElementById('customer').value
     };
 
-
-    // Define the URL for the API endpoint
-    let cartStoreUrl = '/cart'; // Make sure this matches your actual API endpoint
-
-    // Make the POST request
-    axios.post('/cart', formData)
+    // إرسال بيانات السلة إلى الخادم
+    axios.post('/cart', cartData)
     .then(function (response) {
         console.log(response);
         alert('تم حفظ السلة بنجاح');
     })
     .catch(function (error) {
-        if (error.response && error.response.status === 422) {
-            // استخراج وعرض أخطاء التحقق
-            let errorMessage = "الرجاء تصحيح الأخطاء التالية:\n";
-            Object.keys(error.response.data.errors).forEach((key) => {
-                error.response.data.errors[key].forEach((message) => {
-                    errorMessage += `${message}\n`;
-                });
-            });
-            alert(errorMessage);
-        } else {
-            // التعامل مع أنواع الأخطاء الأخرى
-            console.error('حدث خطأ:', error);
-            alert('حدث خطأ أثناء حفظ السلة.');
-        }
+        console.error('Error:', error);
+        alert('حدث خطأ أثناء حفظ السلة.');
     });
 }
-document.getElementById('saveCartButton').addEventListener('click', saveCart);
 
+
+// document.getElementById('saveCartButton').addEventListener('click', saveCart);
 
 
 

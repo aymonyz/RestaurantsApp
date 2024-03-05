@@ -1,78 +1,63 @@
-const customerSelect = document.getElementById('customer');
+document.addEventListener('DOMContentLoaded', function() {
+    var customerSelect = document.getElementById('customer');
+    if (customerSelect) {
+        var originalOptions = [...customerSelect.options]; // Clone original options
 
-customerSelect.addEventListener('keyup', (event) => {
-    const searchTerm = event.target.value.toLowerCase();
-    const options = customerSelect.options;
-    for (let i = 0; i < options.length; i++) {
-        const optionText = options[i].text.toLowerCase();
-        if (optionText.includes(searchTerm)) {
-            options[i].style.display = 'block';
-        } else {
-            options[i].style.display = 'none';
-        }
+        customerSelect.insertAdjacentHTML('afterend', '<input type="text" id="customerSearch" placeholder="Search customers...">');
+        var searchInput = document.getElementById('customerSearch');
+
+        searchInput.addEventListener('keyup', function(event) {
+            const searchTerm = event.target.value.toLowerCase();
+            customerSelect.innerHTML = ''; // Clear current options
+            originalOptions.forEach(function(option) {
+                if (option.text.toLowerCase().includes(searchTerm)) {
+                    customerSelect.appendChild(option.cloneNode(true)); // Append only matching options
+                }
+            });
+        });
     }
 });
 
-// يمكن إضافة الوظائف المتعلقة بإدارة البحث عن العملاء، مثل selectCustomer وclearCustomerSearch، إلى هذا الملف.
 
 function selectCustomer(customerId, customerName) {
     var customerSearchInput = document.getElementById('CustomerSearch');
     var selectedCustomerIdInput = document.getElementById('selectedCustomerId');
     var searchResultsDiv = document.getElementById('searchResults');
 
-    customerSearchInput.value = customerName; // تحديث صندوق البحث بالاسم
-    selectedCustomerIdInput.value = customerId; // تخزين معرف العميل
-
-    // إخفاء نتائج البحث
-    searchResultsDiv.style.display = 'none';
-}
-
-
-
-    function clearCustomerSearch() {
-    var customerSearchInput = document.getElementById('CustomerSearch');
-    var selectedCustomerIdInput = document.getElementById('selectedCustomerId');
-    var searchResultsDiv = document.getElementById('searchResults');
-
-    customerSearchInput.value = '';
-    selectedCustomerIdInput.value = '';
-    searchResultsDiv.innerHTML = '';
-    searchResultsDiv.style.display = 'none';
-}
-
-
-
-    function clearCustomerSearch() {
-    var customerSearchInput = document.getElementById('CustomerSearch');
-    var selectedCustomerIdInput = document.getElementById('selectedCustomerId');
-    var searchResultsDiv = document.getElementById('searchResults');
-
-    customerSearchInput.value = '';
-    selectedCustomerIdInput.value = '';
-    searchResultsDiv.innerHTML = '';
-    searchResultsDiv.style.display = 'none';
-}
-
-
-
-   function searchCustomer() {
-    var input = document.getElementById('CustomerSearch').value;
-    var searchResultsDiv = document.getElementById('searchResults');
-
-    if(input.length >= 3) {
-        // استخدام الـ Template Literals بشكل صحيح
-        fetch(`/search?term=${input}`)
-        .then(response => response.json())
-        .then(data => {
-            searchResultsDiv.innerHTML = '';
-            searchResultsDiv.style.display = 'block';
-            data.forEach(customer => {
-                // تصحيح استخدام Template Literals هنا أيضًا
-                searchResultsDiv.innerHTML += `<div onclick="selectCustomer(${customer.id}, '${customer.name.replace(/'/g, "\\'")}')">${customer.name}</div>`;
-            });
-        }).catch(error => console.error('Error:', error));
-    } else {
+    if (customerSearchInput && selectedCustomerIdInput && searchResultsDiv) {
+        customerSearchInput.value = customerName; 
+        selectedCustomerIdInput.value = customerId; 
         searchResultsDiv.style.display = 'none';
     }
 }
 
+
+function clearCustomerSearch() {
+    var customerSearchInput = document.getElementById('CustomerSearch');
+    var selectedCustomerIdInput = document.getElementById('selectedCustomerId');
+    var searchResultsDiv = document.getElementById('searchResults');
+
+    customerSearchInput.value = '';
+    selectedCustomerIdInput.value = '';
+    searchResultsDiv.innerHTML = '';
+    searchResultsDiv.style.display = 'none';
+}
+
+function searchCustomer() {
+    var input = document.getElementById('CustomerSearch').value;
+    var searchResultsDiv = document.getElementById('searchResults');
+
+    if (input.length >= 3) {
+        fetch(`/search?term=${input}`)
+            .then(response => response.json())
+            .then(data => {
+                searchResultsDiv.innerHTML = '';
+                searchResultsDiv.style.display = 'block';
+                data.forEach(customer => {
+                    searchResultsDiv.innerHTML += `<div onclick="selectCustomer(${customer.id}, '${customer.name.replace(/'/g, "\\'")}')">${customer.name}</div>`;
+                });
+            }).catch(error => console.error('Error:', error));
+    } else {
+        searchResultsDiv.style.display = 'none';
+    }
+}
