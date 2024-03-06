@@ -28,6 +28,7 @@ use App\Http\Controllers\EstablishmePController;
 use App\Models\Cost;
 use App\http\Controllers\LocationController;
 use App\http\Controllers\restController;
+use App\http\Controllers\OtherInvoiceDataController;
 
 
 
@@ -39,13 +40,16 @@ use Illuminate\Database\Console\Migrations\ResetCommand;
 
 // تأكد من استخدام المسار الصحيح لموديل BranchData
 
+
 use App\Http\Controllers\adressController;
 use App\Models\address;
+
 
 Route::get('/', function () {
     return view('auth.login');
 })->name('login');
 Auth::routes();
+
 Route::get('/groups', [GroupsController::class, 'index'])->name('groups.index');
 Route::post('/update-image/{item}', [ImageController::class, 'updateImage'])->name('updateImage');
 
@@ -54,10 +58,15 @@ Route::post('/update-image/{item}', [ImageController::class, 'updateImage'])->na
 Route::get('/groups/{id}edit', [GroupsController::class, 'edit'])->name('groups.edit');
 
 Route::post('/cart/save', [CartController::class, 'store'])->name('cart.store');
+
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart', 'App\Http\Controllers\CartController@store');
 Route::post('/cart', [CartController::class, 'store']);
 Route::get('/cart', 'App\Http\Controllers\CartController@index');
+
+//other invoice data route
+Route::post('/save-invoice-details', [OtherInvoiceDataController::class, 'save']);
+
 
 
 Route::get('/cart', [CartController::class, 'index']);
@@ -198,7 +207,7 @@ Route::get('/files/{item}', function($item){
 Route::get('/index', function () {
     return view('index');
 });
- Route::get('/{page}', [AdminController::class, 'index'])->where('page', '.*');
+Route::get('/{page}', [AdminController::class, 'index'])->where('page', '.*');
 
 // Example route to the home page
 Route::get('/home', [HomeController::class, 'index'])->name('home');
