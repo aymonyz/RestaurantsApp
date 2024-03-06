@@ -21,14 +21,19 @@ class ItemPriceController extends Controller
             $data['urgent'] = $urgent;
     
             ItemPrice::create($data);
+            return redirect()->back()->with(['message' => 'تم حفظ السعر بنجاح']);
     
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Dump validation errors for debugging
             dd($e->errors());
         }
+    }  //delete
+    
+    public function destroy($id)
+    {
+        ItemPrice::destroy($id);
     }
-    
-    
+
 }
 
 

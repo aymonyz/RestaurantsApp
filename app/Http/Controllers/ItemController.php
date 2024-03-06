@@ -30,13 +30,14 @@ $is_active = $request->has('is_active') ? true : false;
         ]);
         $data ['is_active'] = $is_active;
 
+
+
     
         // Now $data contains the validated form input, and you can use it to save to the database or perform other actions.
     
         // Example: Save to the database
         Item::create($data);
-       
-       
+        return redirect()->back()->with(['message' => 'تم حفظ العنصر بنجاح']);
     
     }
     public function show(){
@@ -115,4 +116,37 @@ dd($item);
     return view('items.cards', compact('items'));
 }
 
+    /**
+     * حذف مورد محدد.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        // العثور على العنصر بالمعرف وحذفه
+        $item = Item::findOrFail($id);
+        $item->delete();
+
+        // إعادة توجيه المستخدم مع رسالة نجاح
+        return redirect()->back()->with(['message' => 'تم حفظ العنصر بنجاح']);
+    }
+    public function update(Request $request, $id)
+    {
+        $item = Item::findOrFail($id);
+    
+        // تحقق من وجود الحقل 'is_active' وتحويله إلى قيمة صحيحة
+        $is_active = $request->has('is_active') ? 1 : 0;
+    
+        // تجميع البيانات، بما في ذلك القيمة المُحولة لـ 'is_active'
+        $data = $request->all();
+        $data['is_active'] = $is_active;
+    
+        // تحديث البيانات في قاعدة البيانات
+        $item->update($data);
+    
+        return redirect()->back()->with(['message' => 'تم حفظ العنصر بنجاح']);
+        
+    }
+    
 }

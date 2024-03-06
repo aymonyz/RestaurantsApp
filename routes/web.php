@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ItemController;
@@ -14,13 +13,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Branch_dataController;
 use App\Http\Controllers\AdditionalServiceController;
 use App\Http\Controllers\PaymentMethodController;
-
 use App\Http\Controllers\adress;
-
 use App\Http\Controllers\CartController;
-
 use Illuminate\Support\Facades\View;
-
 use App\Models\BranchData; 
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\CostController;
@@ -29,52 +24,30 @@ use App\Models\Cost;
 use App\http\Controllers\LocationController;
 use App\http\Controllers\restController;
 use App\http\Controllers\OtherInvoiceDataController;
-
-
-
-
-
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ResetController;
 use Illuminate\Database\Console\Migrations\ResetCommand;
-
-// تأكد من استخدام المسار الصحيح لموديل BranchData
-
-
 use App\Http\Controllers\adressController;
 use App\Models\address;
-
 
 Route::get('/', function () {
     return view('auth.login');
 })->name('login');
 Auth::routes();
-
 Route::get('/groups', [GroupsController::class, 'index'])->name('groups.index');
 Route::post('/update-image/{item}', [ImageController::class, 'updateImage'])->name('updateImage');
-
-
 // استخدم هذا النمط لكل الطرق
 Route::get('/groups/{id}edit', [GroupsController::class, 'edit'])->name('groups.edit');
-
 Route::post('/cart/save', [CartController::class, 'store'])->name('cart.store');
-
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart', 'App\Http\Controllers\CartController@store');
 Route::post('/cart', [CartController::class, 'store']);
 Route::get('/cart', 'App\Http\Controllers\CartController@index');
-
 //other invoice data route
 Route::post('/save-invoice-details', [OtherInvoiceDataController::class, 'save']);
-
-
-
 Route::get('/cart', [CartController::class, 'index']);
-
-
 Route::put('/groups/{id}', [GroupsController::class, 'update'])->name('groups.update');
 Route::delete('/groups/{id}', [GroupsController::class, 'destroy'])->name('groups.destroy');
-
 // تحديد الطرق لمتحكم GroupsController
  Route::get('/products', [GroupsController::class, 'index'])->name('groups.index');
  Route::post('/groups/store', [GroupsController::class, 'store'])->name('groups.store');
@@ -110,6 +83,8 @@ Route::post('/alerts/store', [CostController::class, 'store'])->name('alerts.sto
 Route::put('/alerts/{id}', [CostController::class, 'update'])->name('alerts.update');
 Route::delete('/alerts/{id}', [CostController::class, 'destroy'])->name('alerts.destroy');
 
+//المنتجات
+Route::post('/product-details', [ItemController::class, 'someMethod']);
 
 
 
@@ -174,8 +149,15 @@ Route::post('/invoice', 'InvoiceController@process')->name('invoice.process');
 Route::post('/inv.aspx/FillInitializeInvoice', 'YourController@yourMethod');
 Route::post('/GetCustomers', 'YourController@yourMethod');
 
+Route::put('/items/{item}', 'App\Http\Controllers\ItemController@update')->name('items.update');
+Route::put('/items/{item}', 'App\Http\Controllers\ItemController@update')->name('items.update');
 
+Route::put('/items/{item}', [ItemController::class, 'update'])->name('items.update');
+Route::put('/items/{item}', [ItemController::class, 'update']);
 
+Route::delete('/items/{id}', 'ItemController@destroy')->name('items.destroy');
+Route::put('/items/{item}', 'ItemController@update')->name('items.update');
+Route::get('/items', [ItemController::class, 'index']);
 
 
 Route::get('/search', [CustomerController::class, 'search'])->name('search');
@@ -195,6 +177,7 @@ Route::post('/cart/add', [InvoiceController::class, 'store'])->name('cart.add');
 Route::get('/files/{item}', function($item){
     return view('files',['item'=>$item]);
 })->name('files');
+Route::post('/product-details', [ItemController::class, 'destroy']);
 
 // Redirect the root URL to the login page
 
