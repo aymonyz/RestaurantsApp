@@ -43,7 +43,7 @@
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <!link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- زر "إضافة عميل جديد" -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addClientModal">

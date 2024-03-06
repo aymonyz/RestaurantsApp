@@ -26,6 +26,8 @@ class ItemPriceController extends Controller
             // Dump validation errors for debugging
             dd($e->errors());
         }
+        return back()->with('success', 'تم إضافة التسعيرة بنجاح.');
+
     }
     
     
