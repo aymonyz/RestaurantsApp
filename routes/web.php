@@ -29,6 +29,7 @@ use App\Http\Controllers\ResetController;
 use Illuminate\Database\Console\Migrations\ResetCommand;
 use App\Http\Controllers\adressController;
 use App\Models\address;
+use Illuminate\Contracts\Cache\Store;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -49,8 +50,8 @@ Route::get('/cart', [CartController::class, 'index']);
 Route::put('/groups/{id}', [GroupsController::class, 'update'])->name('groups.update');
 Route::delete('/groups/{id}', [GroupsController::class, 'destroy'])->name('groups.destroy');
 // تحديد الطرق لمتحكم GroupsController
- Route::get('/products', [GroupsController::class, 'index'])->name('groups.index');
- Route::post('/groups/store', [GroupsController::class, 'store'])->name('groups.store');
+Route::get('/products', [GroupsController::class, 'index'])->name('groups.index');
+Route::post('/groups/store', [GroupsController::class, 'store'])->name('groups.store');
 Route::get('/groups/{id}/edit', 'GroupsController@edit')->name('groups.edit');
 
 Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
@@ -96,7 +97,6 @@ Route::post('/product-details', [ItemController::class, 'someMethod']);
 // Route::get('/rest', [restController::class, 'index'])->name('rest.index');
 // Route::delete('/rest/{id}', [restController::class, 'destroy'])->name('rest.destroy');
 // Route::get('/rest/{id}/edit', [restController::class, 'edit'])->name('rest.edit');
-
 
 
 
@@ -149,8 +149,12 @@ Route::post('/invoice', 'InvoiceController@process')->name('invoice.process');
 Route::post('/inv.aspx/FillInitializeInvoice', 'YourController@yourMethod');
 Route::post('/GetCustomers', 'YourController@yourMethod');
 
+<<<<<<< Updated upstream
 Route::put('/items/{item}', 'App\Http\Controllers\ItemController@update')->name('items.update');
 Route::put('/items/{item}', 'App\Http\Controllers\ItemController@update')->name('items.update');
+=======
+//تحديث الصورة
+>>>>>>> Stashed changes
 
 Route::put('/items/{item}', [ItemController::class, 'update'])->name('items.update');
 Route::put('/items/{item}', [ItemController::class, 'update']);
@@ -167,6 +171,21 @@ Route::get('/search', [CustomerController::class, 'search'])->name('search');
 Route::get('/product-details',[ItemController::class, 'show'])->name('items.show');
 Route::get('/cards',[InvoiceController::class, 'show'])->name('cards.show');
 Route::delete('/items/destroy/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
+
+//المنتجات تعديل حذف اضافة 
+Route::put('/update-product/{item}', 'ItemController@update')->name('update-product');
+// أو إذا كنت تستخدم PATCH
+Route::patch('/update-product/{item}', 'ItemController@update')->name('update-product');
+// استخدام Route::put أو Route::patch بناءً على ما تفضل
+Route::put('/update-product/{item}', 'App\Http\Controllers\ItemController@update')->name('update-product');
+Route::put('/product/{id}', 'App\Http\Controllers\ItemController@update')->name('update-product');
+
+
+Route::post('/product-details/store', [ItemController::class, 'store'])->name('product-details.store');
+Route::delete('/product-details/destroy/{item}', [ItemController::class, 'destroy'])->name('product-details.destroy');
+Route::get('/product-details/edit/{item}', [ItemController::class, 'edit'])->name('product-details.edit');
+Route::put('/product-details/update/{item}', [ItemController::class, 'update'])->name('product-details.update');
+Route::get('/product-details', [ItemController::class, 'show'])->name('product-details');
 
 //Update image
 

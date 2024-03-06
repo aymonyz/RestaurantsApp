@@ -37,7 +37,12 @@ $is_active = $request->has('is_active') ? true : false;
     
         // Example: Save to the database
         Item::create($data);
+<<<<<<< Updated upstream
         return redirect()->back()->with(['message' => 'تم حفظ العنصر بنجاح']);
+=======
+       
+        return back()->with('success', 'تم حفظ العنصر بنجاح!');
+>>>>>>> Stashed changes
     
     }
     public function show(){
@@ -85,7 +90,7 @@ dd($item);
         
 
         // قم بإرجاع العرض مع العناصر المصفاة
-        return view('cards', ['items' => $items,'groups'=>$groups
+        return view('cards', ['product-details' => $items,'groups'=>$groups
     ]);
     }
     public function index(Request $request)

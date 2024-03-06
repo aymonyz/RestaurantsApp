@@ -288,7 +288,11 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
+<<<<<<< Updated upstream
 						<h5 class="modal-title" id="editImageModalLabel-{{ $item->id }}">تعديل  الصورة</h5>
+=======
+						<h5 class="modal-title" id="editImageModalLabel-{{ $item->id }}">تعديل الصورة</h5>
+>>>>>>> Stashed changes
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -475,6 +479,7 @@ $images = [
 		  </button>
 		</div>
 		<div class="modal-body">
+<<<<<<< Updated upstream
 			
 				
 					<form action="/items/3" method="post">
@@ -483,6 +488,12 @@ $images = [
 						<!-- حقول النموذج الأخرى هنا -->
 					
 					
+=======
+			<form id="editProductForm" method="POST" action="{{ route('update-product', ['item' => $item->id]) }}">
+				@csrf
+				@method('PUT')
+			
+>>>>>>> Stashed changes
 			<!-- تضمين حقول النموذج هنا لتعديل المنتج -->
 			<input type="hidden" id="productId" name="productId">
 			<div class="form-group">
@@ -547,9 +558,13 @@ $images = [
 			
 			<div class="modal-footer">
 			  <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+<<<<<<< Updated upstream
 			
 			  <button type="submit">تحديث</button>
 		
+=======
+			  <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+>>>>>>> Stashed changes
 			</div>
 		  </form>
 		</div>
@@ -562,7 +577,11 @@ $images = [
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
     type: 'POST',
+<<<<<<< Updated upstream
     url: '/product-details', // تأكد من أن هذا يطابق مسار POST المُعرّف
+=======
+    url: '/update-product',
+>>>>>>> Stashed changes
     data: {
         // بيانات الفورم
     },
@@ -573,10 +592,17 @@ $images = [
         // التعامل مع الخطأ
     }
 });
+<<<<<<< Updated upstream
 
   </script>
   <script>
 	
+=======
+  </script>
+  <script>
+	
+
+>>>>>>> Stashed changes
 	</script>
   <script>
 	
@@ -594,11 +620,14 @@ $images = [
   
 	// عرض النافذة المنبثقة
 	$('#editProductModal').modal('show');
+<<<<<<< Updated upstream
 	// إخفاء النافذة المنبثقة
 	$('#editProductModal').modal('hide');
 	
 	// حفظ التغييرات
 	
+=======
+>>>>>>> Stashed changes
   }
   </script>
 	  
