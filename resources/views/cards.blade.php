@@ -1,35 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				</div>
-				<!-- row closed -->
-			</div>
-			<!-- Container closed -->
-		</div>
-		<!-- main-content closed -->
-@endsection
-@section('js')
-@endsection
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
     <link rel="stylesheet" href="">
     <title>حفظ الأمتار</title>
     <style>
@@ -118,6 +87,9 @@
     background-color: #007bff;
     color: white;
 }
+.hidden-detail {
+        display: none;
+    }
     
     </style>
 </head>
@@ -166,15 +138,11 @@
 
 <form name="cartForm" method="POST" action="{{route('cart.store')}}">
     @csrf
-
-    
-
     <div class="card" id="cart">
         <div class="card-body">
             <h5 class="card-title">إصدار فاتورة</h5>
             <ul id="cartItems"></ul>
             <p>إجمالي المبلغ: <span id="totalPrice">0.00</span></p>
-
             <p>
                 خصم: 
                 <input type="number" id="discount" value="0" min="0" onchange="updateTotalPrice()">
@@ -187,9 +155,6 @@
             <p>التوصيل للمنازل: <input type="checkbox" id="delivery" onchange="toggleDelivery()"></p>
 
 
-            <p>خصم: <input type="number" id="discount" value="0" min="0" onchange="updateTotalPrice()"></p>
-            <p>التوصيل للمنازل: <input type="checkbox" id="delivery" onchange="toggleDelivery()"></p>
-
             <p>تكلفة التوصيل: <input type="number" id="deliveryCost" value="0" min="0" disabled onchange="updateTotalPrice()"></p>
             <p>طرق الدفع: 
                 <select id="paymentMethod">
@@ -199,30 +164,69 @@
                     @endforeach
                 </select>
             </p>
+            <button  type='button' data-toggle="modal" data-target="#invoiceModal">بيانات اخرى للفاتورة</button>
+            <!-- Modal -->
+            <div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-labelledby="invoiceModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="invoiceModalLabel">تفاصيل الفاتورة الإضافية</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="form-group">
+                            <label for="deliveryDateTime">تاريخ ووقت التوصيل</label>
+                            <input type="datetime-local" class="form-control" id="deliveryDateTime">
+                        </div>
+                        <div class="form-group">
+                          <label for="invoiceNote">ملاحظة الفاتورة</label>
+                          <textarea class="form-control" id="invoiceNote" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                          <label for="bottomNote1">ملاحظة في أسفل الفاتورة 1</label>
+                          <textarea class="form-control" id="bottomNote1" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                          <label for="bottomNote2">ملاحظة في أسفل الفاتورة 2</label>
+                          <textarea class="form-control" id="bottomNote2" rows="3"></textarea>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary">حفظ التغييرات</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+           
+            <!--Choosing a customer -->
             <p>اختر العميل: 
-                <select id="customer">
+                <select id="customer" class="choices-select">
+                    <option value="">اختر...</option>
                     @foreach($customers as $customer)
                         <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                     @endforeach
                 </select>
-
             </p>
             
             <button onclick="saveCart(event)">حفظ</button>
         </div>
     </div>
 </form>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-            @foreach($additionalServices as $additionalService)
-                <button class="additional-service-button" onclick="addToCart({{$additionalService->id}}, '{{$additionalService->name}}', {{$additionalService->price}},'{{ $additionalService->unit }}')">{{$additionalService->name}}</button>
-            @endforeach
-            
-            <button onclick="saveCart()">حفظ</button>
-        </div>
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js"></script>
     <script>
+        //seach customers
+        document.addEventListener('DOMContentLoaded', function() {
+    var element = document.querySelector('.choices-select');
+    var choices = new Choices(element);
+});
+
+
         //filter items and search items
         document.getElementById('itemSearch').addEventListener('input', filterItems);
 var filterButtons = document.getElementsByClassName('filter-button');
@@ -274,31 +278,31 @@ window.onload = function() {
         let cartItems = [];
 let totalCartPrice = 0;
 window.onload = function() {
-    window.addToCart = function(itemId, itemName, itemPrice, itemUnit) {
-
-let cartItems = [];
-let totalCartPrice = 0;
-
-window.addToCart = function(itemId, itemName, itemPrice, itemUnit) {
-
+    window.addToCart = function(itemId, itemName, itemPrice, itemUnit, width, height) {
     itemUnit = itemUnit.trim();  // Remove any leading or trailing white spaces
 
     if (itemUnit === "متر") {
-        showMeterModal(itemId, itemName, itemPrice);
+        showMeterModal(itemId, itemName, itemPrice, width, height);
     } else {
-        cartItems.push({ id: itemId, name: itemName, price: itemPrice, quantity: 1 });
+        // Always add a new item to the cart
+        cartItems.push({
+            id: itemId,
+            name: itemName,
+            price: itemPrice,
+            quantity: 1,
+            unit: itemUnit,
+            width: width,
+            height: height
+        });
+
         totalCartPrice += itemPrice;
         updateCart();
     }
 }
-
 }
 
-}
-       
 
-
-function showMeterModal(itemId, itemName, itemPrice) {
+function showMeterModal(itemId, itemName, itemPrice, width, height) {
     // Create modal
     const modal = document.createElement('div');
     modal.style.display = 'block';
@@ -331,44 +335,35 @@ function showMeterModal(itemId, itemName, itemPrice) {
 
     // Create label and input field for width
     const widthLabel = document.createElement('label');
-
     widthLabel.textContent = 'العرض:';
-
-    widthLabel.textContent = 'Width:';
-
     modalContent.appendChild(widthLabel);
 
     const widthInput = document.createElement('input');
     widthInput.type = 'number';
     widthInput.value = 1;
+    console.log(widthInput);
     modalContent.appendChild(widthInput);
 
     // Create label and input field for height
     const heightLabel = document.createElement('label');
-
     heightLabel.textContent = 'الطول:';
-
-    heightLabel.textContent = 'Height:';
-
     modalContent.appendChild(heightLabel);
 
     const heightInput = document.createElement('input');
     heightInput.type = 'number';
     heightInput.value = 1;
+    console.log(heightInput);
     modalContent.appendChild(heightInput);
 
     // Create label and read-only input field for number of meters
     const meterLabel = document.createElement('label');
-
     meterLabel.textContent = 'عدد الأمتار:';
-
-    meterLabel.textContent = 'Number of meters:';
-
     modalContent.appendChild(meterLabel);
 
     const meterInput = document.createElement('input');
     meterInput.type = 'number';
     meterInput.value = 1;
+    console.log(meterInput);
     meterInput.readOnly = true;
     modalContent.appendChild(meterInput);
 
@@ -382,11 +377,7 @@ function showMeterModal(itemId, itemName, itemPrice) {
 
     // Create label and input field for number of items
     const quantityLabel = document.createElement('label');
-
     quantityLabel.textContent = 'القطع:';
-
-    quantityLabel.textContent = 'Number of items:';
-
     modalContent.appendChild(quantityLabel);
 
     const quantityInput = document.createElement('input');
@@ -396,11 +387,7 @@ function showMeterModal(itemId, itemName, itemPrice) {
 
     // Create label and input field for item price
     const priceLabel = document.createElement('label');
-
     priceLabel.textContent = 'السعر';
-
-    priceLabel.textContent = 'Price per item:';
-
     modalContent.appendChild(priceLabel);
 
     const priceInput = document.createElement('input');
@@ -419,12 +406,21 @@ function showMeterModal(itemId, itemName, itemPrice) {
         const itemPrice = parseFloat(priceInput.value);
         const totalPrice = numberOfMeters * itemPrice * quantity;
 
-        cartItems.push({ id: itemId, name: itemName, price: totalPrice, quantity: quantity });
+
+        cartItems.push({ 
+        id: itemId, 
+        name: itemName, 
+        price: totalPrice, 
+        quantity: quantity,
+        width: width, // Save width
+        height: height, // Save height
+        numberOfMeters: numberOfMeters // Save number of meters
+    });
         totalCartPrice += totalPrice;
         updateCart();
 
         modal.style.display = 'none';
-    };
+    };//end
     modalContent.appendChild(addButton);
 
     modal.appendChild(modalContent);
@@ -448,7 +444,6 @@ const customerSelect = document.getElementById('customer');
         }
     });
     //delete item from the cart
-
     function deleteItem(index) {
     // Directly use the index to splice the array
     cartItems.splice(index, 1);
@@ -457,8 +452,9 @@ const customerSelect = document.getElementById('customer');
     totalCartPrice = cartItems.reduce((total, item) => total + item.price, 0);
     updateCart();
 }
-    function updateCart() {
+function updateCart() {
     const cartContainer = document.getElementById('cartItems');
+    const itemsDetailsArray = []; // New array to hold item details
 
     // Clear previous items
     cartContainer.innerHTML = '';
@@ -466,11 +462,48 @@ const customerSelect = document.getElementById('customer');
     // Update cart items
     cartItems.forEach((item ,index)=> {
         const listItem = document.createElement('li');
-        listItem.id = `item-${item.id}`; // Assign a unique ID to the list item
- 
+        listItem.id = `item-${item.id}-${index}`; // Assign a unique ID to the list item
+
         listItem.textContent = `${item.name} - ${item.price.toFixed(2)}`;
 
-        
+        // Create new li elements for each property
+const widthItem = document.createElement('li');
+widthItem.textContent = `Width: ${item.width}`;
+widthItem.classList.add('hidden-detail');
+
+const heightItem = document.createElement('li');
+heightItem.textContent = `Height: ${item.height}`;
+heightItem.classList.add('hidden-detail');
+
+const metersItem = document.createElement('li');
+metersItem.textContent = `Number of Meters: ${item.numberOfMeters}`;
+metersItem.classList.add('hidden-detail');
+
+const quantityItem = document.createElement('li');
+quantityItem.textContent = `Quantity: ${item.quantity}`;
+quantityItem.classList.add('hidden-detail');
+
+// Append new li elements to the cartContainer
+const cartContainer = document.getElementById('cartItems');
+cartContainer.appendChild(widthItem);
+cartContainer.appendChild(heightItem);
+cartContainer.appendChild(metersItem);
+cartContainer.appendChild(quantityItem);
+
+
+        // Create item details object and append it to itemsDetailsArray
+        const itemDetails = {
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            width: item.width,
+            height: item.height,
+            numberOfMeters: item.numberOfMeters,
+            quantity: item.quantity,
+            additionalServices: item.additionalServices || []
+        };
+        itemsDetailsArray.push(itemDetails);
+
         // Create edit icon
         const editIcon = document.createElement('i');
         editIcon.className = 'fas fa-edit';
@@ -484,6 +517,7 @@ const customerSelect = document.getElementById('customer');
         // Pass the current index directly to the deleteItem function
         deleteIcon.onclick = () => deleteItem(index);
         listItem.appendChild(deleteIcon);
+
         // Create form for additional services
         const editForm = document.createElement('form');
         editForm.style.display = 'none';
@@ -501,24 +535,27 @@ const customerSelect = document.getElementById('customer');
             const button = document.createElement('button');
             button.textContent = service.additional_service_name;
             button.value = service.additional_service_price; // Use the price from the database
+
             // In the button onclick function
-         button.onclick = () => {
-         event.preventDefault();
+            button.onclick = () => {
+                event.preventDefault();
+                // Add a class to the button to indicate that it's been activated
+                button.classList.add('activated');
 
-        updateItemPrice(item.id, parseFloat(service.additional_service_price));
+                updateItemPrice(item.id, parseFloat(service.additional_service_price));
 
-    // Add service to the list
-       const serviceItem = document.createElement('li');
-       serviceItem.textContent = `${service.additional_service_name} - ${service.additional_service_price.toFixed(2)}`;
-        additionalServicesList.appendChild(serviceItem);
+                // Add service to the list
+                const serviceItem = document.createElement('li');
+                serviceItem.textContent = `${service.additional_service_name} - ${service.additional_service_price.toFixed(2)}`;
+                additionalServicesList.appendChild(serviceItem);
 
-    // Add the service to the item's additionalServices array
-       item.additionalServices = item.additionalServices || [];
-       item.additionalServices.push({
-        name: service.additional_service_name,
-        price: service.additional_service_price
-       });
-    };
+                // Add the service to the item's additionalServices array
+                item.additionalServices = item.additionalServices || [];
+                item.additionalServices.push({
+                    name: service.additional_service_name,
+                    price: service.additional_service_price
+                });
+            };
             editForm.appendChild(button);
         });
 
@@ -527,9 +564,11 @@ const customerSelect = document.getElementById('customer');
         cartContainer.appendChild(listItem);
     });
 
+    // Log itemsDetailsArray to the console for debugging
+    console.log(itemsDetailsArray);
+
     updateTotalPrice();
 }
-
       
        
         function updateTotalPrice() {
@@ -548,82 +587,6 @@ const customerSelect = document.getElementById('customer');
     totalPrice = (totalCartPrice - discount + deliveryCost).toFixed(2);
     totalPriceElement.textContent = totalPrice;
 }
-
-    function deleteItem(itemId) {
-    // Filter out the item with the given id
-    cartItems = cartItems.filter(item => item.id !== itemId);
-
-    // Update the total cart price
-    totalCartPrice = cartItems.reduce((total, item) => total + item.price, 0);
-
-    // Update the cart in the UI
-    updateCart();
-    }
-      
-
-      
-        function updateCart() {
-            const cartContainer = document.getElementById('cartItems');
-    
-            // Clear previous items
-            cartContainer.innerHTML = '';
-    
-            // Update cart items
-            cartItems.forEach(item => {
-                const listItem = document.createElement('li');
-                //original code in next line                 listItem.textContent = ${item.name} - $${item.price.toFixed(2)};    
-
-                listItem.textContent = ${item.name} - ${item.price.toFixed(2)};    
-                // Create edit icon
-                const editIcon = document.createElement('i');
-                editIcon.className = 'fas fa-edit';
-                editIcon.onclick = () => showEditForm(item.id, item.name, item.price);
-                listItem.appendChild(editIcon);
-
-                // Create delete icon
-                const deleteIcon = document.createElement('i');
-                deleteIcon.className = 'fas fa-trash';
-                deleteIcon.onclick = () => deleteItem(item.id);
-                listItem.appendChild(deleteIcon);
-    
-    
-                // Create form for additional services
-                const editForm = document.createElement('form');
-                editForm.style.display = 'none';
-                editForm.id = editForm${item.id};
-    
-                // getting additional services from the database
-                let additionalServices = @json($additionalServices);
-    
-                // Create buttons for additional services
-                additionalServices.forEach((service, index) => {
-                    const button = document.createElement('button');
-                    button.textContent = service.additional_service_name;
-                    button.value = service.additional_service_price; // Use the price from the database
-                    button.onclick = () => {
-                        event.preventDefault();
-
-                        updateItemPrice(item.id, parseFloat(service.additional_service_price));
-                    };
-                    editForm.appendChild(button);
-                });
-    
-                listItem.appendChild(editForm);
-                cartContainer.appendChild(listItem);
-            });
-    
-            updateTotalPrice();
-        }
-    
-        function updateTotalPrice() {
-            const discount = parseFloat(document.getElementById('discount').value);
-            const deliveryCost = document.getElementById('delivery').checked ? parseFloat(document.getElementById('deliveryCost').value) : 0;
-            const totalPriceElement = document.getElementById('totalPrice');
-    
-            totalPrice = (totalCartPrice - discount + deliveryCost).toFixed(2);
-            totalPriceElement.textContent = totalPrice;
-        }
-
     
         function toggleDelivery() {
             const deliveryCostInput = document.getElementById('deliveryCost');
@@ -666,9 +629,6 @@ const customerSelect = document.getElementById('customer');
     const additionalServicesList = document.createElement('ul');
     additionalServicesList.id = `additionalServicesList${itemId}`;
 
-    additionalServicesList.id = additionalServicesList${itemId};
-
-
     // Create buttons for additional services
     let additionalServices = @json($additionalServices);
     additionalServices.forEach((service, index) => {
@@ -701,18 +661,9 @@ function updateItemPrice(itemId, additionalServicePrice, additionalServiceName) 
         item.additionalServices.push({ name: additionalServiceName, price: additionalServicePrice });
 
         // Update additional services list in modal
-
         const additionalServicesList = document.getElementById(`additionalServicesList${itemId}`);
         const listItem = document.createElement('li');
         listItem.textContent = `${additionalServiceName} - ${additionalServicePrice.toFixed(2)}`;
-
-        const additionalServicesList = document.getElementById(additionalServicesList${itemId});
-        const listItem = document.createElement('li');
-        //original code in the next line         listItem.textContent = ${additionalServiceName} - $${additionalServicePrice.toFixed(2)};
-
-        listItem.textContent = ${additionalServiceName} - ${additionalServicePrice.toFixed(2)};
-
-
         // Create delete icon
         const deleteIcon = document.createElement('i');
         deleteIcon.className = 'fas fa-trash';
@@ -735,26 +686,99 @@ function removeAdditionalService(itemId, additionalServiceName) {
             item.additionalServices.splice(index, 1); // Remove the additional service from the list
 
             // Update additional services list in modal
-
             const additionalServicesList = document.getElementById(`additionalServicesList${itemId}`);
-
-            const additionalServicesList = document.getElementById(additionalServicesList${itemId});
-
             additionalServicesList.removeChild(additionalServicesList.childNodes[index]);
         }
     }
     updateTotalPrice();
 }
-        
-    
+function extractData() {
+    const itemsNodes = Array.from(document.querySelectorAll('#cartItems > li'));
+    const data = [];
+    let currentItem = {};
 
-        function saveCart(event) {
+    itemsNodes.forEach((node) => {
+        if (node.id.startsWith('item-')) {
+            // The item details have been collected; now collecting item name and price
+            const [name, price] = node.textContent.split(' - ').map(part => part.trim());
+            currentItem.id = node.id;
+            currentItem.name = name;
+            currentItem.price = parseFloat(price.replace(/[^0-9.-]+/g, ""));
+            // Push the complete item to the data array
+            data.push(currentItem);
+            // Reset currentItem for the next item
+            currentItem = {};
+        } else {
+            // Collecting item details
+            const detailType = node.textContent.split(':')[0];
+            const detailValue = parseFloat(node.textContent.split(':')[1].trim());
+
+            switch (detailType) {
+                case 'Width':
+                    currentItem.width = detailValue;
+                    break;
+                case 'Height':
+                    currentItem.height = detailValue;
+                    break;
+                case 'Number of Meters':
+                    currentItem.numberOfMeters = detailValue;
+                    break;
+                case 'Quantity':
+                    currentItem.quantity = detailValue;
+                    break;
+            }
+        }
+    });
+
+    return data;
+}
+
+
+
+function saveCart(event) {
             event.preventDefault();
+            const cartItems = extractData();
+            console.log(cartItems);
             // Create hidden inputs for all the data you want to submit
     const form = document.forms['cartForm'];
 
-// Assuming `cartItems` is an array of objects {id, name, price, quantity}
+    //checking if the customer is selected
+    // Check if a customer is selected
+    const customerId = document.getElementById('customer').value;
+    if (!customerId) {
+        alert('يجب إختيار العميل');
+        return;
+    }
+
+// Assuming cartItems is an array of objects {id, name, price, quantity}
 cartItems.forEach((item, index) => {
+ 
+ // Width
+ const inputWidth = document.createElement('input');
+        inputWidth.type = 'hidden';
+        inputWidth.name = `items[${index}][width]`;
+        inputWidth.value = item.width;
+        form.appendChild(inputWidth);
+
+        // Height
+        const inputHeight = document.createElement('input');
+        inputHeight.type = 'hidden';
+        inputHeight.name = `items[${index}][height]`;
+        inputHeight.value = item.height;
+        form.appendChild(inputHeight);
+
+        // Number of Meters
+        const inputMeters = document.createElement('input');
+        inputMeters.type = 'hidden';
+        inputMeters.name = `items[${index}][numberOfMeters]`;
+        inputMeters.value = item.numberOfMeters;
+        form.appendChild(inputMeters);
+       
+    
+
+
+    
+    //end of new code
     const inputId = document.createElement('input');
     inputId.type = 'hidden';
     inputId.name = `items[${index}][id]`;
@@ -823,76 +847,110 @@ totalPriceInput.value = document.getElementById('totalPrice').textContent; // As
 form.appendChild(totalPriceInput);
 
 // In the cartItems.forEach loop
-item.additionalServices.forEach((service, serviceIndex) => {
-    const inputServiceName = document.createElement('input');
-    inputServiceName.type = 'hidden';
-    inputServiceName.name = `items[${index}][services][${serviceIndex}][name]`;
-    inputServiceName.value = service.name;
-    form.appendChild(inputServiceName);
+// In the cartItems.forEach loop
+if (item.additionalServices) {
+    item.additionalServices.forEach((service, serviceIndex) => {
+        const inputServiceName = document.createElement('input');
+        inputServiceName.type = 'hidden';
+        inputServiceName.name = `items[${index}][services][${serviceIndex}][name]`;
+        inputServiceName.value = service.name;
+        form.appendChild(inputServiceName);
 
-    const inputServicePrice = document.createElement('input');
-    inputServicePrice.type = 'hidden';
-    inputServicePrice.name = `items[${index}][services][${serviceIndex}][price]`;
-    inputServicePrice.value = service.price;
-    form.appendChild(inputServicePrice);
+        const inputServicePrice = document.createElement('input');
+        inputServicePrice.type = 'hidden';
+        inputServicePrice.name = `items[${index}][services][${serviceIndex}][price]`;
+        inputServicePrice.value = service.price;
+        form.appendChild(inputServicePrice);
+    });
+}
+
+    // Item unit
+   /* const inputUnit = document.createElement('input');
+    inputUnit.type = 'hidden';
+    inputUnit.name = `items[${index}][unit]`;
+    inputUnit.value = item.unit; // Assuming item.unit holds the unit information
+    console.log(inputUnit);
+    form.appendChild(inputUnit);
+
+    // Number of pieces
+    const inputPieces = document.createElement('input');
+    inputPieces.type = 'hidden';
+    inputPieces.name = `items[${index}][pieces]`;
+    inputPieces.value = item.pieces; // Assuming item.pieces holds the number of pieces
+    console.log(inputPieces);
+    form.appendChild(inputPieces);
+
+    // Dimensions
+    const inputWidth = document.createElement('input');
+    inputWidth.type = 'hidden';
+    inputWidth.name = `items[${index}][width]`;
+    inputWidth.value = item.width; // Assuming item.width holds the width
+    console.log(inputWidth);
+    form.appendChild(inputWidth);
+
+    const inputHeight = document.createElement('input');
+    inputHeight.type = 'hidden';
+    inputHeight.name = `items[${index}][height]`;
+    inputHeight.value = item.height; // Assuming item.height holds the height
+    console.log(inputHeight);
+    form.appendChild(inputHeight);
+*/
+   
+
 });
 
-});
+
 
 
 
 // submit the form
-         form.submit();
+        form.submit();
            
     }
+    //Other invoice data modal submit function
+    document.addEventListener("DOMContentLoaded", function() {
+  document.querySelector('.btn-primary').addEventListener('click', function() {
+    e.preventDefault(); // Prevent default form submission
 
-        function saveCart() {
-            const discount = parseFloat(document.getElementById('discount').value);
-            const delivery = document.getElementById('delivery').checked;
-            const deliveryCost = delivery ? parseFloat(document.getElementById('deliveryCost').value) : 0;
-            const paymentMethod = document.getElementById('paymentMethod').value;
-            const customerId = document.getElementById('customer').value;
-    
-            // Send an AJAX request to save the cart to the database
-            // You can use a JavaScript framework like Axios or jQuery.ajax to make the request
-            // Example using Axios:
-            axios.post('/cart/save', {
-                items: cartItems,
-                discount: discount,
-                delivery: delivery,
-                deliveryCost: deliveryCost,
-                paymentMethod: paymentMethod,
-                customerId: customerId,
-                totalPrice: totalPrice
-            })
-            .then(function (response) {
-                // Handle the response, e.g. show a success message
-            });
-        }
+    var deliveryDate = document.getElementById('deliveryDate').value;
+    var invoiceNote = document.getElementById('invoiceNote').value;
+    var bottomNote1 = document.getElementById('bottomNote1').value;
+    var bottomNote2 = document.getElementById('bottomNote2').value;
+
+    var formData = {
+      deliveryDate: deliveryDate,
+      invoiceNote: invoiceNote,
+      bottomNote1: bottomNote1,
+      bottomNote2: bottomNote2,
+    };
+
+    fetch('/save-invoice-details', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      // Update the page or show a success message
+      alert('Changes saved successfully!');
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      // Handle errors, such as showing an error message
+      alert('An error occurred: ' + error);
+    });
+  });
+
+  // Optional: Load updated data when the modal is triggered to open
+  // This can be done by adding an event listener to the modal open button
+  // and fetching the latest data to populate the form fields.
+});
 
     </script>
 
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				
-
-</html>
-

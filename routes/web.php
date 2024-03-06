@@ -23,6 +23,7 @@ use App\Http\Controllers\EstablishmePController;
 use App\Models\Cost;
 use App\http\Controllers\LocationController;
 use App\http\Controllers\restController;
+use App\http\Controllers\OtherInvoiceDataController;
 
 
 
@@ -30,12 +31,11 @@ use App\Http\Controllers\ImageController;
 // تأكد من استخدام المسار الصحيح لموديل BranchData
 
 
-
-
 Route::get('/', function () {
     return view('auth.login');
 })->name('login');
 Auth::routes();
+
 Route::get('/groups', [GroupsController::class, 'index'])->name('groups.index');
 Route::post('/update-image/{item}', [ImageController::class, 'updateImage'])->name('updateImage');
 
@@ -44,6 +44,8 @@ Route::post('/update-image/{item}', [ImageController::class, 'updateImage'])->na
 Route::get('/groups/{id}edit', [GroupsController::class, 'edit'])->name('groups.edit');
 
 Route::post('/cart/save', [CartController::class, 'store'])->name('cart.store');
+//other invoice data route
+Route::post('/save-invoice-details', [OtherInvoiceDataController::class, 'save']);
 
 
 
