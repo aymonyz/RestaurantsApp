@@ -37,12 +37,10 @@ $is_active = $request->has('is_active') ? true : false;
     
         // Example: Save to the database
         Item::create($data);
-<<<<<<< Updated upstream
-        return redirect()->back()->with(['message' => 'تم حفظ العنصر بنجاح']);
-=======
+
        
         return back()->with('success', 'تم حفظ العنصر بنجاح!');
->>>>>>> Stashed changes
+
     
     }
     public function show(){

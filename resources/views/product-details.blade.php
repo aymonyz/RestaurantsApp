@@ -251,7 +251,7 @@
 <table border="1">
 <h1>جدول  الاصناف </h1>
 <br>
-<thead>
+<thead class="responsive-table">
 	<tr>
 		<th>الإسم بالعربية</th>
 		<th>الإسم بالإنجليزية</th>
@@ -288,11 +288,9 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-<<<<<<< Updated upstream
+
 						<h5 class="modal-title" id="editImageModalLabel-{{ $item->id }}">تعديل  الصورة</h5>
-=======
-						<h5 class="modal-title" id="editImageModalLabel-{{ $item->id }}">تعديل الصورة</h5>
->>>>>>> Stashed changes
+
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -326,6 +324,9 @@ $images = [
     <div class="container mt-5">
         <h3 class="text-center mt-4">اختر صورة لهذا الصنف</h3>
         <div class="row">
+			 <!-- صندوق البحث -->
+			 <input type="text" id="searchBox" placeholder="ابحث عن الصنف..." style="margin-bottom: 20px; width: 100%; padding: 10px;">
+			 <div class="row" id="itemsRow">
             @foreach($images as $image)
                 <div class="col-md-4 image-container">
                     <!-- Use a form for each image card -->
@@ -463,9 +464,6 @@ $images = [
 	</tbody>
 </table>
 </div>
-
-	
-
 </div>
 </div>
 <!-- Modal -->
@@ -479,22 +477,12 @@ $images = [
 		  </button>
 		</div>
 		<div class="modal-body">
-<<<<<<< Updated upstream
-			
-				
-					<form action="/items/3" method="post">
-						<input type="hidden" name="_method" value="PUT">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
-						<!-- حقول النموذج الأخرى هنا -->
-					
-					
-=======
-			<form id="editProductForm" method="POST" action="{{ route('update-product', ['item' => $item->id]) }}">
+
+			<form method="POST" action="{{ route('items.update', ['item' => $item->id]) }}">
 				@csrf
 				@method('PUT')
 			
->>>>>>> Stashed changes
-			<!-- تضمين حقول النموذج هنا لتعديل المنتج -->
+		
 			<input type="hidden" id="productId" name="productId">
 			<div class="form-group">
 			  <label for="arabicName">الاسم بالعربية</label>
@@ -558,13 +546,13 @@ $images = [
 			
 			<div class="modal-footer">
 			  <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
-<<<<<<< Updated upstream
+
 			
-			  <button type="submit">تحديث</button>
+
 		
-=======
+
 			  <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
->>>>>>> Stashed changes
+
 			</div>
 		  </form>
 		</div>
@@ -572,68 +560,32 @@ $images = [
 	</div>
   </div>
   <script>
-	$.ajax({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    },
-    type: 'POST',
-<<<<<<< Updated upstream
-    url: '/product-details', // تأكد من أن هذا يطابق مسار POST المُعرّف
-=======
-    url: '/update-product',
->>>>>>> Stashed changes
-    data: {
-        // بيانات الفورم
-    },
-    success: function(response) {
-        // التعامل مع الاستجابة
-    },
-    error: function(error) {
-        // التعامل مع الخطأ
-    }
-});
-<<<<<<< Updated upstream
+	function setValue(selector, value) {
+    $(selector).val(value);
+}
 
-  </script>
-  <script>
-	
-=======
-  </script>
-  <script>
-	
+function setChecked(selector, condition) {
+    $(selector).prop('checked', condition);
+}
 
->>>>>>> Stashed changes
-	</script>
-  <script>
-	
-  function showEditForm(id, arabicName, englishName, abbreviatedArabicName, abbreviatedEnglishName, group, itemNumber, unit, is_active) {
-	// ملء البيانات في النموذج
-	$('#productId').val(id);
-	$('#arabicName').val(arabicName);
-	$('#englishName').val(englishName);
-	$('#abbreviatedArabicName').val(abbreviatedArabicName);
-	$('#abbreviatedEnglishName').val(abbreviatedEnglishName);
-	$('#group').val(group);
-	$('#itemNumber').val(itemNumber);
-	$('#unit').val(unit);
-	$('#is_active').prop('checked', is_active === "1");
-  
-	// عرض النافذة المنبثقة
-	$('#editProductModal').modal('show');
-<<<<<<< Updated upstream
-	// إخفاء النافذة المنبثقة
-	$('#editProductModal').modal('hide');
-	
-	// حفظ التغييرات
-	
-=======
->>>>>>> Stashed changes
-  }
-  </script>
-	  
-							
+function showEditForm(id, arabicName, englishName, abbreviatedArabicName, abbreviatedEnglishName, group, itemNumber, unit, is_active) {
+    // تعيين القيم للعناصر بشكل مبسط باستخدام دالة مساعدة
+    setValue('#productId', id);
+    setValue('#arabicName', arabicName);
+    setValue('#englishName', englishName);
+    setValue('#abbreviatedArabicName', abbreviatedArabicName);
+    setValue('#abbreviatedEnglishName', abbreviatedEnglishName);
+    setValue('#group', group);
+    setValue('#itemNumber', itemNumber);
+    setValue('#unit', unit);
+    
+    // تعيين حالة الفحص باستخدام القيمة المنطقية مباشرة
+    setChecked('#is_active', is_active === "1");
+ 
+    // عرض النافذة المنبثقة
+    $('#editProductModal').modal('show'); // تأكد من أن المعرف صحيح
+}
 
-									<script>
 function showInterface(interfaceId) {
         var interfaces = document.getElementsByClassName('branch-info');
         for (var i = 0; i < interfaces.length; i++) {
@@ -644,7 +596,26 @@ function showInterface(interfaceId) {
             }
         }
     }
-										</script>
+	window.addEventListener('load', function() {
+    document.getElementById('searchBox').addEventListener('keyup', filterItems);
+});
+
+function filterItems() {
+    var searchQuery = document.getElementById('searchBox').value.toLowerCase();
+    var allItems = document.querySelectorAll('.image-container');
+
+    allItems.forEach(function(item) {
+        var itemEnglishDescription = item.querySelector('.card-title').textContent.toLowerCase();
+        var itemArabicDescription = item.querySelector('.card-text').textContent.toLowerCase();
+
+        if (itemEnglishDescription.includes(searchQuery) || itemArabicDescription.includes(searchQuery)) {
+            item.style.display = '';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+</script>
 
 @endsection
 @section('js')

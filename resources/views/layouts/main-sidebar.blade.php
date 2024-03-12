@@ -1,4 +1,60 @@
+ <!-- main-sidebar -->
+<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+<aside class="app-sidebar sidebar-scroll">
+    ...
+    <ul class="side-menu">
+        <!-- للتحقق من الأذونات وعرض العناصر في القائمة الجانبية -->
+        @if(auth()->user()->can('dashboard'))
+        <li class="slide">
+            <a class="side-menu__item" href="{{ url('/dashboard') }}">الرئيسية</a>
+        </li>
+        @endif
+
+        @if(auth()->user()->can('Searchandquery'))
+        	<li class="slide">
+						<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='#') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24" ><path d="M0 0h24v24H0z" fill="none"/><path d="M12 4c-4.41 0-8 3.59-8 8s3.59 8 8 8c.28 0 .5-.22.5-.5 0-.16-.08-.28-.14-.35-.41-.46-.63-1.05-.63-1.65 0-1.38 1.12-2.5 2.5-2.5H16c2.21 0 4-1.79 4-4 0-3.86-3.59-7-8-7zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 10 6.5 10s1.5.67 1.5 1.5S7.33 13 6.5 13zm3-4C8.67 9 8 8.33 8 7.5S8.67 6 9.5 6s1.5.67 1.5 1.5S10.33 9 9.5 9zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 6 14.5 6s1.5.67 1.5 1.5S15.33 9 14.5 9zm4.5 2.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5z" opacity=".3"/><path d="M12 2C6.49 2 2 6.49 2 12s4.49 10 10 10c1.38 0 2.5-1.12 2.5-2.5 0-.61-.23-1.21-.64-1.67-.08-.09-.13-.21-.13-.33 0-.28.22-.5.5-.5H16c3.31 0 6-2.69 6-6 0-4.96-4.49-9-10-9zm4 13h-1.77c-1.38 0-2.5 1.12-2.5 2.5 0 .61.22 1.19.63 1.65.06.07.14.19.14.35 0 .28-.22.5-.5.5-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.14 8 7c0 2.21-1.79 4-4 4z"/><circle cx="6.5" cy="11.5" r="1.5"/><circle cx="9.5" cy="7.5" r="1.5"/><circle cx="14.5" cy="7.5" r="1.5"/><circle cx="17.5" cy="11.5" r="1.5"/></svg><span class="side-menu__label">بحث واستعلام</span><i class="angle fe fe-chevron-down"></i></a>
+						<ul class="slide-menu">
+							<li><a class="slide-item" href="{{ url('/' . $page='accordion') }}">بحث شامل للفواتير</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='carousel') }}">الحساب العام للاشتراكات</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='collapse') }}">سجل النظام</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='modals') }}">Modals</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='timeline') }}">Timeline</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='sweet-alert') }}">Sweet Alert</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='rating') }}">Ratings</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='counters') }}">Counters</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='search') }}">Search</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='userlist') }}">Userlist</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='blog') }}">Blog</a></li>
+						</ul>
+					</li>
+        @endif
+
+        @if(auth()->user()->can('business_summary'))
+        <li class="slide">
+            <a class="side-menu__item" href="{{ url('/summary') }}">ملخص الأعمال الذكي</a>
+        </li>
+        @endif
+
+        @if(auth()->user()->can('products_services'))
+        <li class="slide">
+            <a class="side-menu__item" href="{{ url('/products') }}">الأصناف والخدمات</a>
+        </li>
+        @endif
+
+        <!-- وهكذا لباقي الأذونات -->
+    </ul>
+    ...
+</aside> 
+
+<!-- /main-sidebar -->
+
+<!-- /main-sidebar -->
+
+
+{{-- 
 <!-- main-sidebar -->
+
+ <!-- main-sidebar -->
 		<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 		<aside class="app-sidebar sidebar-scroll">
 			<div class="main-sidebar-header active">
@@ -46,11 +102,12 @@
 						<ul class="slide-menu">
 							<li><a class="slide-item" href="{{ url('/' . $page='products') }}">مجموعة الاصناف</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='product-details') }}">الاصناف</a></li>
-							<li><a class="slide-item" href="{{ url('/' . $page='product-cart') }}">الخدمات</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='additional_services') }}">الخدمات</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='product-cart') }}">إضافة  الاصناف</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='product-cart') }}">طباعة الاسعار</a></li>
 						</ul>
 					</li>
+					
 					<li class="side-item side-item-category">نقاط البيع</li>
 					<li class="slide">
 						<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='#') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M4 12c0 4.08 3.06 7.44 7 7.93V4.07C7.05 4.56 4 7.92 4 12z" opacity=".3"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93s3.05-7.44 7-7.93v15.86zm2-15.86c1.03.13 2 .45 2.87.93H13v-.93zM13 7h5.24c.25.31.48.65.68 1H13V7zm0 3h6.74c.08.33.15.66.19 1H13v-1zm0 9.93V19h2.87c-.87.48-1.84.8-2.87.93zM18.24 17H13v-1h5.92c-.2.35-.43.69-.68 1zm1.5-3H13v-1h6.93c-.04.34-.11.67-.19 1z"/></svg><span class="side-menu__label">نقاط البيع</span><i class="angle fe fe-chevron-down"></i></a>
@@ -205,7 +262,7 @@
 							<li><a class="slide-item" href="{{ url('/' . $page='signup') }}">العملاء والاشتراكات</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='forgot') }}">البقات</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='reset') }}">المناطق</a></li>
-							<li><a class="slide-item" href="{{ url('/' . $page='lockscreen') }}">طرق الدفع</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='payment_methods') }}">طرق الدفع</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='underconstruction') }}">اوقات التوصيل</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='404') }}">404 Error</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='500') }}">500 Error</a></li>
@@ -219,8 +276,8 @@
 								<ul class="sub-slide-menu">
 									<li><a class="sub-slide-item" href="{{ url('/' . $page='#') }}">بيانات المنشاة</a></li>
 									<li><a class="sub-slide-item" href="{{ url('/' . $page='controlpanel') }}">فروع المنشاء</a></li>
-									<li><a class="sub-slide-item" href="{{ url('/' . $page='#') }}">أدارة المستخدمين</a></li>
-									<li><a class="sub-slide-item" href="{{ url('/' . $page='#') }}">إدارة صلايحات النظام </a></li>
+									<li><a class="sub-slide-item" href="{{ url('/' . $page='forgot') }}">أدارة المستخدمين</a></li>
+									<li><a class="sub-slide-item" href="{{ url('/' . $page='roles') }}">إدارة صلايحات النظام </a></li>
 
 								</ul>
 							</li>
@@ -229,4 +286,4 @@
 				</ul>
 			</div>
 		</aside>
-<!-- main-sidebar -->
+<!-- main-sidebar -->  --}}

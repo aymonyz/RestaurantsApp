@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
+            
             $table->id();
             $table->timestamps();
             $table->string('name', 255)->nullable(); // Name of the customer
@@ -28,6 +29,12 @@ return new class extends Migration
             $table->string('email', 255)->nullable(); // Email
             $table->string('taxNumber', 255)->nullable(); // Tax number
             $table->text('otherData')->nullable(); // Other data, nullable
+            if (Schema::hasColumn('customers', 'mobilenumber')) {
+                Schema::table('customers', function (Blueprint $table) {
+                    $table->dropUnique('customers_mobilenumber_unique');
+                });
+            }
+            
         });
     }
 

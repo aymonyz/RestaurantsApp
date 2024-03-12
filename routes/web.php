@@ -30,6 +30,12 @@ use Illuminate\Database\Console\Migrations\ResetCommand;
 use App\Http\Controllers\adressController;
 use App\Models\address;
 use Illuminate\Contracts\Cache\Store;
+use App\Http\Controllers\PrintOptionController;
+use App\Http\Controllers\UserController;
+
+
+
+
 
 Route::get('/', function () {
     return view('auth.login');
@@ -87,7 +93,33 @@ Route::delete('/alerts/{id}', [CostController::class, 'destroy'])->name('alerts.
 //المنتجات
 Route::post('/product-details', [ItemController::class, 'someMethod']);
 
+// إعداتات
 
+Route::post('/print_options', 'PrintOptionController@store')->name('print_options.store');
+Route::post('/print_options', [PrintOptionController::class, 'store'])->name('print_options.store');
+
+
+
+
+Route::post('/add-user', [UserController::class, 'store'])->name('users.store');
+
+// لعرض نموذج إنشاء المستخدم
+Route::get('/forgot', [UserController::class, 'create'])->name('users.create');
+
+// لمعالجة بيانات نموذج إنشاء المستخدم
+Route::post('/forgot', [UserController::class, 'store'])->name('users.store');
+
+
+// تأكد من استخدام الاسم الصحيح للطريقة إذا كان مختلفًا
+Route::get('/admin/{id}', [AdminController::class, 'index']);
+
+
+// إضافة، عرض، وتعديل الأدوار
+Route::get('/roles', 'App\Http\Controllers\RoleController@index')->name('roles.index');
+Route::post('/roles', 'App\Http\Controllers\RoleController@store')->name('roles.store');
+Route::get('/roles/{role}/edit', 'App\Http\Controllers\RoleController@edit')->name('roles.edit');
+Route::put('/roles/{role}', 'App\Http\Controllers\RoleController@update')->name('roles.update');
+Route::delete('/roles/{role}', 'App\Http\Controllers\RoleController@destroy')->name('roles.destroy');
 
 // //المناطق
 // Route::post('/rest','restController@store')->name('rest.store');
@@ -149,19 +181,26 @@ Route::post('/invoice', 'InvoiceController@process')->name('invoice.process');
 Route::post('/inv.aspx/FillInitializeInvoice', 'YourController@yourMethod');
 Route::post('/GetCustomers', 'YourController@yourMethod');
 
-<<<<<<< Updated upstream
+
 Route::put('/items/{item}', 'App\Http\Controllers\ItemController@update')->name('items.update');
-Route::put('/items/{item}', 'App\Http\Controllers\ItemController@update')->name('items.update');
-=======
+
 //تحديث الصورة
->>>>>>> Stashed changes
+
+// Route::put('/items/{item}', [ItemController::class, 'update'])->name('items.update');
+// Route::put('/items/{item}', [ItemController::class, 'update']);
+
+// Route::delete('/items/{id}', 'ItemController@destroy')->name('items.destroy');
+// Route::put('/items/{item}', 'ItemController@update')->name('items.update');
+// Route::get('/items', [ItemController::class, 'index']);
+
 
 Route::put('/items/{item}', [ItemController::class, 'update'])->name('items.update');
-Route::put('/items/{item}', [ItemController::class, 'update']);
-
-Route::delete('/items/{id}', 'ItemController@destroy')->name('items.destroy');
-Route::put('/items/{item}', 'ItemController@update')->name('items.update');
+Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
 Route::get('/items', [ItemController::class, 'index']);
+
+
+
+
 
 
 Route::get('/search', [CustomerController::class, 'search'])->name('search');

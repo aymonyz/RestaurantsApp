@@ -44,7 +44,7 @@ class PaymentMethodController extends Controller
     
         $paymentMethod = PaymentMethod::create($validatedData);
     
-        return redirect()->route('payment-methods.index')->with('success', 'تم بنجاح إضافة طريقة الدفع');
+        return redirect()->route('payment_methods.index')->with('success', 'تم بنجاح إضافة طريقة الدفع');
     }
 
     /**
@@ -62,7 +62,7 @@ class PaymentMethodController extends Controller
     {
         //
         $paymentMethod = PaymentMethod::find($id);
-    return view('settings.payment-methods.edit', ['paymentMethod' => $paymentMethod]);
+    return view('settings.payment_methods.edit', ['paymentMethod' => $paymentMethod]);
     }
 
     /**
@@ -82,7 +82,7 @@ class PaymentMethodController extends Controller
         ]);
         $updatedValidatedData ['payment_appearance'] = $payment_appearance ;
     $paymentMethod->update($updatedValidatedData);
-    return redirect()->route('payment-methods.index')->with('success', 'تم تحديث البيانات بنجاح');
+    return redirect()->route('payment_methods.index')->with('success', 'تم تحديث البيانات بنجاح');
     }
 
     /**

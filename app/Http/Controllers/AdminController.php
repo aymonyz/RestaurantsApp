@@ -87,6 +87,17 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // 
     }
+    public function admin($id)
+    {
+        $viewPath = "admin." . $id; // مثال: "admin.create_user"
+    
+        if(view()->exists($viewPath)){
+            return view($viewPath);
+        } else {
+            return view('404');
+        }
+    }
+    
 }

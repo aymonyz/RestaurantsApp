@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 
 @extends('layouts.master')
 @section('css')
@@ -43,8 +42,8 @@
 				<!-- row -->
 
 
-
-
+@Include('ad-castoar')
+<button id="addClientModal">إضافة عميل جديد</button>
 
                     <!DOCTYPE html>
                     <html lang="en">
@@ -105,7 +104,7 @@
                         @csrf
                         <div class="card" id="cart">
                             <div class="card-body">
-                                <h5 class="card-title">إصدار فاتورة</h5>
+                                <h5 class="card-title">إص1دار فاتورة</h5>
                                 <ul id="cartItems"></ul>
                                 <p>إجمالي المبلغ: <span id="totalPrice">0.00</span></p>
                                 <p>
@@ -139,10 +138,12 @@
                                     </select>
                                 </p>
                                 
-                                <button onclick="saveCart(event)">حفظ</button>
+                                <button onclick="saveCart(event)">حف333ظ</button>
                             </div>
                         </div>
                     </form>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
                         <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
                         <script>
                             //seach customers
@@ -832,11 +833,23 @@
 
                         }
                     
-                        </script>
-                    
-                    
-                    </body>
-                    </html>
+                   
+                        $(document).ready(function() {
+    $('.filter-button').click(function() {
+        var groupName = $(this).data('group');
+
+        // أولاً، إخفاء جميع العناصر
+        $('#products > div').hide(); // افتراض أن جميع المنتجات موجودة ضمن عناصر <div> مباشرة تحت #products
+
+        // ثم، إظهار العناصر التي تطابق الفئة المحددة
+        $('#products div[data-group="' + groupName + '"]').show();
+
+        console.log("Filter by group: " + groupName); // Placeholder for actual filtering logic
+    });
+});
+</script>
+</body>
+</html>
                     
                     
                     
@@ -857,5 +870,4 @@
 @endsection
 @section('js')
 @endsection
-=======
->>>>>>> Stashed changes
+
