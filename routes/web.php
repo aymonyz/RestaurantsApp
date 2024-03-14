@@ -32,7 +32,11 @@ use App\Models\address;
 use Illuminate\Contracts\Cache\Store;
 use App\Http\Controllers\PrintOptionController;
 use App\Http\Controllers\UserController;
-
+use  App\Models\User;
+use  Spatie\Permission\Models\Role;
+use  Spatie\Permission\PermissionRegistrar;
+use  Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Session;
 
 
 
@@ -100,6 +104,18 @@ Route::post('/print_options', [PrintOptionController::class, 'store'])->name('pr
 
 
 
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+//تغير للغة 
+Route::get('lang/{locale}', function ($locale) {
+    if (! in_array($locale, ['en', 'ar'])) {
+        abort(400);
+    }
+    Session::put('locale', $locale);
+    return redirect()->back();
+})->name('locale.setting');
 
 Route::post('/add-user', [UserController::class, 'store'])->name('users.store');
 

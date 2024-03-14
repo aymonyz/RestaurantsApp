@@ -550,7 +550,6 @@ slide is-expanded side-menu__item {
     color: $primary;
   }
 }
-
 .side-menu__item {
   position: relative;
   display: -webkit-box;
@@ -565,7 +564,7 @@ slide is-expanded side-menu__item {
   -webkit-transition: border-left-color 0.3s ease, background-color 0.3s ease;
   -o-transition: border-left-color 0.3s ease, background-color 0.3s ease;
   transition: border-left-color 0.3s ease, background-color 0.3s ease;
-  height: 34px;
+  height: 20px !important;
 
   &.active, &:hover, &:focus {
     text-decoration: none;
