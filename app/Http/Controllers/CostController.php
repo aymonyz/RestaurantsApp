@@ -35,6 +35,7 @@ class CostController extends Controller
     {
         $expenses = Expenses::all(); // Assuming Expenses model contains expenses groups
         $establishments = Establishment::all();
+        dd($establishments); // Check if establishments are being fetched correctly
         return view('alerts', compact('expenses', 'establishments'));
     }
 

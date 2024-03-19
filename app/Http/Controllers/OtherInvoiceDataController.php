@@ -8,17 +8,23 @@ use App\Models\OtherInvoiceData;
 class OtherInvoiceDataController extends Controller
 {
     //
-    public function store(Request $request)
+    public function save(Request $request)
 {
     $validatedData = $request->validate([
-        'delivery_date' => 'nullable|date',
-        'invoice_note' => 'nullable|string',
-        'bottom_note1' => 'nullable|string',
-        'bottom_note2' => 'nullable|string',
+        'deliveryDate' => 'nullable|date',
+        'invoiceNote' => 'nullable|string',
+        'bottomNote1' => 'nullable|string',
+        'bottomNote2' => 'nullable|string',
     ]);
 
-    OtherInvoiceData::create($validatedData);
+    OtherInvoiceData::updateOrCreate([], $validatedData);
+    return response()->json(['success' => 'تم حفظ بيانات الفاتورة الأخرى بنجاح']);
 
-    return redirect()->back()->with('success', 'Data saved successfully');
+
+}
+public function get()
+{
+    $data = OtherInvoiceData::first();
+    return response()->json($data);
 }
 }

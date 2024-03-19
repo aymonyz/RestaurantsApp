@@ -13,6 +13,13 @@
 <!--Internal   Notify -->
 
 <!--Internal  treeview -->
+<style>
+    *{
+        text-align: right !important;
+        direction:rtl !important;
+    
+    }
+</style>
 
 @endsection
 @section('page-header')

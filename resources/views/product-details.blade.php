@@ -2,103 +2,189 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Document</title>
+	<title>الأصناف</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>
 <style>
-	body{
-		direction: rtl;
+	/* Overall aesthetic improvements for better readability and modern feel */
+body, html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+	text-align: right !important;
+}
+
+/* Enhancing form inputs, select boxes, and buttons */
+input, select, textarea, button {
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 5px 0;
+    padding: 10px;
+}
+
+button {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* Styling buttons with different intentions for better user guidance */
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: black;
+}
+
+/* Improving the layout of forms for better structure and readability */
+.pricing-form, .card-body {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Responsive tables */
+table {
+    width: 100%; /* Make table width responsive */
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+th, td {
+    padding: 0.75rem; /* Increase padding for better readability */
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Ensure table headers are bold and centered */
+th {
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Improve table readability on small screens */
+@media screen and (max-width: 768px) {
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto; /* Enable horizontal scrolling on small devices */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table-responsive > .table {
+        margin-bottom: 0; /* Remove margin bottom from table inside container */
+    }
+
+    .table-responsive > .table > thead > tr > th,
+    .table-responsive > .table > tbody > tr > th,
+    .table-responsive > .table > tfoot > tr > th,
+    .table-responsive > .table > thead > tr > td,
+    .table-responsive > .table > tbody > tr > td,
+    .table-responsive > .table > tfoot > tr > td {
+        white-space: nowrap; /* Prevent text wrapping in cells */
+    }
+}
+
+/* Enhance visual separation of table rows for better readability */
+tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05); /* Slight background color for odd rows */
+}
+
+/* Styling for table to fill the screen width on larger screens */
+.table-fullwidth {
+    min-width: 100%;
+}
+
+/* Additional styling for a cleaner look */
+table {
+    border-collapse: collapse; /* Collapse borders for a cleaner look */
+}
+
+/* Highlight table row on hover for better interaction feedback */
+tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Slight background color change on hover */
+}
+
+
+/* Styling links within tables for better interaction feedback */
+.edit-btn a, .delete-btn input[type="submit"] {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Ensuring visual consistency across different browsers and devices */
+* {
+    box-sizing: border-box;
+}
+.pricing-form select {
+	width: 100%;
+	padding: 10px;
+	margin: 5px 0;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 1rem;
+	background-color: white;
+	color: #333;
+	cursor: pointer;
+}
+form.items-form{
+	width:60%;
+	margin-inline: auto;
+}
+.pricing-form form, table.items-prices-table, h1.items-prices, h2.add-price-to-product
+{
+	width:60%;
+	margin-inline: auto;
+}
+@media(max-width:750px){
+	form.items-form{
+		width:100%;
 	}
-	*{
-		direction: rtl;
-
-	}
-	.form-container{
-		display: block;
-	}
-	table {
-		width: 100%;
-		border-collapse: collapse;
-		margin-top: 20px;
+	.pricing-form form, table.items-prices-table, h1.items-prices, h2.add-price-to-product
+	{
+		width:100%;
 	}
 
-	th, td {
-		border: 1px solid #ddd;
-		padding: 8px;
-		text-align: center;
-	}
-
-	th {
-		background-color: #f2f2f2;
-	}
-
-	td {
-		font-size: 14px;
-	}
-
-	.edit-btn, .delete-btn {
-		padding: 5px 10px;
-		text-align: center;
-		text-decoration: none;
-		display: inline-block;
-		margin: 2px;
-		cursor: pointer;
-		border: 1px solid #007bff;
-		color: #007bff;
-		border-radius: 4px;
-		transition: background-color 0.3s;
-	}
-
-	.edit-btn:hover, .delete-btn:hover {
-		background-color: #007bff;
-		color: #fff;
-	}
-	.pricing-form {
-			background-color: #fff;
-			padding: 20px;
-			border-radius: 8px;
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		}
-
-		.form-group {
-			margin-bottom: 15px;
-		}
-
-		label {
-			display: block;
-			font-weight: bold;
-			margin-bottom: 5px;
-		}
-
-		select, input[type="text"], input[type="checkbox"] {
-			width: 100%;
-			padding: 8px;
-			border: 1px solid #ced4da;
-			border-radius: 4px;
-			box-sizing: border-box;
-		}
-
-		input[type="checkbox"] {
-			width: auto;
-		}
-
-		.submit-btn {
-			background-color: #007bff;
-			color: #fff;
-			padding: 10px;
-			border: none;
-			border-radius: 4px;
-			cursor: pointer;
-		}
-
-		.submit-btn:hover {
-			background-color: #0056b3;
-		}
+}
 
 </style>
-
 
 @extends('layouts.master')
 @section('css')
@@ -111,6 +197,11 @@
 				<!-- breadcrumb -->
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
+						@if (session('success'))
+                 <div class="alert alert-success">
+                  {{ session('success') }}
+                </div>
+                     @endif
 						<div class="d-flex">
 							<h4 class="content-title mb-0 my-auto">الاصناف</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ الاصناف والخدمات</span>
 						</div>
@@ -156,18 +247,18 @@
 
 
 
-<div class="row">
-	<div class="col-md-6 text-center">
-		<button class="btn btn-primary btn-lg" onclick="showInterface('interface1')">إضافة صنف</button>
-	</div>
-	<div class="col-md-6 text-center">
-		<button class="btn btn-success btn-lg" onclick="showInterface('interface2')">إضافة تسعير</button>
-	</div>
+<div class="row justify-content-center">
+    <div class="col-auto">
+        <button class="btn btn-primary btn-lg" onclick="showInterface('interface1')">إضافة صنف</button>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-success btn-lg" onclick="showInterface('interface2')">إضافة تسعير</button>
+    </div>
 </div>
 <div id="interface1" class="branch-info">
 
 	<div class="card-body">
-		<form action="{{ route('items.store')}}" method="POST">
+		<form action="{{ route('items.store')}}" method="POST" class="items-form">
 			@csrf
 			<div class="row">
 				<div class="col-md-6 mb-3">
@@ -247,9 +338,10 @@
 		</form>
 
 <!-- MyItems -->
+<div  class="table-responsive">
 
 <table border="1">
-<h1>جدول  الاصناف </h1>
+<h1 class="items-table table-fullwidth">جدول  الاصناف </h1>
 <br>
 <thead class="responsive-table">
 	<tr>
@@ -272,6 +364,7 @@
 	<td>{{ $item->group }}</td>
 	<td>
 		@if ($item->image)
+
 			<img src="{{ asset($item->image) }}" alt="Item Image" height="50">
 		@else
 			<img src="{{ asset('/Images/photo-empty.png') }}" alt="Default Image" height="50">
@@ -280,6 +373,16 @@
 			<!-- Button trigger modal -->
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editImageModal-{{ $item->id }}">
 				تعديل
+
+    <img src="{{ asset($item->image->src) }}" alt="Item Image" height="50">
+@else
+    <img src="{{ asset('/Images/photo-empty.png') }}" alt="Default Image" height="50">
+@endif
+		<div>
+			<!-- Button trigger modal -->
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editImageModal-{{ $item->id }}">
+				تعديل الصورة
+
 			</button>
 		</div>
 	
@@ -289,7 +392,11 @@
 				<div class="modal-content">
 					<div class="modal-header">
 
+
 						<h5 class="modal-title" id="editImageModalLabel-{{ $item->id }}">تعديل  الصورة</h5>
+
+
+						<h5 class="modal-title" id="editImageModalLabel-{{ $item->id }}">تعديل الصورة</h5>
 
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -324,9 +431,11 @@ $images = [
     <div class="container mt-5">
         <h3 class="text-center mt-4">اختر صورة لهذا الصنف</h3>
         <div class="row">
+
 			 <!-- صندوق البحث -->
 			 <input type="text" id="searchBox" placeholder="ابحث عن الصنف..." style="margin-bottom: 20px; width: 100%; padding: 10px;">
 			 <div class="row" id="itemsRow">
+
             @foreach($images as $image)
                 <div class="col-md-4 image-container">
                     <!-- Use a form for each image card -->
@@ -371,7 +480,11 @@ $images = [
 		</div>
 	</td>
 	
+
 	<td>{{ $item->is_active }}</td>
+
+	<td>{{ $item->is_active ? "نعم": "لا" }}</td>
+
 	<td class="edit-btn">
 		<a href="#" onclick="showEditForm({{ $item->id }}, '{{ $item->arabicName }}', '{{ $item->englishName }}', '{{ $item->abbreviatedArabicname }}', '{{ $item->group }}', '{{ $item->unit }}', '{{ $item->is_active }}')">تعديل</a>
 	
@@ -388,12 +501,13 @@ $images = [
 
 </table>
 </div>
+	</div>
 							
 					</div>
 <!----end paeg1---->
 <div id="interface2" class="branch-info" style="display:none;">
 	<div class="pricing-form">
-		<h2>إضافة تسعيره للمنتج</h2>
+		<h2 class="add-price-to-product">إضافة تسعيرة للمنتج</h2>
 		<form action="{{ route('itemPricing.store') }}" method="POST">
 			@csrf
 		
@@ -422,25 +536,28 @@ $images = [
 		
 			<div class="form-group">
 				<label for="price">السعر</label>
-				<input type="text" id="price" name="price" placeholder="Enter price" required>
+				<input type="text" id="price" name="price" placeholder="أدخل السعر" required>
 			</div>
 		
-			<button type="submit" class="submit-btn">حفظ</button>
-			<button type="button" class="btn btn-secondary go-back-two" style="width: 100px;" data-dismiss="modal">رجوع</button>
+			<button type="submit" class="submit-btn" style="background-color: #4CAF50; color: white; border: none; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">حفظ</button>			
 
 		</form>
 		
 	</div>
-	<h1>اسعار الأصناف</h1>
+	<h1 class="items-prices">اسعار الأصناف</h1>
 
-<table border="1">
+<table border="1" class="items-prices-table">
 	<thead>
 		<tr>
 			<th>إسم الصنف</th>
 			<th>نوع الخدمة</th>
 			<th>مستعجل</th>
 			<th>السعر</th>
+
 			<th>الحزف</th>
+
+			<th>الحذف</th>
+
 		</tr>
 	</thead>
 	<tbody>
@@ -448,11 +565,14 @@ $images = [
 			<tr>
 				<td>{{ $itemPrice->item_name }}</td>
 				<td>{{ $itemPrice->service_type }}</td>
-				<td>{{ $itemPrice->urgent ? 'Yes' : 'No' }}</td>
+				<td>{{ $itemPrice->urgent ? 'نعم' : 'لا' }}</td>
 				<td>{{ $itemPrice->price }}</td>
 			 
 				<td class="delete-btn">
 					<form method="post" action="{{route('items.destroy',['item'=>$item])}}">
+
+					<form method="post" action="{{ route('itemPricing.destroy', ['id' => $itemPrice->id]) }}">
+
 						@csrf
 						@method('delete')
 						<input type="submit" value="حذف">
@@ -477,6 +597,7 @@ $images = [
 		  </button>
 		</div>
 		<div class="modal-body">
+
 
 			<form method="POST" action="{{ route('items.update', ['item' => $item->id]) }}">
 				@csrf
@@ -585,6 +706,127 @@ function showEditForm(id, arabicName, englishName, abbreviatedArabicName, abbrev
     // عرض النافذة المنبثقة
     $('#editProductModal').modal('show'); // تأكد من أن المعرف صحيح
 }
+
+
+			<form id="editProductForm" method="POST" >
+				@csrf
+				@method('PUT')
+			
+			<!-- تضمين حقول النموذج هنا لتعديل المنتج -->
+			<input type="hidden" id="productId" name="productId">
+			<div class="form-group">
+			  <label for="arabicName">الاسم بالعربية</label>
+			  <input type="text" class="form-control" id="arabicName" name="arabicName">
+			  <small id="arabicNameHelp" class="form-text text-muted">هذا الاسم سيظهر في طباعة الفاتورة</small>
+			</div>
+			<div class="form-group">
+			  <label for="englishName">الاسم بالإنجليزية</label>
+			  <input type="text" class="form-control" id="englishName" name="englishName">
+			  <small id="englishNameHelp" class="form-text text-muted">هذا الاسم سيظهر في طباعة الفاتورة</small>
+			</div>
+  
+			<div class="row">
+			  <div class="col-md-6 mb-3">
+				<label class="form-label">الإسم المختصر</label>
+				<input type="text" class="form-control" maxlength="13" id="abbreviatedArabicName" name="abbreviatedArabicName">
+				<small class="text-success">هذا الاسم سيظهر على شاشة الفاتورة</small>
+			  </div>
+			  <div class="col-md-6 mb-3">
+				<label class="form-label">الإسم الانجليزي المختصر</label>
+				<input type="text" class="form-control" maxlength="13" id="abbreviatedEnglishName" name="abbreviatedEnglishName">
+				<small class="text-success">هذا الاسم سيظهر على شاشة الفاتورة</small>
+			  </div>
+			</div>
+  
+			<div class="row">
+			  <div class="col-md-6 mb-3">
+				<label class="form-label">المجموعة</label>
+				<select class="form-select" id="group" name="group">
+				  <option value="" disabled selected>اختر المجموعة الاصناف</option>
+				  <!-- تكرار خيارات المجموعة -->
+				  @foreach($groups as $group)
+				  <option value="{{ $group->GroupNameArabic }}">{{ $group->GroupNameArabic }}</option>
+			  @endforeach
+				</select>
+				<small class="text-success">يمكنك تصنيف الصنف إلى مجموعات، على سبيل المثال: قميص، اختر رجالي من القائمة</small>
+			  </div>
+			  
+			  <div class="col-md-6 mb-3">
+				<label class="form-label">رقم الصنف</label>
+				<input type="text" class="form-control" maxlength="3" id="itemNumber" name="itemNumber">
+				<small class="text-success">يمكنك البحث عن الاصناف باستخدام هذا الرقم في شاشة الفواتير</small>
+			  </div>
+			
+  
+			<div class="row">
+			  <div class="col-md-6 mb-3">
+				<label class="form-label">وحدة القياس</label>
+				<select class="form-select" id="unit" name="unit">
+				  <option value="متر">متر</option>
+				  <option value="قطعة">قطعة</option>
+				</select>
+			  </div>
+			  <div class="col-md-6 mb-2">
+				<div class="form-group">
+				  <label for="is_active">نشط</label>
+				  <input type="checkbox" id="is_active" name="is_active">
+				</div>
+			  </div>
+			</div>
+			
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+			  <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+			</div>
+		  </form>
+		</div>
+	  </div>
+	</div>
+  </div>
+  <script>
+	$.ajax({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    type: 'POST',
+    url: '/update-product',
+    data: {
+        // بيانات الفورم
+    },
+    success: function(response) {
+        // التعامل مع الاستجابة
+    },
+    error: function(error) {
+        // التعامل مع الخطأ
+    }
+});
+  </script>
+  <script>
+	
+
+	</script>
+  <script>
+	
+  function showEditForm(id, arabicName, englishName, abbreviatedArabicName, abbreviatedEnglishName, group, itemNumber, unit, is_active) {
+	// ملء البيانات في النموذج
+	$('#productId').val(id);
+	$('#arabicName').val(arabicName);
+	$('#englishName').val(englishName);
+	$('#abbreviatedArabicName').val(abbreviatedArabicName);
+	$('#abbreviatedEnglishName').val(abbreviatedEnglishName);
+	$('#group').val(group);
+	$('#itemNumber').val(itemNumber);
+	$('#unit').val(unit);
+	$('#is_active').prop('checked', is_active === "1");
+  
+	// عرض النافذة المنبثقة
+	$('#editProductModal').modal('show');
+  }
+  </script>
+	  
+							
+
+									<script>
 
 function showInterface(interfaceId) {
         var interfaces = document.getElementsByClassName('branch-info');

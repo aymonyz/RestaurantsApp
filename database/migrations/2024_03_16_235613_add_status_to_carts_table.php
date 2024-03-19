@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('customers', function (Blueprint $table) {
+        Schema::table('carts', function (Blueprint $table) {
             //
-            $table->string('mobileNumber')->unique()->change();
+            $table->string('status')->default('under-execution');
 
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('customers', function (Blueprint $table) {
+        Schema::table('carts', function (Blueprint $table) {
             //
         });
     }

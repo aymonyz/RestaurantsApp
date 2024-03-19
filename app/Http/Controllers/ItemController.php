@@ -118,6 +118,14 @@ dd($item);
     $items = $query->get();
     return view('items.cards', compact('items'));
 }
+public function destroy($id)
+{
+    $item = Item::find($id);
+    if (!$item) {
+        return redirect()->back()->with('error', 'العنصر غير موجود');
+    }
+    $item->delete();
+    return redirect()->back()->with('success', 'تم حذف العنصر بنجاح');
 
     /**
      * حذف مورد محدد.
@@ -152,4 +160,5 @@ dd($item);
         
     }
     
+}
 }

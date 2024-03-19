@@ -14,6 +14,9 @@ use App\Http\Controllers\Branch_dataController;
 use App\Http\Controllers\AdditionalServiceController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\adress;
+
+use App\Http\Controllers\SmsController;
+
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\View;
 use App\Models\BranchData; 
@@ -24,9 +27,18 @@ use App\Models\Cost;
 use App\http\Controllers\LocationController;
 use App\http\Controllers\restController;
 use App\http\Controllers\OtherInvoiceDataController;
+
+use App\http\Controllers\InvoicePageSettingController;
+
+
+
+
+
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ResetController;
+use App\Http\Controllers\DeliverySettingController;
 use Illuminate\Database\Console\Migrations\ResetCommand;
+
 use App\Http\Controllers\adressController;
 use App\Models\address;
 use Illuminate\Contracts\Cache\Store;
@@ -38,6 +50,13 @@ use  Spatie\Permission\PermissionRegistrar;
 use  Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
+
+// تأكد من استخدام المسار الصحيح لموديل BranchData
+
+
+
+use App\Http\Controllers\adressController;
+use App\Models\address;
 
 
 
@@ -57,6 +76,31 @@ Route::get('/cart', 'App\Http\Controllers\CartController@index');
 //other invoice data route
 Route::post('/save-invoice-details', [OtherInvoiceDataController::class, 'save']);
 Route::get('/cart', [CartController::class, 'index']);
+
+
+//other invoice data route
+Route::post('/save-invoice-details', [OtherInvoiceDataController::class, 'save']);
+Route::get('/get-invoice-details', [OtherInvoiceDataController::class, 'get']);
+
+//clock-delivery modal
+Route::post('/save-delivery-clock-data', [OtherInvoiceDataController::class, 'store']);
+//Send SMS messages
+Route::post('/send-sms', [SmsController::class, 'send'])->name('send-sms');
+//inoice page settings
+
+Route::get('/signin', [InvoicePageSettingController::class, 'index'])->name('invoice-settings.index');
+Route::post('/invoice-page-settings', [InvoicePageSettingController::class, 'store'])->name('invoice-page-settings.store');
+//deliver settings
+Route::post('/delivery-settings', [DeliverySettingController::class, 'store'])->name('delivery-settings.store');
+
+Route::post('/cart', 'App\Http\Controllers\CartController@store');
+Route::post('/cart', [CartController::class, 'store']);
+Route::get('/cart', 'App\Http\Controllers\CartController@index');
+
+
+
+
+
 Route::put('/groups/{id}', [GroupsController::class, 'update'])->name('groups.update');
 Route::delete('/groups/{id}', [GroupsController::class, 'destroy'])->name('groups.destroy');
 // تحديد الطرق لمتحكم GroupsController
@@ -197,6 +241,7 @@ Route::post('/invoice', 'InvoiceController@process')->name('invoice.process');
 Route::post('/inv.aspx/FillInitializeInvoice', 'YourController@yourMethod');
 Route::post('/GetCustomers', 'YourController@yourMethod');
 
+//تحديث الصورة
 
 Route::put('/items/{item}', 'App\Http\Controllers\ItemController@update')->name('items.update');
 
@@ -225,6 +270,9 @@ Route::get('/search', [CustomerController::class, 'search'])->name('search');
 
 Route::get('/product-details',[ItemController::class, 'show'])->name('items.show');
 Route::get('/cards',[InvoiceController::class, 'show'])->name('cards.show');
+//update cart status from under execution to ready for delivery
+Route::post('/update-cart-status', [CartController::class, 'updateStatus'])->name('cart.update-status');
+
 Route::delete('/items/destroy/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
 
 //المنتجات تعديل حذف اضافة 
@@ -283,4 +331,7 @@ Route::post('/AreasStore', [AreaController::class, 'store'])->name('area.store')
 Route::post('/items', [ItemController::class, 'store'])->name('items.store');
 
 Route::post('/itemsprice', [ItemPriceController::class, 'store'])->name('itemPricing.store');
+Route::delete('/itemsprice/{id}', [ItemPriceController::class, 'destroy'])->name('itemPricing.destroy');
+
+Route::post('/invoice-page-settings', [InvoicePageSettingController::class, 'store'])->name('invoice-page-settings.store');
 

@@ -35,6 +35,15 @@ class ItemPriceController extends Controller
 
         return back()->with('success', 'تم إضافة التسعيرة بنجاح.');
 
+        return back()->with('success', 'تم إضافة التسعيرة بنجاح.');
+
+    }
+    public function destroy($id)
+    {
+        $itemPrice = ItemPrice::find($id);
+        $itemPrice->delete();
+        return back()->with('success', 'تم حذف التسعيرة بنجاح.');
+
     }
 
 }

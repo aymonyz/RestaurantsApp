@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('carts', function (Blueprint $table) {
-            $table->dropColumn('items');
+        Schema::create('delivery_settings', function (Blueprint $table) {
+            $table->id();
+            $table->boolean('enable_delivery_service');
+            $table->decimal('min_delivery_order', 8, 2);
+            $table->decimal('delivery_service_fee', 8, 2);
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('carts', function (Blueprint $table) {
-            //$table->text('items');
-        });
+        Schema::dropIfExists('delivery_settings');
     }
 };
