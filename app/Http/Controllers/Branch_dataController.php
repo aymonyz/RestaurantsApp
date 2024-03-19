@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch_data;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class Branch_dataController extends Controller
 {public function store(Request $request)
     {

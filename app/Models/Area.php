@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Area extends Model
 {
     use HasFactory;
-    protected $fillable=['area'];
+protected $fillable = ['name', 'address', /* any other fields you want to mass assign */];
 }

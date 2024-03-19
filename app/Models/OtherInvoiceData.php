@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class OtherInvoiceData extends Model
 {
     use HasFactory;
+    protected $fillable = ['deliveryDate', 'invoiceNote', 'bottomNote1', 'bottomNote2'];
 }

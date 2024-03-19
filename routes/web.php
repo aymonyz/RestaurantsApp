@@ -13,7 +13,12 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Branch_dataController;
 use App\Http\Controllers\AdditionalServiceController;
+use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\adress;
+use App\Http\Controllers\SmsController;
+
 use App\Http\Controllers\CartController;
+
 use Illuminate\Support\Facades\View;
 
 use App\Models\BranchData; 
@@ -24,11 +29,24 @@ use App\Models\Cost;
 use App\http\Controllers\LocationController;
 use App\http\Controllers\restController;
 use App\http\Controllers\OtherInvoiceDataController;
+use App\http\Controllers\InvoicePageSettingController;
+
+
 
 
 
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\ResetController;
+use App\Http\Controllers\DeliverySettingController;
+use Illuminate\Database\Console\Migrations\ResetCommand;
+
 // تأكد من استخدام المسار الصحيح لموديل BranchData
+
+
+
+use App\Http\Controllers\adressController;
+use App\Models\address;
+
 
 
 Route::get('/', function () {
@@ -44,8 +62,26 @@ Route::post('/update-image/{item}', [ImageController::class, 'updateImage'])->na
 Route::get('/groups/{id}edit', [GroupsController::class, 'edit'])->name('groups.edit');
 
 Route::post('/cart/save', [CartController::class, 'store'])->name('cart.store');
+
 //other invoice data route
 Route::post('/save-invoice-details', [OtherInvoiceDataController::class, 'save']);
+Route::get('/get-invoice-details', [OtherInvoiceDataController::class, 'get']);
+
+//clock-delivery modal
+Route::post('/save-delivery-clock-data', [OtherInvoiceDataController::class, 'store']);
+//Send SMS messages
+Route::post('/send-sms', [SmsController::class, 'send'])->name('send-sms');
+//inoice page settings
+
+Route::get('/signin', [InvoicePageSettingController::class, 'index'])->name('invoice-settings.index');
+Route::post('/invoice-page-settings', [InvoicePageSettingController::class, 'store'])->name('invoice-page-settings.store');
+//deliver settings
+Route::post('/delivery-settings', [DeliverySettingController::class, 'store'])->name('delivery-settings.store');
+
+Route::post('/cart', 'App\Http\Controllers\CartController@store');
+Route::post('/cart', [CartController::class, 'store']);
+Route::get('/cart', 'App\Http\Controllers\CartController@index');
+
 
 
 
@@ -54,8 +90,8 @@ Route::put('/groups/{id}', [GroupsController::class, 'update'])->name('groups.up
 Route::delete('/groups/{id}', [GroupsController::class, 'destroy'])->name('groups.destroy');
 
 // تحديد الطرق لمتحكم GroupsController
- Route::get('/products', [GroupsController::class, 'index'])->name('groups.index');
- Route::post('/groups/store', [GroupsController::class, 'store'])->name('groups.store');
+Route::get('/products', [GroupsController::class, 'index'])->name('groups.index');
+Route::post('/groups/store', [GroupsController::class, 'store'])->name('groups.store');
 Route::get('/groups/{id}/edit', 'GroupsController@edit')->name('groups.edit');
 
 Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
@@ -102,7 +138,6 @@ Route::delete('/alerts/{id}', [CostController::class, 'destroy'])->name('alerts.
 
 
 
-
 //additional_services
 Route::get('/additional_services', [AdditionalServiceController::class, 'index'])->name('additional_services.index');
 Route::post('/additional_services/store', [AdditionalServiceController::class, 'store'])->name('additional_services.store');
@@ -110,19 +145,39 @@ Route::get('/additional_services/{id}/edit', [AdditionalServiceController::class
 Route::put('/additional_services/{id}/update', [AdditionalServiceController::class, 'update'])->name('additional_services.update');
 Route::delete('/additional_services/{id}/destroy', [AdditionalServiceController::class, 'destroy'])->name('additional_services.destroy');
 
+Route::get('/payment_methods', [PaymentMethodController::class, 'index'])->name('payment_methods.index');
+Route::post('/payment_methods/store', [PaymentMethodController::class, 'store'])->name('payment-methods.save');
+Route::get('/payment_methods/{id}/edit', [PaymentMethodController::class, 'edit'])->name('payment-methods.edit');
+Route::put('/payment_methods/{id}/update', [PaymentMethodController::class, 'update'])->name('payment-methods.update');
+Route::delete('/payment_methods/{id}/destroy', [PaymentMethodController::class, 'destroy'])->name('payment-methods.destroy');
+
 
 //إضافة عميل جديد
 
-Route::post('customers/store', [CustomerController::class, 'store'])->name('customer.store');
+Route::post('customer/store', [CustomerController::class, 'store'])->name('customer.store');
 Route::post('/customers', [CustomerController::class, 'store']);
 Route::post('customers/store', [CustomerController::class, 'store'])->name('customers.store');
 Route::get('/showForm', [CustomerController::class, 'showForm']);
 View::composer('cards', function ($view) {
     $view->with('branches', BranchData::all());
 });
+//المناطق
+Route::get('/reset', [ResetController::class, 'index'])->name('reset.index');
 
+// Route to handle form submission and save the area
+Route::post('/reset/store', [ResetController::class, 'store'])->name('reset.store');
 
+// Route to handle deleting an area
+Route::post('/reset/delete', [ResetController::class, 'delete'])->name('reset.delete');
+// web.php
 
+// Route to handle deleting an area
+Route::post('/reset/delete/{id}', [ResetController::class, 'delete'])->name('reset.delete');
+// في ملف web.php، أضف Route جديد أو قم بتعديل Route موجود ليشمل إرسال بيانات الفروع إلى الصفحة.
+Route::get('/ad-castoar', [adressController::class, 'showCards'])->name('ad-castoar');
+Route::get('/ad-castoar', [adressController::class, 'showSelectForm']);
+Route::get('/some-path', 'adressController@someMethod');
+Route::get('/ad-castoar',[adressController::class,'show'])->name('adress');
 
 Route::post('/countries/get-data', 'CountryController@getData');
 // في ملف routes/web.php
@@ -132,6 +187,7 @@ Route::post('/invoice', 'InvoiceController@process')->name('invoice.process');
 Route::post('/inv.aspx/FillInitializeInvoice', 'YourController@yourMethod');
 Route::post('/GetCustomers', 'YourController@yourMethod');
 
+//تحديث الصورة
 
 
 
@@ -142,7 +198,25 @@ Route::get('/search', [CustomerController::class, 'search'])->name('search');
 
 Route::get('/product-details',[ItemController::class, 'show'])->name('items.show');
 Route::get('/cards',[InvoiceController::class, 'show'])->name('cards.show');
+//update cart status from under execution to ready for delivery
+Route::post('/update-cart-status', [CartController::class, 'updateStatus'])->name('cart.update-status');
+
 Route::delete('/items/destroy/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
+
+//المنتجات تعديل حذف اضافة 
+Route::put('/update-product/{item}', 'ItemController@update')->name('update-product');
+// أو إذا كنت تستخدم PATCH
+Route::patch('/update-product/{item}', 'ItemController@update')->name('update-product');
+// استخدام Route::put أو Route::patch بناءً على ما تفضل
+Route::put('/update-product/{item}', 'App\Http\Controllers\ItemController@update')->name('update-product');
+Route::put('/product/{id}', 'App\Http\Controllers\ItemController@update')->name('update-product');
+
+
+Route::post('/product-details/store', [ItemController::class, 'store'])->name('product-details.store');
+Route::delete('/product-details/destroy/{item}', [ItemController::class, 'destroy'])->name('product-details.destroy');
+Route::get('/product-details/edit/{item}', [ItemController::class, 'edit'])->name('product-details.edit');
+Route::put('/product-details/update/{item}', [ItemController::class, 'update'])->name('product-details.update');
+Route::get('/product-details', [ItemController::class, 'show'])->name('product-details');
 
 //Update image
 
@@ -165,7 +239,7 @@ Route::get('/files/{item}', function($item){
 Route::get('/index', function () {
     return view('index');
 });
- Route::get('/{page}', [AdminController::class, 'index'])->where('page', '.*');
+Route::get('/{page}', [AdminController::class, 'index'])->where('page', '.*');
 
 // Example route to the home page
 Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -184,4 +258,7 @@ Route::post('/AreasStore', [AreaController::class, 'store'])->name('area.store')
 Route::post('/items', [ItemController::class, 'store'])->name('items.store');
 
 Route::post('/itemsprice', [ItemPriceController::class, 'store'])->name('itemPricing.store');
+Route::delete('/itemsprice/{id}', [ItemPriceController::class, 'destroy'])->name('itemPricing.destroy');
+
+Route::post('/invoice-page-settings', [InvoicePageSettingController::class, 'store'])->name('invoice-page-settings.store');
 

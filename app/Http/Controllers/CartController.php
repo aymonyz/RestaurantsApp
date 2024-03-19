@@ -1,13 +1,21 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\Cart;
+
 use Illuminate\Http\Request;
+use App\Models\CartItem;
+
+use App\Models\ItemPrice;
+
+
 
 class CartController extends Controller
 {
     public function store(Request $request)
     {
+
         $data = $request->all();
+        //dd($data);
 
         // Handle the boolean values for 'urgent' and 'delivery'
         $data['urgent'] = $request->has('urgent');
@@ -16,6 +24,15 @@ class CartController extends Controller
         // Set default values for 'discount' and 'customerId'
         $data['discount'] = $data['discount'] ?? 0;
         $data['customerId'] = $data['customerId'] ?? null;
+
+        // Add new fields
+    $data['pickupDate'] = $request->input('pickupDate');
+    $data['pickupTimeFrom'] = $request->input('pickupTimeFrom');
+    $data['pickupTimeTo'] = $request->input('pickupTimeTo');
+    $data['deliveryDate'] = $request->input('deliveryDate');
+    $data['deliveryTimeFrom'] = $request->input('deliveryTimeFrom');
+    $data['deliveryTimeTo'] = $request->input('deliveryTimeTo');
+    $data['deliveryAddress'] = $request->input('deliveryAddress');
 
         // Create a new cart instance
         $cart = Cart::create($data);
@@ -44,5 +61,15 @@ class CartController extends Controller
     protected function validateDimension($value)
     {
         return is_numeric($value) ? (float)$value : null;
+
     }
+    public function updateStatus(Request $request)
+{
+    $cart = Cart::find($request->cartId);
+    $cart->status = 'ready for delivery';
+    $cart->save();
+
+    return response()->json(['status' => 'success']);
 }
+
+}    

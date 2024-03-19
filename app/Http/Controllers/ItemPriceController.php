@@ -26,6 +26,14 @@ class ItemPriceController extends Controller
             // Dump validation errors for debugging
             dd($e->errors());
         }
+        return back()->with('success', 'تم إضافة التسعيرة بنجاح.');
+
+    }
+    public function destroy($id)
+    {
+        $itemPrice = ItemPrice::find($id);
+        $itemPrice->delete();
+        return back()->with('success', 'تم حذف التسعيرة بنجاح.');
     }
     
     

@@ -36,7 +36,7 @@ $is_active = $request->has('is_active') ? true : false;
         // Example: Save to the database
         Item::create($data);
        
-       
+        return back()->with('success', 'تم حفظ العنصر بنجاح!');
     
     }
     public function show(){
@@ -84,7 +84,7 @@ dd($item);
         
 
         // قم بإرجاع العرض مع العناصر المصفاة
-        return view('cards', ['items' => $items,'groups'=>$groups
+        return view('cards', ['product-details' => $items,'groups'=>$groups
     ]);
     }
     public function index(Request $request)
@@ -114,5 +114,14 @@ dd($item);
     $items = $query->get();
     return view('items.cards', compact('items'));
 }
+public function destroy($id)
+{
+    $item = Item::find($id);
+    if (!$item) {
+        return redirect()->back()->with('error', 'العنصر غير موجود');
+    }
+    $item->delete();
+    return redirect()->back()->with('success', 'تم حذف العنصر بنجاح');
 
+}
 }

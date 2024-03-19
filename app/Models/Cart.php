@@ -9,9 +9,20 @@ class Cart extends Model
 {
     public function items()
 {
-    return $this->hasMany(CartItem::class);
+    return $this->hasMany(CartItem::class,'cart_id');
 }
+public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customerId');
+    }
+
     use HasFactory;
-    protected $fillable = ['discount', 'delivery', 'deliveryCost', 'urgent', 'paymentMethod', 'customerId', 'totalPrice'];
+    protected $fillable = ['discount', 'delivery', 'deliveryCost', 'urgent', 'paymentMethod', 'customerId', 'totalPrice','pickupDate',
+    'pickupTimeFrom',
+    'pickupTimeTo',
+    'deliveryDate',
+    'deliveryTimeFrom',
+    'deliveryTimeTo',
+    'deliveryAddress'];
 
 }

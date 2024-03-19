@@ -60,6 +60,7 @@
 
     <!-- واجهة 1: عرض الفروع -->
 <div id="interface1" class="branch-info">
+    
     <div class="container">
         <h2 class="text-center">فروع المنشأة</h2>
         <div class="table-responsive">

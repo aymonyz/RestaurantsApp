@@ -1,81 +1,67 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Customer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\BranchData;
-class CustomerController extends Controller
+use Illuminate\Database\QueryException;
 
+class CustomerController extends Controller
 {
+    // إضافة عميل جديد مع التحقق من عدم تكرار أرقام الهواتف
     public function store(Request $request)
     {
-        
-        // Validating the request data
-        $data = $request->validate([
-             // تأكد من وجود id في جدول branch_data
+        // التحقق من وجود رقم الهاتف
+        $existingCustomer = Customer::where('mobileNumber', $request->mobileNumber)
+            ->orWhere('mobileNumber2', $request->mobileNumber)
+            ->first();
 
-            'name' => 'nullable|max:255', // Assuming 'name' is the field name for the customer's name
-            'country' => 'nullable', // Assuming 'country' is the field name for the customer's country
-            'branch' => 'nullable', // Assuming 'branch' is the field name for the branch
-            'mobileNumber' => 'nullable|digits:9', // Validating first mobile number
-            'mobileNumber2' => 'nullable|digits:9', // Validating second mobile number, if provided
-            'apartmentNumber' => 'nullable|max:255', // Validating apartment number
-            'buildingNumber' => 'nullable|max:255', // Validating building number
-            'address' => 'nullable|max:255', // Validating address
-            'priceList' => 'nullable', // Assuming 'priceList' is the field name for the price list
-            'discount' => 'nullable|numeric|between:0,100', // Validating discount, assuming a percentage
-          //  'freeze' => 'nullable|boolean', // Validating freeze status
-            'email' => 'nullable|email|max:255', // Validating email
-            'taxNumber' => 'nullable|max:255', // Validating tax number
-            'otherData' => 'nullable|max:255', // Validating other data, if provided
-            // 'branch' => 'required|exists:branch_data,id',
-            
+        if ($existingCustomer) {
+            // إذا وُجد العميل، أعد إلى الصفحة مع رسالة خطأ
+            return back()->withErrors(['mobileNumber' => 'العميل موجود بالفعل.']);
+        }
+
+        // التحقق من صحة بيانات الطلب
+        $data = $request->validate([
+            'branch' => 'nullable', 
+            'country' => 'nullable',
+            'mobileNumber' => 'required|digits:9|unique:customers,mobileNumber', 
+            'mobileNumber2' => 'nullable|digits:9|unique:customers,mobileNumber2', 
+            'name' => 'nullable|max:255', 
+            'apartmentNumber' => 'nullable|max:255',
+            'buildingNumber' => 'nullable|max:255', 
+            'address' => 'nullable|max:255', 
+            'discount' => 'nullable|numeric|between:0,100',
+            'email' => 'nullable|email|max:255', 
+            'taxNumber' => 'nullable|max:255', 
+            'otherData' => 'nullable|max:255', 
+            'priceList' => 'nullable',
         ]);
 
-
-        // Creating a new customer record
-        $customer = Customer::create(
-
-            $data
-        );
-        // Redirecting back with a success message
-        return back()->with('success', 'تم حفظ العميل بنجاح');
-        
+        // محاولة إنشاء سجل العميل
+        try {
+            Customer::create($data);
+            return back()->with('success', 'تم حفظ العميل بنجاح');
+        } catch (QueryException $e) {
+            // التعامل مع الاستثناءات
+            return back()->withErrors(['error' => 'حدث خطأ أثناء حفظ البيانات.']);
+        }
     }
 
+    // عرض جميع العملاء
     public function index() {
-        $customers = Customer::all(); // أو استخدم Customer::select('name')->get(); لجلب أسماء العملاء فقط
+        $customers = Customer::all();
         return response()->json($customers);
     }
+
+    // البحث عن عميل
     public function search(Request $request) {
-        $search = $request->get('term');
+        $searchTerm = $request->get('term');
+        $result = Customer::where('name', 'LIKE', '%' . $searchTerm . '%')
+                          ->orWhere('mobileNumber', 'LIKE', '%' . $searchTerm . '%')
+                          ->orWhere('address', 'LIKE', '%' . $searchTerm . '%')
+                          ->get();
         
-        // تحديث الاستعلام ليشمل الحقول المطلوبة
-        $result = DB::table('customers')
-                    ->where('name', 'LIKE', '%'. $search. '%')
-                    ->select('id', 'name', 'mobileNumber', 'address') // على سبيل المثال
-                    ->get();
-    
         return response()->json($result);
     }
-    
-    
-    public function showForm()
-{
-    // استرجاع جميع الفروع من قاعدة البيانات
-    $branches = BranchData::all();
-    
-    // التحقق مما إذا كان هناك فروع متاحة
-    if($branches->isEmpty()) {
-        return back()->with('error', 'لم يتم العثور على بيانات الفروع.');
-    }
-
-    // تمرير المتغير $branches إلى العرض
-    return view('cards', ['branches' => $branches]);
 }
-
-    
-}
-
-
