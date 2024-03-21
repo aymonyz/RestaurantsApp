@@ -16,8 +16,11 @@
 							<input class="form-control" placeholder="Search for anything..." type="search"> <button class="btn"><i class="fas fa-search d-none d-md-block"></i></button>
 						</div>
 					</div>
+					
 					<div class="main-header-right">
 						<ul class="nav">
+							<div id="google_translate_element"></div>
+{{-- 
 							<li class="nav-item dropdown">
 								<a href="#" class="nav-link pl-0 country-flag1" data-toggle="dropdown" aria-expanded="false">
 									<span class="avatar country-Flag mr-0 align-self-center bg-transparent">
@@ -26,7 +29,9 @@
 									<div class="my-auto">
 										<strong class="mr-2 ml-2 my-auto">Language</strong>
 									</div>
+
 								</a>
+								
 								<div class="dropdown-menu dropdown-menu-left dropdown-menu-arrow">
 									<a href="{{ route('locale.setting', ['en']) }}" class="dropdown-item d-flex">
 										<span class="avatar ml-3 align-self-center bg-transparent">
@@ -44,7 +49,13 @@
 											<span class="mt-2">العربية</span>
 										</div>
 									</a>
+									
 								</div>
+								
+
+     --}}
+       
+   
 							</li>
 						</ul>
 					
@@ -270,6 +281,16 @@
 					</div>
 				</div>
 			</div>
+			<script>
+				function googleTranslateElementInit() {
+				  new google.translate.TranslateElement({
+					pageLanguage: 'ar',
+					autoDisplay: 'true',
+					layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
+				  }, 'google_translate_element');
+				}
+			  </script>
+			<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <!-- /main-header -->
 					{{-- <a href="#" class="dropdown-item d-flex">
 											<span class="avatar  ml-3 align-self-center bg-transparent"><img src="{{URL::asset('assets/img/flags/germany_flag.jpg')}}" alt="img"></span>

@@ -1,13 +1,13 @@
 @extends('layouts.master')
 @section('css')
-<!-- Internal Select2 css -->
-<link href="{{URL::asset('assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet">
 @endsection
 @section('page-header')
 				<!-- breadcrumb -->
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
-						<div class="d-flex"><h4 class="content-title mb-0 my-auto">Mail</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Compose-mail</span></div>
+						<div class="d-flex">
+							<h4 class="content-title mb-0 my-auto">Pages</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Empty</span>
+						</div>
 					</div>
 					<div class="d-flex my-xl-auto right-content">
 						<div class="pr-1 mb-3 mb-xl-0">
@@ -38,85 +38,110 @@
 				<!-- breadcrumb -->
 @endsection
 @section('content')
-				<!-- row opened -->
-				<div class="row row-sm">
-					<!-- Col -->
-					<div class="col-lg-4 col-xl-3 col-md-12 col-sm-12">
-						<div class="card mg-b-20">
-							<div class="main-content-left main-content-left-mail card-body">
-								<a class="btn btn-primary btn-compose" href="" id="btnCompose">Compose</a>
-								<div class="main-mail-menu">
-									<nav class="nav main-nav-column mg-b-20">
-										<a class="nav-link" href=""><i class="bx bxs-inbox"></i> Inbox <span>18</span></a>
-										<a class="nav-link" href=""><i class="bx bx-star"></i> Starred <span>8</span></a>
-										<a class="nav-link" href=""><i class="bx bx-alarm-snooze"></i> Snoozed <span>6</span></a>
-										<a class="nav-link" href=""><i class="bx bx-bookmarks"></i> Important <span>15</span></a>
-										<a class="nav-link" href=""><i class="bx bx-send"></i> Sent Mail <span>24</span></a>
-										<a class="nav-link" href=""><i class="bx bx-edit"></i> Drafts <span>2</span></a>
-										<a class="nav-link" href=""><i class="bx bx-message-error"></i> Spam <span>32</span></a>
-										<a class="nav-link" href=""><i class="bx bx-message-square-detail"></i> Chats <span>14</span></a>
-										<a class="nav-link" href=""><i class="bx bx-folder"></i> All Mail <span>652</span></a>
-										<a class="nav-link" href=""><i class="bx bx-book-content"></i> Contacts <span>547</span></a>
-										<a class="nav-link" href=""><i class="bx bx-trash"></i> Trash <span>365</span></a>
-									</nav>
-									<label class="main-content-label main-content-label-sm">Settings</label>
-									<nav class="nav main-nav-column">
-										<a class="nav-link active" href="#">Email Settings</a>
-										<a class="nav-link" href="#">Account Information</a>
-									</nav>
-								</div><!-- main-mail-menu -->
-							</div>
-						</div>
-					</div>
-					<!-- /Col -->
-					<div class="col-xl-9 col-lg-8 col-md-12 col-sm-12">
-						<div class="card">
-							<div class="card-header">
-								<h3 class="card-title">Compose new message</h3>
-							</div>
-							<div class="card-body">
-								<form >
-									<div class="form-group">
-										<div class="row align-items-center">
-											<label class="col-sm-2">To</label>
-											<div class="col-sm-10">
-												<input type="text" class="form-control">
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="row align-items-center">
-											<label class="col-sm-2">Subject</label>
-											<div class="col-sm-10">
-												<input type="text" class="form-control">
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="row ">
-											<label class="col-sm-2">Message</label>
-											<div class="col-sm-10">
-												<textarea rows="10" class="form-control"></textarea>
-											</div>
-										</div>
-									</div>
-								</form>
-							</div>
-							<div class="card-footer d-sm-flex">
-								<div class="mt-2 mb-2">
-									<a href="javascript:void(0)" class="mr-3" data-toggle="tooltip" title="" data-original-title="Attach"><i class="bx bx-paperclip text-muted tx-22"></i></a>
-									<a href="javascript:void(0)" class="mr-3" data-toggle="tooltip" title="" data-original-title="Link"><i class="bx bx-link text-muted tx-22"></i></a>
-									<a href="javascript:void(0)" class="mr-3" data-toggle="tooltip" title="" data-original-title="Photos"><i class="bx bx-image text-muted tx-22"></i></a>
-									<a href="javascript:void(0)" class="mr-3" data-toggle="tooltip" title="" data-original-title="Delete"><i class="bx bx-trash text-muted tx-22"></i></a>
-								</div>
-								<div class="btn-list mr-auto">
-									<button type="button" class="btn btn-success btn-space">Discard</button>
-									<button type="button" class="btn btn-primary btn-space">Save</button>
-									<button type="button" class="btn btn-danger btn-space">Send</button>
-								</div>
-							</div>
-						</div>
-					</div>
+				<!-- row -->
+				<div class="row">
+
+
+
+					<style>
+						body {
+						  font-family: 'Arial', sans-serif;
+						}
+						table {
+						  width: 100%;
+						  border-collapse: collapse;
+						  margin-top: 20px;
+						}
+						th, td {
+						  border: 1px solid #ddd;
+						  padding: 8px;
+						  text-align: left;
+						}
+						th {
+						  background-color: #f2f2f2;
+						}
+						tr:nth-child(even) {
+						  background-color: #f9f9f9;
+						}
+						tr:hover {
+						  background-color: #e9e9e9;
+						}
+						a {
+						  text-decoration: none;
+						  color: blue;
+						}
+						button {
+						  padding: 5px 10px;
+						  background-color: red;
+						  color: white;
+						  border: none;
+						  border-radius: 5px;
+						  cursor: pointer;
+						}
+						button:hover {
+						  opacity: 0.8;
+						}
+					  </style>
+
+<!-- الهيكل الأساسي لـ HTML مع Blade template syntax لإدراج البيانات -->
+<table>
+	<thead>
+	  <tr>
+		<th>ID</th>
+		<th>Discount</th>
+		<th>Delivery</th>
+		<th>Delivery Cost</th>
+		<th>Urgent</th>
+		<th>Payment Method</th>
+		<th>Customer ID</th>
+		<th>Total Price</th>
+		<th>Created At</th>
+		<th>Updated At</th>
+		<th>Pickup Date</th>
+		<th>Pickup Time From</th>
+		<th>Pickup Time To</th>
+		<th>Delivery Date</th>
+		<th>Delivery Time From</th>
+		<th>Delivery Time To</th>
+		<th>Delivery Address</th>
+		<th>Status</th>
+		<th>Actions</th> <!-- إذا أردت أن تضيف أزرار للتعديل والحذف -->
+	  </tr>
+	</thead>
+	<tbody>
+	  @foreach($invoices as $invoice)
+	  <tr>
+		<td>{{ $invoice->id }}</td>
+		<td>{{ $invoice->discount }}</td>
+		<td>{{ $invoice->delivery ? 'نعم' : 'لا' }}</td>
+		<td>{{ $invoice->deliveryCost }}</td>
+		<td>{{ $invoice->urgent ? 'نعم' : 'لا' }}</td>
+		<td>{{ $invoice->paymentMethod }}</td>
+		<td>{{ $invoice->customerId }}</td>
+		<td>{{ $invoice->totalPrice }}</td>
+		<td>{{ $invoice->created_at->format('d/m/Y H:i:s') }}</td>
+		<td>{{ $invoice->updated_at->format('d/m/Y H:i:s') }}</td>
+		<td>{{ optional($invoice->pickupDate)->format('d/m/Y') }}</td>
+		<td>{{ $invoice->pickupTimeFrom }}</td>
+		<td>{{ $invoice->pickupTimeTo }}</td>
+		<td>{{ optional($invoice->deliveryDate)->format('d/m/Y') }}</td>
+		<td>{{ $invoice->deliveryTimeFrom }}</td>
+		<td>{{ $invoice->deliveryTimeTo }}</td>
+		<td>{{ $invoice->deliveryAddress }}</td>
+		<td>{{ $invoice->status }}</td>
+		<td>
+		  <!-- أضف هنا الأزرار أو الروابط للتعديل والحذف -->
+		 
+		  </form>
+		</td>
+	  </tr>
+	  @endforeach
+	</tbody>
+  </table>
+  
+
+
+		
 				</div>
 				<!-- row closed -->
 			</div>
@@ -125,9 +150,4 @@
 		<!-- main-content closed -->
 @endsection
 @section('js')
-<!-- Moment js -->
-<script src="{{URL::asset('assets/plugins/raphael/raphael.min.js')}}"></script>
-<!-- Internal Select2.min js -->
-<script src="{{URL::asset('assets/plugins/select2/js/select2.min.js')}}"></script>
-<script src="{{URL::asset('assets/js/select2.js')}}"></script>
 @endsection

@@ -13,7 +13,9 @@
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
 						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">إدارة المستخدمين</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/لوحة التحكم </span>
+							{{-- <h4 class="content-title mb-0 my-auto">إدارة المستخدمين</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/لوحة التحكم </span> --}}
+                            <h4 class="content-title mb-0 my-auto">{{ __('permissions.user_management') }}</h4>
+
 						</div>
 					</div>
 					<div class="d-flex my-xl-auto right-content">
@@ -45,63 +47,85 @@
 				<!-- breadcrumb -->
 @endsection
 @section('content')
-
-<html lang="ar"dir="rtl">>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>عرض المستخدمين</title>
+    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* @media (max-width: 768px) {
+            .table-responsive {
+                overflow-x: auto;
+            }
+            .btn {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.875rem;
+            }
+        } */
+        @media (max-width: 768px) {
+    .btn {
+        margin-bottom: 10px; /* إضافة مسافة بين الأزرار عند عرضها في سطر جديد */
+    }
+    .table {
+        font-size: 14px; /* تصغير الخط لتحسين القراءة على الشاشات الصغيرة */
+    }
+}
+
+    </style>
 </head>
 <body>
 
 <div class="container mt-5">
-    <h2 class="mb-4">قائمة المستخدمين</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">رقم العميل</th>
-                <th scope="col">اسم المستخدم</th>
-                <th scope="col">البريد الإلكتروني</th>
-                <th scope="col">صلاحيات</th>
-                <th scope="col">حذف</th>
-                <th scope="col">تحديث</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($users as $user)
-                <tr>
-                    <th scope="row">{{ $user->id }}</th>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>
-                        {{-- @foreach($user->permissions as $permission)
-                            <button class="btn btn-sm btn-info m-1">{{ $permission->name }}</button>
-                        @endforeach --}}
-                        {{-- @foreach($user->permissions as $permission)
-                        <button class="btn btn-sm btn-info m-1">{{ __('permissions.'.$permission->name) }}</button>
-                    @endforeach --}}
-                    @foreach($user->permissions as $permission)
-                    <button class="btn btn-sm btn-info m-1">{{ __('permissions.'.$permission->name) }}</button>
-                @endforeach
-                
-                    </td>
-                    <td>
-                        <form action="{{ route('users.destroy', $user->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('هل أنت متأكد من أنك تريد حذف هذا المستخدم؟');">حذف</button>
+    {{-- <h2 class="mb-4">قائمة المستخدمين</h2> --}}
+    <h4 class="content-title mb-0 my-auto">{{ __('permissions.user_management') }}</h4>
+    
 
-                        </form>
-                    </td>
-                    <td>
-                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary">تحديث</a>
-                    </td>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">{{ __('permissions.customer_number') }}</th>
+                    <th scope="col">{{ __('permissions.username') }}</th>
+                    <th scope="col">{{ __('permissions.email') }}</th>
+                    <th scope="col">{{ __('permissions.permissions') }}</th>
+                    <th scope="col">{{ __('permissions.delete') }}</th>
+                    <th scope="col">{{ __('permissions.update') }}</th>
+                    
+                    
                 </tr>
-            @endforeach
-        </tbody>
-        
-    </table>
+            </thead>
+            <tbody>
+                @foreach($users as $user)
+                    <tr>
+                        <th scope="row">{{ $user->id }}</th>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>
+                            @foreach($user->permissions as $permission)
+                            <button class="btn btn-sm btn-info m-1">{{__('permissions.'.$permission->name) }}</button>
+                            @endforeach
+                        </td>
+                        <td>
+                            <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('هل أنت متأكد من أنك تريد حذف هذا المستخدم؟');">{{ __('permissions.delete') }}</button>
+                            </form>
+                        </td>
+                        <td>
+                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary">{{ __('permissions.update') }}
+                            
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -109,7 +133,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-								</div>
+					</div>
 							</div>
 						</div>
 					</div>

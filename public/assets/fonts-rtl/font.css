@@ -1,0 +1,71 @@
+/*@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(../fonts/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(../fonts/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(../fonts/MTP_ySUJH_bn48VBG8sNSnhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(../fonts/k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'BarCodeFont';
+  font-style: normal;
+  font-weight: 300;
+  src: local('BarCodeFont'), local('BarCodeFont'), url(../fonts/FFontCode39H3.woff) format('woff');
+}*/
+
+@import url(https://fonts.googleapis.com/earlyaccess/amiri.css);
+@import url(https://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
+@import url(https://fonts.googleapis.com/earlyaccess/droidarabicnaskh.css);
+@import url(https://fonts.googleapis.com/earlyaccess/lateef.css);
+@import url(https://fonts.googleapis.com/earlyaccess/scheherazade.css);
+@import url(https://fonts.googleapis.com/earlyaccess/thabit.css);
+* {
+    /*direction: rtl;*/
+    /*  color: #444;*/
+}
+
+h3 {
+    /*background: #222;*/
+    /*   color: #f9f9f9;*/
+    padding: 5px;
+}
+
+.amiri {
+    font-family: 'Amiri', serif;
+}
+
+.droid-arabic-kufi {
+    font-family: 'Droid Arabic Kufi', serif;
+}
+
+.droid-arabic-naskh {
+    font-family: 'Droid Arabic Naskh', serif;
+}
+
+.lateef {
+    font-family: 'Lateef', serif;
+}
+
+.scheherazade {
+    font-family: 'Scheherazade', serif;
+}
+
+.thabit {
+    font-family: 'Thabit', serif;
+}

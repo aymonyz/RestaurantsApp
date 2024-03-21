@@ -15,8 +15,51 @@ use App\Models\BranchData; // Add this line
 use App\Models\branches; // Add this line
 use App\Models\address; // Add this line
 use App\Models\Cart; // Add this line
+use App\Models\Invoice; // Add this line
+use Carbon\Carbon;
+
+use Illuminate\Support\Facades\Log;
+
 class InvoiceController extends Controller
 {
+// تأكد من استخدام النموذج الصحيح
+
+public function search(Request $request)
+{
+    
+
+    $dateFrom = $request->input('date_from');
+    $dateTo = $request->input('date_to');
+
+    // تعديل تاريخ النهاية ليشمل نهاية اليوم
+    $dateToEnd = Carbon::createFromFormat('Y-m-d', $dateTo)->endOfDay();
+    $dateFrom = Carbon::createFromFormat('Y-m-d', $request->input('date_from'))->startOfDay()->toDateTimeString();
+    $dateToEnd = Carbon::createFromFormat('Y-m-d', $request->input('date_to'))->endOfDay()->toDateTimeString();
+    Log::info('Date From: ' . $dateFrom);
+Log::info('Date To: ' . $dateToEnd);
+    $invoices = Invoice::whereBetween('created_at', [$dateFrom, $dateToEnd])->get();
+    DB::enableQueryLog();
+    // الاستعلام هنا
+    $invoices = Invoice::whereBetween('created_at', [$dateFrom, $dateToEnd])->get();
+    $log = DB::getQueryLog();
+    Log::info(print_r($log, true));
+    
+// هذا سيوقف التنفيذ ويعرض البيانات المُرجعة من الاستعلام
+    
+    return view('mail-read', compact('invoices'));
+}
+
+public function showPaidInvoicesReport(Request $request)
+{
+    $invoices = Invoice::where('status', 'paid')
+                ->whereBetween('created_at', [$request->startDate, $request->endDate])
+                ->get();
+
+    // لا حاجة لتمرير startDate و endDate كمتغيرات منفصلة، يمكن الوصول إليهما مباشرة من الطلب في العرض
+    return view('mail-settings', compact('invoices'));
+}
+
+
     //
     public function show(){
         
@@ -100,7 +143,35 @@ $readyForDeliveryCartsCount = Cart::Where('status', 'ready for delivery')->count
 
         return view('cards', ['addresses' => $addresses, 'branches' => $branches]);
     }
-  
-   
+    public function index()
+    {
+        $invoices = Cart::all(); // استرداد جميع الفواتير من قاعدة البيانات
+        $branchData = DB::table('branch_data')->get();
+        return view('mail-read', compact('invoices','branchData')); // تمريرها إلى الـ view
+    }
+    // public function search(Request $request)
+    // {
+    //     $query = Invoice::query();
+        
+    //     if ($request->filled('date_from')) {
+    //         $query->whereDate('created_at', '>=', $request->date_from);
+    //     }
     
+    //     if ($request->filled('date_to')) {
+    //         $query->whereDate('created_at', '<=', $request->date_to);
+    //     }
+    
+    //     // تسجيل الاستعلام SQL في ملف السجلات
+    //     \Log::info($query->toSql());
+    //     // تسجيل البيانات المرتبطة بالاستعلام (Bindings) في ملف السجلات
+    //     \Log::info($query->getBindings());
+    
+    //     $invoices = $query->get();
+    
+    //     return view('mail-read', compact('invoices'));
+    // }
+    
+    
+    
+
 }

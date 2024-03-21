@@ -94,6 +94,7 @@ border-radius: 50%;
                         
                         <form id="paymentMethodForm" method="POST" action="{{route('payment-methods.update',$paymentMethod->id)}}">
                             @csrf
+                            @method('PUT')
 
                             <div class="form-group row">
                                 <label for="paymethod_arabic" class="col-md-4 col-form-label text-md-right">{{ __('اسم طريقة الدفع بالعربية') }}</label>

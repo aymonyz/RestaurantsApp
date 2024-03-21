@@ -1,0 +1,63 @@
+/* here you can put your own css to customize and override the theme */
+
+/*@font-face {
+    font-family: 'Amiri';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts-rtl/amiri-v15-latin_arabic-regular.eot');*/
+
+/* IE9 Compat Modes */
+
+/*src: local('Amiri Regular'), local('Amiri-Regular'), url('../fonts/amiri-v15-latin_arabic-regular.eot?#iefix') format('embedded-opentype'),*/
+
+/* IE6-IE8 */
+
+/*url('../fonts-rt/amiri-v15-latin_arabic-regular.woff2') format('woff2'),*/
+
+/* Super Modern Browsers */
+
+/*url('../fonts-rt/amiri-v15-latin_arabic-regular.woff') format('woff'),*/
+
+/* Modern Browsers */
+
+/*url('../fonts-rt/amiri-v15-latin_arabic-regular.ttf') format('truetype'),*/
+
+/* Safari, Android, iOS */
+
+/*url('../fonts-rt/amiri-v15-latin_arabic-regular.svg#Amiri') format('svg');*/
+
+/* Legacy iOS */
+
+/*}*/
+
+/* amiri-700 - latin_arabic */
+
+/*@font-face {
+    font-family: 'Amiri';
+    font-style: normal;
+    font-weight: 700;
+    src: url('../fonts/amiri-v15-latin_arabic-700.eot');*/
+
+/* IE9 Compat Modes */
+
+/*src: local('Amiri Bold'), local('Amiri-Bold'), url('../fonts/amiri-v15-latin_arabic-700.eot?#iefix') format('embedded-opentype'),*/
+
+/* IE6-IE8 */
+
+/*url('../fonts/amiri-v15-latin_arabic-700.woff2') format('woff2'),*/
+
+/* Super Modern Browsers */
+
+/*url('../fonts/amiri-v15-latin_arabic-700.woff') format('woff'),*/
+
+/* Modern Browsers */
+
+/*url('../fonts/amiri-v15-latin_arabic-700.ttf') format('truetype'),*/
+
+/* Safari, Android, iOS */
+
+/*url('../fonts/amiri-v15-latin_arabic-700.svg#Amiri') format('svg');*/
+
+/* Legacy iOS */
+
+/*}*/

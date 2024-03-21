@@ -62,7 +62,7 @@ class PaymentMethodController extends Controller
     {
         //
         $paymentMethod = PaymentMethod::find($id);
-    return view('settings.payment_methods.edit', ['paymentMethod' => $paymentMethod]);
+    return view('settings.payment-methods.edit', ['paymentMethod' => $paymentMethod]);
     }
 
     /**
@@ -93,6 +93,6 @@ class PaymentMethodController extends Controller
         //
         $paymentMethod = PaymentMethod::find($id);
         $paymentMethod->delete();
-        return redirect()->route('payment-methods.index')->with('success', 'تم حذف طريقة الدفع بنجاح');
+        return redirect()->route('payment_methods.index')->with('success', 'تم حذف طريقة الدفع بنجاح');
     }
 }

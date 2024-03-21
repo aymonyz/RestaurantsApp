@@ -23,6 +23,8 @@ public function customer()
     'deliveryDate',
     'deliveryTimeFrom',
     'deliveryTimeTo',
-    'deliveryAddress'];
+    'deliveryAddress',
+      'created_by',
+];
 
 }

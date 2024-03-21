@@ -2,14 +2,11 @@
 namespace App\Http\Controllers;
 use App\Models\Cart;
 
-
-use Illuminate\Support\Facades\Log;
-
-
 use Illuminate\Http\Request;
 use App\Models\CartItem;
 
 use App\Models\ItemPrice;
+use llluminate\Support\Facades\Auth;
 
 
 
@@ -18,26 +15,20 @@ class CartController extends Controller
     public function store(Request $request)
     {
 
-        $cart = new Cart;
-        $cart->discount = $request->input('discount');
-        $cart->discountType = $request->input('discountType');
-        $cart->urgent = $request->input('urgent');
-        $cart->delivery = $request->input('delivery');
-        $cart->deliveryCost = $request->input('deliveryCost');
-        $cart->paymentMethod = $request->input('paymentMethod');
-        // other fields
-
-
         $data = $request->all();
         //dd($data);
-
+        
         // Handle the boolean values for 'urgent' and 'delivery'
-        $data['urgent'] = $request->has('urgent');
-        $data['delivery'] = $request->has('delivery');
+        // $data['urgent'] = $request->has('urgent');
+        $data['urgent'] = $request->input('urgent') ? 1 : 0;
+        $data['delivery'] = $request->input('delivery') ? 1 : 0;
+
+        
 
         // Set default values for 'discount' and 'customerId'
         $data['discount'] = $data['discount'] ?? 0;
         $data['customerId'] = $data['customerId'] ?? null;
+       
 
         // Add new fields
     $data['pickupDate'] = $request->input('pickupDate');

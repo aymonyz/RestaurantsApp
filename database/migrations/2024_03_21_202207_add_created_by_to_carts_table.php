@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('carts', function (Blueprint $table) {
-            $table->dropColumn('items');
+            //
+            $table->string('created_by');
+
         });
     }
 
@@ -22,8 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('carts', function (Blueprint $table) {
-            //$table->text('items');
+            //
+            $table->dropColumn('created_by'); // Added this line
+
         });
     }
 };
-

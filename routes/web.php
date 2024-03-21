@@ -39,8 +39,8 @@ use App\Http\Controllers\ResetController;
 use App\Http\Controllers\DeliverySettingController;
 use Illuminate\Database\Console\Migrations\ResetCommand;
 
-use App\Http\Controllers\adressController;
-use App\Models\address;
+// use App\Http\Controllers\adressController;
+// use App\Models\address;
 use Illuminate\Contracts\Cache\Store;
 use App\Http\Controllers\PrintOptionController;
 use App\Http\Controllers\UserController;
@@ -190,6 +190,15 @@ Route::delete('/roles/{role}', 'App\Http\Controllers\RoleController@destroy')->n
 // Route::delete('/rest/{id}', [restController::class, 'destroy'])->name('rest.destroy');
 // Route::get('/rest/{id}/edit', [restController::class, 'edit'])->name('rest.edit');
 
+//التقارير
+
+Route::get('/mail-read', [InvoiceController::class, 'index']);
+Route::get('/mail-read/search', [InvoiceController::class, 'search'])->name('mail-read.search');
+Route::get('/search', [InvoiceController::class, 'search'])->name('mail-read.search');
+///mail-settings
+Route::get('/mail-settings', [InvoiceController::class, 'showPaidInvoicesReport'])->name('mail-settings');
+
+
 
 
 //additional_services
@@ -227,11 +236,11 @@ Route::post('/reset/delete', [ResetController::class, 'delete'])->name('reset.de
 
 // Route to handle deleting an area
 Route::post('/reset/delete/{id}', [ResetController::class, 'delete'])->name('reset.delete');
-// في ملف web.php، أضف Route جديد أو قم بتعديل Route موجود ليشمل إرسال بيانات الفروع إلى الصفحة.
-Route::get('/ad-castoar', [adressController::class, 'showCards'])->name('ad-castoar');
-Route::get('/ad-castoar', [adressController::class, 'showSelectForm']);
-Route::get('/some-path', 'adressController@someMethod');
-Route::get('/ad-castoar',[adressController::class,'show'])->name('adress');
+// // في ملف web.php، أضف Route جديد أو قم بتعديل Route موجود ليشمل إرسال بيانات الفروع إلى الصفحة.
+// Route::get('/ad-castoar', [adressController::class, 'showCards'])->name('ad-castoar');
+// Route::get('/ad-castoar', [adressController::class, 'showSelectForm']);
+// Route::get('/some-path', 'adressController@someMethod');
+// Route::get('/ad-castoar',[adressController::class,'show'])->name('adress');
 
 Route::post('/countries/get-data', 'CountryController@getData');
 // في ملف routes/web.php
